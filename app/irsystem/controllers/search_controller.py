@@ -3,7 +3,8 @@ from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 
 project_name = "CUpids"
-net_id = "Net Ids: afb75, ak2355, da388, db758, kr439"
+net_id = "Alexa Batino (afb75), Divya Agrawal (da388), Keethu Ramalingam (kr439), Asma Khan (ak2355), Deb Bhattacharya (db758)"
+
 
 @irsystem.route('/', methods=['GET'])
 def search():
