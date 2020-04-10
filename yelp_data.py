@@ -35,18 +35,40 @@ attributes = set()
 categories = set()
 for element in tempList:
   if element['stars'] > 3 and element['review_count'] > 10:
-    finalList.append(element)
-    categories.add(element['categories'])
-    for key in element['attributes']:
-      attributes.add(key)
+    # for key in element['attributes']:
+    #   if "Restaurant" in key:
+    #     attributes.add(key)
+    #     finalList.append(element)
+    #     categories.add(element['categories'])
+    #     break
+    if "Restaurant" in element['categories']:
+      finalList.append(element)
+      categories.add(element['categories'])
+      for key in element['attributes']:
+        attributes.add(key)
+
+attribute_dict = {}
+for a in attributes:
+  attribute_dict[a] = 0
+
+for f in finalList:
+  for att in f['attributes']:
+    attribute_dict[att] += 1
+
+print(attribute_dict)
 
 # print(finalList)
-print(categories)
+# print(attributes)
 
-# x = [21,22,23,4,5,6,77,8,9,10,31,32,33,34,35,36,37,18,49,50,100]
+#x = [21,22,23,4,5,6,77,8,9,10,31,32,33,34,35,36,37,18,49,50,100]
 # num_bins = 5
-# n, bins, patches = plt.hist(x, num_bins, facecolor='blue', alpha=0.5)
+# n, bins, patches = plt.hist(x, num_bins, facecolor='blue')
 # plt.show()
+# plt.savefig('output.png')
+
+names = list(attribute_dict.keys())
+values = list(attribute_dict.values())
+
 
 
 
