@@ -1,11 +1,9 @@
 import numpy as np
 import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt; plt.rcdefaults()
 
 import json
-
-# with open('path_to_file/person.json') as f:
-#   data = json.load(f)
 
 jsonList = []
 count = 0
@@ -35,40 +33,44 @@ attributes = set()
 categories = set()
 for element in tempList:
   if element['stars'] > 3 and element['review_count'] > 10:
-    # for key in element['attributes']:
-    #   if "Restaurant" in key:
-    #     attributes.add(key)
-    #     finalList.append(element)
-    #     categories.add(element['categories'])
-    #     break
     if "Restaurant" in element['categories']:
       finalList.append(element)
       categories.add(element['categories'])
       for key in element['attributes']:
         attributes.add(key)
 
-attribute_dict = {}
-for a in attributes:
-  attribute_dict[a] = 0
+new_categories = set()
+for cat in categories:
+  c = set(cat.split(", "))
+  print(c)
+  new_categories = new_categories.union(c)
+
+categories_dict = {}
+for n in new_categories:
+  categories_dict[n] = 0
 
 for f in finalList:
-  for att in f['attributes']:
-    attribute_dict[att] += 1
+  for el in new_categories:
+    if el in f['categories']:
+      categories_dict[el] += 1
 
-print(attribute_dict)
+print(categories_dict)
 
-# print(finalList)
-# print(attributes)
+objects = categories_dict.keys()
+y_pos = np.arange(len(objects))
+performance = categories_dict.values()
 
-#x = [21,22,23,4,5,6,77,8,9,10,31,32,33,34,35,36,37,18,49,50,100]
-# num_bins = 5
-# n, bins, patches = plt.hist(x, num_bins, facecolor='blue')
-# plt.show()
-# plt.savefig('output.png')
+# plt.bar(y_pos, performance, align='center', alpha=0.5)
+# plt.xticks(y_pos, objects)
+# plt.ylabel('Usage')
+# plt.title('Programming language usage')
 
-names = list(attribute_dict.keys())
-values = list(attribute_dict.values())
+plt.barh(y_pos, performance, align='center', alpha=0.5)
+plt.yticks(y_pos, objects)
+plt.xlabel('Categories')
+plt.title('Restaurant Categories')
 
+plt.show()
 
 
 
