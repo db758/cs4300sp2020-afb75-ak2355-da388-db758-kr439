@@ -1,6 +1,6 @@
 import numpy as np
-# import matplotlib.mlab as mlab
-# import matplotlib.pyplot as plt
+import matplotlib.mlab as mlab
+import matplotlib.pyplot as plt
 
 import json
 
@@ -16,11 +16,12 @@ with open('yelp-business-100.txt') as f:
       print(type(obj))
       jsonList.append(obj)
 
-print(jsonList[0])
+# print(jsonList[0])
 
 tempList = []
 for e in jsonList:
   temp = {}
+  temp['business_id'] = e['business_id']
   temp["name"] = e['name']
   temp['address']  = e['address']
   temp['city'] = e['city']
@@ -33,10 +34,17 @@ for e in jsonList:
   tempList.append(temp)
 
 finalList = []
+attributes = set()
+categories = set()
 for element in tempList:
   if element['stars'] > 3 and element['review_count'] > 10:
     finalList.append(element)
-print(finalList)
+    categories.add(element['categories'])
+    for key in element['attributes']:
+      attributes.add(key)
+
+# print(finalList)
+print(categories)
 
 # x = [21,22,23,4,5,6,77,8,9,10,31,32,33,34,35,36,37,18,49,50,100]
 # num_bins = 5
