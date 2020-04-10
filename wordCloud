@@ -1,0 +1,82 @@
+Last login: Fri Apr 10 04:27:39 on ttys000
+Keethus-MacBook-Pro:~ keethuramalingam$ cd /Users/keethuramalingam/Downloads/Movie-Analysis-master 
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ cd /Users/keethuramalingam/Downloads/Movie-Analysis-master 
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ cd /Users/keethuramalingam/Downloads/Movie-Analysis-master 
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+    
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ 
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+{'[': 5043, "'": 29008, 'A': 2318, 'c': 3343, 't': 4042, 'i': 6575, 'o': 6319, 'n': 4495, ',': 9461, ' ': 9461, 'd': 2795, 'v': 923, 'e': 7946, 'u': 1390, 'r': 10547, 'F': 1778, 'a': 9065, 's': 1763, 'y': 4651, 'S': 804, '-': 625, ']': 5043, 'T': 1413, 'h': 1710, 'l': 3508, 'D': 2715, 'm': 7378, 'R': 1109, 'C': 2761, 'M': 846, 'W': 310, 'H': 772, 'p': 475, 'B': 293, 'g': 293, 'G': 1, 'w': 4, 'V': 2, 'N': 9}
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+Traceback (most recent call last):
+  File "plots.py", line 100, in <module>
+    makePlot2("Genres")
+  File "plots.py", line 63, in makePlot2
+    for val in [x.strip() for x in my_string.split(',')]:
+NameError: name 'my_string' is not defined
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+{"'Action'": 1153, "'Adventure'": 923, "'Fantasy'": 610, "'Sci-Fi'": 616, "'Thriller'": 1411, "'Documentary'": 121, "'Romance'": 1107, "'Animation'": 242, "'Comedy'": 1872, "'Family'": 546, "'Musical'": 132, "'Mystery'": 500, "'Western'": 97, "'Drama'": 2594, "'History'": 207, "'Sport'": 182, "'Crime'": 889, "'Horror'": 565, "'War'": 213, "'Biography'": 293, "'Music'": 214, "'Game-Show'": 1, "'Reality-TV'": 2, "'News'": 3, "'Short'": 5, "'Film-Noir'": 6}
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+{"'Action'": 1153, "'Adventure'": 923, "'Fantasy'": 610, "'Sci-Fi'": 616, "'Thriller'": 1411, "'Documentary'": 121, "'Romance'": 1107, "'Animation'": 242, "'Comedy'": 1872, "'Family'": 546, "'Musical'": 132, "'Mystery'": 500, "'Western'": 97, "'Drama'": 2594, "'History'": 207, "'Sport'": 182, "'Crime'": 889, "'Horror'": 565, "'War'": 213, "'Biography'": 293, "'Music'": 214, "'Game-Show'": 1, "'Reality-TV'": 2, "'News'": 3, "'Short'": 5, "'Film-Noir'": 6}
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+{"'Action'": 1153, "'Adventure'": 923, "'Fantasy'": 610, "'Sci-Fi'": 616, "'Thriller'": 1411, "'Documentary'": 121, "'Romance'": 1107, "'Animation'": 242, "'Comedy'": 1872, "'Family'": 546, "'Musical'": 132, "'Mystery'": 500, "'Western'": 97, "'Drama'": 2594, "'History'": 207, "'Sport'": 182, "'Crime'": 889, "'Horror'": 565, "'War'": 213, "'Biography'": 293, "'Music'": 214, "'Game-Show'": 1, "'Reality-TV'": 2, "'News'": 3, "'Short'": 5, "'Film-Noir'": 6}
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+{"'Action'": 1153, "'Adventure'": 923, "'Fantasy'": 610, "'Sci-Fi'": 616, "'Thriller'": 1411, "'Documentary'": 121, "'Romance'": 1107, "'Animation'": 242, "'Comedy'": 1872, "'Family'": 546, "'Musical'": 132, "'Mystery'": 500, "'Western'": 97, "'Drama'": 2594, "'History'": 207, "'Sport'": 182, "'Crime'": 889, "'Horror'": 565, "'War'": 213, "'Biography'": 293, "'Music'": 214, "'Game-Show'": 1, "'Reality-TV'": 2, "'News'": 3, "'Short'": 5, "'Film-Noir'": 6}
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+Traceback (most recent call last):
+  File "plots.py", line 102, in <module>
+    makePlot2("Genres")
+  File "plots.py", line 70, in makePlot2
+    plt.bar(*zip(*gen.items()))
+AttributeError: 'list' object has no attribute 'items'
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+Traceback (most recent call last):
+  File "plots.py", line 6, in <module>
+    from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+ModuleNotFoundError: No module named 'wordcloud'
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python
+Python 3.6.5 |Anaconda, Inc.| (default, Apr 26 2018, 08:42:37) 
+[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import sys
+>>> print(sys.executable)
+/Users/keethuramalingam/anaconda3/bin/python
+>>> quit()
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ Users/keethuramalingam/anaconda3/bin/python -m pip install wordcloud
+-bash: Users/keethuramalingam/anaconda3/bin/python: No such file or directory
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ cd
+Keethus-MacBook-Pro:~ keethuramalingam$ Users/keethuramalingam/anaconda3/bin/python -m pip install wordcloud
+-bash: Users/keethuramalingam/anaconda3/bin/python: No such file or directory
+Keethus-MacBook-Pro:~ keethuramalingam$ /Users/keethuramalingam/anaconda3/bin/python -m pip install wordcloud
+
+Collecting wordcloud
+  Downloading https://files.pythonhosted.org/packages/ce/e7/37c4bc1416d01102d792dac3cb1ebe4b62d5e5e1e585dbfb3e02d8ebd484/wordcloud-1.6.0-cp36-cp36m-macosx_10_6_x86_64.whl (157kB)
+    100% |████████████████████████████████| 163kB 3.2MB/s 
+Requirement already satisfied: pillow in ./anaconda3/lib/python3.6/site-packages (from wordcloud) (5.1.0)
+Requirement already satisfied: matplotlib in ./anaconda3/lib/python3.6/site-packages (from wordcloud) (2.2.2)
+Requirement already satisfied: numpy>=1.6.1 in ./anaconda3/lib/python3.6/site-packages (from wordcloud) (1.14.3)
+Requirement already satisfied: cycler>=0.10 in ./anaconda3/lib/python3.6/site-packages (from matplotlib->wordcloud) (0.10.0)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.1 in ./anaconda3/lib/python3.6/site-packages (from matplotlib->wordcloud) (2.2.0)
+Requirement already satisfied: python-dateutil>=2.1 in ./anaconda3/lib/python3.6/site-packages (from matplotlib->wordcloud) (2.7.3)
+Requirement already satisfied: pytz in ./anaconda3/lib/python3.6/site-packages (from matplotlib->wordcloud) (2018.4)
+Requirement already satisfied: six>=1.10 in ./anaconda3/lib/python3.6/site-packages (from matplotlib->wordcloud) (1.11.0)
+Requirement already satisfied: kiwisolver>=1.0.1 in ./anaconda3/lib/python3.6/site-packages (from matplotlib->wordcloud) (1.0.1)
+Requirement already satisfied: setuptools in ./anaconda3/lib/python3.6/site-packages (from kiwisolver>=1.0.1->matplotlib->wordcloud) (39.1.0)
+distributed 1.21.8 requires msgpack, which is not installed.
+Installing collected packages: wordcloud
+Successfully installed wordcloud-1.6.0
+You are using pip version 10.0.1, however version 20.0.2 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+Keethus-MacBook-Pro:~ keethuramalingam$ 
+Keethus-MacBook-Pro:~ keethuramalingam$ cd /Users/keethuramalingam/Downloads/Movie-Analysis-master 
+Keethus-MacBook-Pro:Movie-Analysis-master keethuramalingam$ python plots.py
+
