@@ -1,6 +1,6 @@
 import numpy as np
-# import matplotlib.mlab as mlab
-# import matplotlib.pyplot as plt
+import matplotlib.mlab as mlab
+import matplotlib.pyplot as plt
 
 import json
 
@@ -13,10 +13,7 @@ with open('yelp-business-100.txt') as f:
   
     for jsonObj in f.readlines():
       obj = json.loads(jsonObj)
-      print(type(obj))
       jsonList.append(obj)
-
-print(jsonList[0])
 
 tempList = []
 for e in jsonList:
