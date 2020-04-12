@@ -2,11 +2,11 @@ import numpy as np
 import json
 import operator
 
-def create_python_dict(json):
+def create_python_dict():
   """ Converts json to python dictionary """
   jsonList = []
   count = 0
-  with open('yelp-business-100.txt') as f:
+  with open('yelp-restaurants.txt') as f:
       for jsonObj in f.readlines():
         obj = json.loads(jsonObj)
         jsonList.append(obj)
@@ -24,6 +24,18 @@ def create_python_dict(json):
     temp['attributes'] = e['attributes']
     temp['categories'] = e['categories']
     tempList.append(temp)
+  
+  return tempList
+
+def run(mov_attributes, mov_categories, city, state):
+  """" Runs the main code and returns an ordered dictionary of restaurants. """
+
+  #can change to figure out what to print
+  
+  restaurants = create_python_dict()
+  restaurant_locations = restaurant_location(restaurants, city, state)
+  restaurant_scores = find_restaurants(mov_categories, mov_attributes, restaurants)
+  return combine_location(restaurant_scores, restaurant_locations)
 
 def tokenize_categories(categories):
   """" Takes in a category string and tokenizes it into separate words. 
@@ -77,11 +89,11 @@ def restaurant_location(restaurants, city, state):
         result += r
   return result
 
-def find_restaurants(mov_categories, mov_attributes, restuarants):
+def find_restaurants(mov_categories, mov_attributes, restaurants):
   """" Returns a sorted dictionary of restuarants with name of restaurant and 
   the similarity score to the mov_categories and mov_attributes. """
   result = {}
-  for r in restuarants:
+  for r in restaurants:
     res_attributes = tokenize_attributes(r['attributes'])
     res_categories = tokenize_categories(r['categories'])
     sim_attribute = jaccard_sim(mov_attributes, mov_categories)
