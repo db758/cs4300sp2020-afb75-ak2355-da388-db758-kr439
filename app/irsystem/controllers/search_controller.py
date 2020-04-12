@@ -12,12 +12,10 @@ def search():
 	if not query:
 		data = []
 		output_message = ''
-		bid = db.session.query(Restaurant).filter_by(bid="vjTVxnsQEZ34XjYNS-XUpA").first()
-		print("here")
-		print(bid.bid)
 	else:
 		output_message = "Your search: " + query
-		data = range(5)
+		restaurant = Restaurant.query.filter(Restaurant.name.contains(query)).first()
+		data = [restaurant.name, restaurant.city, restaurant.state]
 	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
 
 
