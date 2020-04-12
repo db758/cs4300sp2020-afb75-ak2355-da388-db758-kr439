@@ -103,12 +103,12 @@ You may either install the PostgresApp if you are using a Mac [here](https://pos
 ``` bash
 # Enter postgres command line interface
 $ psql
-# Create your database which I will call my_app_db in this example, but you can change accordingly
-CREATE DATABASE my_app_db;
+# Create your database which I will call cupids_db in this example, but you can change accordingly
+CREATE DATABASE cupids_db;
 # Quit out
 \q
 ```
-The above creates the actual database that will be used for this application and the name of the database is `my_app_db` which you can change, but make sure to change the `.env` file and in your production app accordingly which I will talk about lower in this guide.
+The above creates the actual database that will be used for this application and the name of the database is `cupids_db` which you can change, but make sure to change the `.env` file and in your production app accordingly which I will talk about lower in this guide.
 
 ### 5. Check to see if app runs fine by running in localhost:
 ``` bash
@@ -287,7 +287,7 @@ As mentioned in the above code, your `.env` file will be where you hold variable
 # Set the environment type of the app (see config.py)
 export APP_SETTINGS=config.DevelopmentConfig
 # Set the DB url to a local database for development
-export DATABASE_URL=postgresql://localhost/my_app_db
+export DATABASE_URL=postgresql://localhost/cupids_db
 ```
 
 As you can see above in the example, I reference a specific configuration class (`DevelopmentConfig`), meaning I plan on working in my development environment.  I also have my database URL. Both of which are used heavily in the app. In local mode you will be maniuplating the .env file but in production you will be manipulating the Config Variables in your Heroku instance or you will modify the .env files in your AWS EC2/EB application.
