@@ -7,10 +7,10 @@ class Restaurant(db.Model):
   address = db.Column(db.String(500))
   city = db.Column(db.String(1000))
   state = db.Column(db.String(1000))
-  stars = db.Column(db.Integer)
-  review_count = db.Column(db.String(30))
-  attributes = db.Column(db.String(1000))
-  categories = db.Column(db.String(1000))
+  stars = db.Column(db.Float)
+  review_count = db.Column(db.Integer)
+  attributes = db.Column(db.String(2000))
+  categories = db.Column(db.String(2000))
 
   def __init__(self, bid, name, address, city, state, stars, review_count, attributes, categories):
     self.bid = bid

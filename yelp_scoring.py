@@ -20,9 +20,7 @@ def create_python_dict():
     temp['city'] = e['city']
     temp['state'] = e['state']
     temp['stars'] = e['stars']
-    print(type(e['stars']))
     temp['review_count'] = e['review_count']
-    print(type(e['review_count']))
     temp['attributes'] = e['attributes']
     temp['categories'] = e['categories']
     tempList.append(temp)

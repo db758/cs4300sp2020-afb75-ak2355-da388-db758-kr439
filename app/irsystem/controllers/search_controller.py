@@ -12,6 +12,9 @@ def search():
 	if not query:
 		data = []
 		output_message = ''
+		bid = db.session.query(Restaurant).filter_by(bid="vjTVxnsQEZ34XjYNS-XUpA").first()
+		print("here")
+		print(bid.bid)
 	else:
 		output_message = "Your search: " + query
 		data = range(5)
