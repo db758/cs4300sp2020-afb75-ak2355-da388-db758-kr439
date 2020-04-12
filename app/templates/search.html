@@ -1,55 +1,43 @@
 <html>
+  <head>
+    <link rel="stylesheet" href="/static/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/main.css" />
+    <style></style>
+  </head>
 
-<head>
-    <link rel="stylesheet" href="/static/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/main.css">
-    <style>
-        body {
-            background-color: lightblue;
-        }
-    </style>
-</head>
-
-
-
-<body>
-    <div class="topcorner">
-        <!-- <p>Project Name: {{ name }}</p>
-        <p>Student Name: ({{ netid }})</p> -->
-    </div>
+  <body>
     <form class="form-inline global-search">
-        <h1 style="font-size: 55px; font-family:Futura; color: #e56a9c">
-            <!-- C
-                <span style="color: #EA4335; ">S</span>
-                <span style="color: #FBBC05; ">4</span>
-                3
-                <span style="color: #34A853; ">0</span>
-                <span style="color: #EA4335; ">0</span> -->
-            CUpids
-        </h1>
+      <h1 class="title">CUpids</h1>
+      <br />
+      <h5 class="subtitle">Find a restaurant and movie for you and yours!</h5>
 
-        <br><br>
+      <br /><br />
 
-        <div class="form-group">
-            <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">
-        </div>
-        <button type="submit" class="btn btn-info"> Go! </button>
+      <div class="form-group">
+        <input
+          id="input"
+          type="text"
+          name="search"
+          class="form-control"
+          placeholder="Your Input"
+        />
+      </div>
+      <button type="submit" class="btn btn-info">Go!</button>
     </form>
     <form class="form-inline global-search">
-        {% if data %}
-        <h1>{{output_message}}</h1>
-        {% for d in data %}
-        <br>
-        <p>{{d}}</p>
-        {% endfor %}
-        {% endif %}
+      {% if data %}
+      <h1>{{ output_message }}</h1>
+      {% for d in data %}
+      <br />
+      <p>{{ d }}</p>
+      {% endfor %} {% endif %}
     </form>
-</body>
+  </body>
 
-
-<div class="footer"
-    style="position: fixed; left: 0; bottom: 0;background-color: #d7a5e4; width: 100%; color: black; text-align: center">
+  <div
+    class="footer"
+    style="font-weight: lighter; position: fixed; left: 0; bottom: 0;background-color: #e56a9c; width: 100%; color: white; text-align: center"
+  >
     <p>{{ netid }}</p>
-</div>
-
+  </div>
 </html>
