@@ -1,6 +1,8 @@
 import numpy as np
 import json
 import operator
+import csv
+import re
 
 def create_python_dict():
   """ Converts json to python dictionary """
@@ -27,6 +29,31 @@ def create_python_dict():
   
   return tempList
 
+def get_key_words():
+  """" Returns the category and attribute final list in csv. """
+  restaurants = create_python_dict()
+  result_cat = set()
+  result_att = set()
+  for res in restaurants:
+    if res['categories'] is not None:
+      c = tokenize_categories(res['categories'])
+      result_cat = result_cat.union(c)
+    if res['attributes'] is not None:
+      result_att = result_att.union(tokenize_attributes(res['attributes']))
+  
+  with open('output.csv', mode='w') as csv_file:
+    fieldnames = ['category', 'attribute']
+    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+    writer.writeheader()
+    length = max(len(result_att), len(result_cat))
+    for c in result_cat:
+      writer.writerow({'category': c})
+    for a in result_att:
+      writer.writerow({'attribute': a})
+  
+  
+
+
 def run(mov_attributes, mov_categories, city, state):
   """" Runs the main code and returns an ordered dictionary of restaurants. """
 
@@ -42,9 +69,8 @@ def tokenize_categories(categories):
   Returns a set of token words. """
 
   new_categories = set()
-  for cat in categories:
-    c = set(cat.split(", "))
-    new_categories = new_categories.union(c)
+  c = set(categories.split(", "))
+  new_categories = new_categories.union(c)
   
   return new_categories
 
@@ -56,13 +82,22 @@ def tokenize_attributes(attributes):
   for key in attributes:
     try:
       i = int(attributes[key])
-      if isinstance(attributes[key], i):
+      if isinstance(i, int):
         new_attributes.add(key)
     except ValueError:  
       if key == "Ambience":
-        for k, v in attributes['Ambience'].items():
-          if v == "True":
-            new_attributes.add(k)
+        text = attributes['Ambience']
+        # attribute_dictionary = json.loads(text)
+        # a = set(text.split(", "))
+        new_attributes = new_attributes.union(set(re.split(r'[:,]\s*', text)))
+        # words = set()
+        # for tup in a:
+        #   temp = set(tup.split(": "))
+        #   print(temp)
+        #   NoneType = type(None)
+          # for w in temp:
+          #   if not isinstance(w, NoneType) and w != 'False' and w != 'True':
+          #     words = words.add(w)
       elif attributes[key] != "False":
         new_attributes.add(key)
   
@@ -121,4 +156,5 @@ def combine_location(restaurant_scores, restaurant_locations):
   sorted_result = sorted(result.items(), key=operator.itemgetter(1))
   return sorted_result
 
-
+print("Method")
+get_key_words()
