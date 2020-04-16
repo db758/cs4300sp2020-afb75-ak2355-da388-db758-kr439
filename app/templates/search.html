@@ -15,14 +15,41 @@
 
       <div class="form-group">
         <input
-          id="input"
+          id="input movie-a"
           type="text"
           name="search"
           class="form-control"
-          placeholder="Your Input"
+          placeholder="What movie do you like?"
         />
+        <input
+          id="input movie-b"
+          type="text"
+          name="search"
+          class="form-control"
+          placeholder="What movie do they like?"
+        />
+        <br />
+        <input
+          id="input location-a"
+          type="text"
+          name="search"
+          class="form-control location-field"
+          placeholder="Where are you located? i.e. Chicago, IL"
+        />
+        <input
+          id="input"
+          type="text"
+          name="search"
+          class="form-control location-field location-b"
+          style="display: none"
+          placeholder="Where are they located? i.e. Newark, NJ"
+        />
+        <br />
+        <input type="checkbox" id="location-btn" onclick="showLocationB()" />
+        <label for="location-btn">We are in different locations</label>
       </div>
-      <button type="submit" class="btn btn-info">Go!</button>
+      <br />
+      <button type="submit" class="btn btn-info" id="home-submit">Go!</button>
     </form>
     <form class="form-inline global-search">
       {% if data %}
@@ -40,4 +67,27 @@
   >
     <p>{{ netid }}</p>
   </div>
+  <script>
+    var location_btn = document.getElementById("location-btn");
+    var location_b = document.getElementsByClassName("location-b")[0];
+    console.log(location_b);
+    // if (document.getElementById("location-btn").checked) {
+    //   // if (location_b.style.display === "block") {
+    //   //   location_b.style.display = "none";
+    //   // } else {
+    //   //   location_b.style.display = "block";
+    //   // }
+    //   location_b.style.display = "block";
+    // } else {
+    //   location_b.style.display = "none";
+    // }
+    function showLocationB() {
+      console.log("here");
+      if (location_btn.checked == true) {
+        location_b.style.display = "inline";
+      } else {
+        location_b.style.display = "none";
+      }
+    }
+  </script>
 </html>

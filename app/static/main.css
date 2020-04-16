@@ -30,7 +30,7 @@
   right: 2%;
 }
 .btn {
-  background-color: #4285f4;
+  background-color: #e56a9c;
   border: none;
 }
 .step-links a {
@@ -49,4 +49,9 @@ body {
 
 .subtitle {
   color: #595758;
+}
+
+.location-field {
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
