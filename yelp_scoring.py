@@ -7,7 +7,6 @@ import re
 def create_python_dict():
   """ Converts json to python dictionary """
   jsonList = []
-  count = 0
   with open('yelp-restaurants.txt') as f:
       for jsonObj in f.readlines():
         obj = json.loads(jsonObj)
@@ -54,15 +53,15 @@ def get_key_words():
   
 
 
-def run(mov_attributes, mov_categories, city, state):
+def run(mov_attributes, mov_categories, city1, state1, city2, state2):
   """" Runs the main code and returns an ordered dictionary of restaurants. """
 
   #can change to figure out what to print
-  
-  restaurants = create_python_dict()
-  restaurant_locations = restaurant_location(restaurants, city, state)
-  restaurant_scores = find_restaurants(mov_categories, mov_attributes, restaurants)
-  return combine_location(restaurant_scores, restaurant_locations)
+  if state1 != state2:
+    restaurants = create_python_dict()
+    restaurant_locations = restaurant_location(restaurants, city1, state1)
+    restaurant_scores = find_restaurants(mov_categories, mov_attributes, restaurants)
+    return combine_location(restaurant_scores, restaurant_locations)
 
 def tokenize_categories(categories):
   """" Takes in a category string and tokenizes it into separate words. 
