@@ -1,39 +1,82 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="/static/bootstrap.min.css">
-        <link rel="stylesheet" href="/static/main.css">
-    </head>
-    <body>
-        <div class="topcorner">
-            <p>Project Name: {{ name }}</p>
-            <p>Student Name: ({{ netid }})</p>
-        </div>
-        <form class="form-inline global-search">
-            <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
-                C
-                <span style="color: #EA4335; ">S</span>
-                <span style="color: #FBBC05; ">4</span>
-                3
-                <span style="color: #34A853; ">0</span>
-                <span style="color: #EA4335; ">0</span>
-            </h1>
-            
-            <br><br>
-            
-            <div class="form-group">
-                <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">
-            </div>
-            <button type="submit" class="btn btn-info"> Go! </button>
-        </form>
-        <form class="form-inline global-search">
-        {% if data %}
-            <h1>{{output_message}}</h1>
-            {% for d in data %}  
-                <br>
-                <p>{{d}}</p>
-            {% endfor %}
-        {% endif %}
-        </form>
-    </body>
+  <head>
+    <link rel="stylesheet" href="/static/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/main.css" />
+    <style></style>
+  </head>
 
+  <body>
+    <form class="form-inline global-search">
+      <h1 class="title">CUpids</h1>
+      <br />
+      <h5 class="subtitle">Find a restaurant and movie for you and yours!</h5>
+
+      <br /><br />
+
+      <div class="form-group">
+        <input
+          id="input movie-a"
+          type="text"
+          name="search"
+          class="form-control"
+          placeholder="What movie do you like?"
+        />
+        <input
+          id="input movie-b"
+          type="text"
+          name="search"
+          class="form-control"
+          placeholder="What movie do they like?"
+        />
+        <br />
+        <input
+          id="input location-a"
+          type="text"
+          name="search"
+          class="form-control location-field"
+          placeholder="Where are you located? i.e. Chicago, IL"
+        />
+        <input
+          id="input"
+          type="text"
+          name="search"
+          class="form-control location-field location-b"
+          style="display: none"
+          placeholder="Where are they located? i.e. Newark, NJ"
+        />
+        <br />
+        <input type="checkbox" id="location-btn" onclick="showLocationB()" />
+        <label for="location-btn">We are in different locations</label>
+      </div>
+      <br />
+      <button type="submit" class="btn btn-info" id="home-submit">Go!</button>
+    </form>
+    <form class="form-inline global-search">
+      {% if data %}
+      <h1>{{ output_message }}</h1>
+      {% for d in data %}
+      <br />
+      <p>{{ d }}</p>
+      {% endfor %} {% endif %}
+    </form>
+  </body>
+
+  <div
+    class="footer"
+    style="font-weight: lighter; position: fixed; left: 0; bottom: 0;background-color: #e56a9c; width: 100%; color: white; text-align: center"
+  >
+    <p>{{ netid }}</p>
+  </div>
+  <script>
+    var location_btn = document.getElementById("location-btn");
+    var location_b = document.getElementsByClassName("location-b")[0];
+
+    function showLocationB() {
+      if (location_btn.checked == true) {
+        location_b.style.display = "inline";
+      } else {
+        location_b.style.display = "none";
+      }
+    }
+  </script>
 </html>
