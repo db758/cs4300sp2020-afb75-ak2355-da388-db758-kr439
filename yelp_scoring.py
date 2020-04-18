@@ -76,17 +76,24 @@ def run(mov_attributes, mov_categories, city1, state1, city2, state2):
       print("Restaurant: " + str(first_elem) + ", Score: " + str(first_elem_score))
       print("Location: " + restaurant_dict[first_elem]['city'] + ", " +  restaurant_dict[first_elem]['state'] + ", Matchings: " + str(i)) 
       return "Restaurant: " + str(first_elem) + ", Score: " + str(first_elem_score)
+ 
   elif state2 is None:
     #if there is only one user
+    print("inside state2 is None")
     restaurant_locations = restaurant_location_one_user(restaurants, city1, state1)
     restaurant_scores, key_words_dict = find_restaurants(mov_categories, mov_attributes, restaurants)
+
+    # for e in restaurant_locations:
+    #   if e['state'] != 'AZ':
+    #     print(e)
+
     final_result = combine_location(restaurant_scores, restaurant_locations)
 
     if len(final_result) == 0:
       print("Could not find restaurant :( ")
       return "Could not find restaurant :( "
     else:
-      first_elem = list(final_result.keys())[0]
+      first_elem = list(final_result.keys())[1]
       first_elem_score = final_result[first_elem]
       i = key_words_dict[first_elem]
       print("Restaurant: " + str(first_elem) + ", Score: " + str(first_elem_score))
@@ -129,8 +136,6 @@ def run(mov_attributes, mov_categories, city1, state1, city2, state2):
       print("Location: " + restaurant_dict[first_elem2]['city'] + ", " +  restaurant_dict[first_elem2]['state'] + ", Matchings: " + str(i2)) 
   
   
-
-
 def tokenize_categories(categories):
   """" Takes in a category string and tokenizes it into separate words. 
   Returns a set of token words. """
@@ -185,7 +190,6 @@ def jaccard_sim(set1, set2):
   """" Returns a tuple with a simple Jaccard Similarity score for set1 and set2
   and the set of intersection words. """
 
-  # numerator = len(set(set1).intersection(set2))
   intersection = intersection_fun(set1, set2)
   numerator = len(intersection)
   denominator = (len(set1) + len(set2)) - numerator
@@ -262,8 +266,8 @@ def combine_location(restaurant_scores, restaurant_locations):
   sorted_result = {r: result[r] for r in sorted(result, key=result.get, reverse=True)}
   return sorted_result
 
-# print("Method")
-# run(['romantic'],['Family'],'Scottsdale', 'AZ', None, None)
+print("Method")
+run(['romantic'],['Family'],'Phoenix', 'AZ', None, None)
 # res = create_python_dict()
 # loc = restaurant_location(res, 'Phoenix', 'AZ')
 # f = find_restaurants(['Family', 'Waffle'], ['romantic', 'casual'], res)
