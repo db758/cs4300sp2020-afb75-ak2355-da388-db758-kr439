@@ -266,8 +266,8 @@ def combine_location(restaurant_scores, restaurant_locations):
   sorted_result = {r: result[r] for r in sorted(result, key=result.get, reverse=True)}
   return sorted_result
 
-print("Method")
-run(['romantic'],['Family'],'Phoenix', 'AZ', None, None)
+# print("Method")
+# run(['romantic'],['Family'],'Phoenix', 'AZ', None, None)
 # res = create_python_dict()
 # loc = restaurant_location(res, 'Phoenix', 'AZ')
 # f = find_restaurants(['Family', 'Waffle'], ['romantic', 'casual'], res)
