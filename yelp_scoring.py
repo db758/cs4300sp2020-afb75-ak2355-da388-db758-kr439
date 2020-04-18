@@ -68,12 +68,14 @@ def run(mov_attributes, mov_categories, city1, state1, city2, state2):
 
     if len(final_result) == 0:
       print("Could not find restaurant :( ")
+      return "Could not find restaurant :( "
     else:
       first_elem = list(final_result.keys())[0]
       first_elem_score = final_result[first_elem]
       i = key_words_dict[first_elem]
       print("Restaurant: " + str(first_elem) + ", Score: " + str(first_elem_score))
       print("Location: " + restaurant_dict[first_elem]['city'] + ", " +  restaurant_dict[first_elem]['state'] + ", Matchings: " + str(i)) 
+      return "Restaurant: " + str(first_elem) + ", Score: " + str(first_elem_score)
   elif state2 is None:
     #if there is only one user
     restaurant_locations = restaurant_location_one_user(restaurants, city1, state1)
@@ -82,12 +84,14 @@ def run(mov_attributes, mov_categories, city1, state1, city2, state2):
 
     if len(final_result) == 0:
       print("Could not find restaurant :( ")
+      return "Could not find restaurant :( "
     else:
       first_elem = list(final_result.keys())[0]
       first_elem_score = final_result[first_elem]
       i = key_words_dict[first_elem]
       print("Restaurant: " + str(first_elem) + ", Score: " + str(first_elem_score))
       print("Location: " + restaurant_dict[first_elem]['city'] + ", " +  restaurant_dict[first_elem]['state'] + ", Matchings: " + str(i)) 
+      return "Restaurant: " + str(first_elem) + ", Score: " + str(first_elem_score)
 
   else:
     #return two restaurants, one for each user
@@ -100,13 +104,14 @@ def run(mov_attributes, mov_categories, city1, state1, city2, state2):
     print("User 1 Restaurant: ")
     if len(final_result1) == 0:
       print("Could not find restaurant for user 1 :( ")
+      return "Could not find restaurant for user 1 :( "
     else:
       first_elem1 = list(final_result1.keys())[0]
       first_elem_score1 = final_result1[first_elem]
       i1 = key_words_dict1[first_elem1]
       print("Restaurant: " + str(first_elem1) + ", Score: " + str(first_elem_score1))
       print("Location: " + restaurant_dict[first_elem1]['city'] + ", " +  restaurant_dict[first_elem1]['state'] + ", Matchings: " + str(i1)) 
-  
+      return "Restaurant: " + str(first_elem1) + ", Score: " + str(first_elem_score1)
 
     #user2
     restaurant_locations2 = restaurant_location_one_user(restaurants, city2, state2)
