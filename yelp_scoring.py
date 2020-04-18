@@ -104,6 +104,9 @@ def run(mov_attributes, mov_categories, city1, state1, city2, state2):
   else:
     #return two restaurants, one for each user
 
+    user1_result = {}
+    user2_result = {}
+
     #user1
     restaurant_locations1 = restaurant_location_one_user(restaurants, city1, state1)
     restaurant_scores1, key_words_dict1 = find_restaurants(mov_categories, mov_attributes, restaurants)
@@ -112,7 +115,7 @@ def run(mov_attributes, mov_categories, city1, state1, city2, state2):
     # print("User 1 Restaurant: ")
     if len(final_result1) == 0:
       # print("Could not find restaurant for user 1 :( ")
-      return {'restaurant1': "Could not find restaurant :( ", 'score1': 'N/A', 'city1': 'N/A', 'state1': 'N/A',
+      user1_result = {'restaurant1': "Could not find restaurant :( ", 'score1': 'N/A', 'city1': 'N/A', 'state1': 'N/A',
       'matchings': 'N/A'}
 
     else:
@@ -122,7 +125,7 @@ def run(mov_attributes, mov_categories, city1, state1, city2, state2):
       
       # print("Restaurant: " + restaurant_dict[first_elem1]['name'] + ", Score: " + str(first_elem_score1))
       # print("Location: " + restaurant_dict[first_elem1]['city'] + ", " +  restaurant_dict[first_elem1]['state'] + ", Matchings: " + str(i1)) 
-      return {'restaurant1': restaurant_dict[first_elem]['name'], 'score1': str(first_elem_score), 
+      user1_result = {'restaurant1': restaurant_dict[first_elem]['name'], 'score1': str(first_elem_score), 
       'city1': restaurant_dict[first_elem]['city'], 'state1': restaurant_dict[first_elem]['state'],
       'matchings': str(i)}
 
@@ -134,7 +137,7 @@ def run(mov_attributes, mov_categories, city1, state1, city2, state2):
     # print("User 2 Restaurant: ")
     if len(final_result2) == 0:
       # print("Could not find restaurant for user 2 :( ")
-      return {'restaurant1': "Could not find restaurant :( ", 'score1': 'N/A', 'city1': 'N/A', 'state1': 'N/A',
+      user2_result = {'restaurant1': "Could not find restaurant :( ", 'score1': 'N/A', 'city1': 'N/A', 'state1': 'N/A',
       'matchings': 'N/A'}
     
     else:
@@ -143,9 +146,11 @@ def run(mov_attributes, mov_categories, city1, state1, city2, state2):
       i2 = key_words_dict2[first_elem2]
       # print("Restaurant: " + restaurant_dict[first_elem2]['name'] + ", Score: " + str(first_elem_score2))
       # print("Location: " + restaurant_dict[first_elem2]['city'] + ", " +  restaurant_dict[first_elem2]['state'] + ", Matchings: " + str(i2)) 
-      return {'restaurant1': restaurant_dict[first_elem]['name'], 'score1': str(first_elem_score), 
+      user2_result = {'restaurant1': restaurant_dict[first_elem]['name'], 'score1': str(first_elem_score), 
       'city1': restaurant_dict[first_elem]['city'], 'state1': restaurant_dict[first_elem]['state'],
       'matchings': str(i)}
+    
+    return [user1_result, user2_result]
       
   
 def intersection_fun(set1, set2):
