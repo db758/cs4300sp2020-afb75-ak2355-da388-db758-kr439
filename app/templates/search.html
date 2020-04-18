@@ -15,31 +15,31 @@
 
       <div class="form-group">
         <input
-          id="input movie-a"
+          id="input"
           type="text"
-          name="search"
+          name="movie-a"
           class="form-control"
           placeholder="What movie do you like?"
         />
         <input
-          id="input movie-b"
+          id="input"
           type="text"
-          name="search"
+          name="movie-b"
           class="form-control"
           placeholder="What movie do they like?"
         />
         <br />
         <input
-          id="input location-a"
+          id="input"
           type="text"
-          name="search"
+          name="location-a"
           class="form-control location-field"
           placeholder="Where are you located? i.e. Chicago, IL"
         />
         <input
           id="input"
           type="text"
-          name="search"
+          name="location-b"
           class="form-control location-field location-b"
           style="display: none"
           placeholder="Where are they located? i.e. Newark, NJ"
@@ -50,14 +50,6 @@
       </div>
       <br />
       <button type="submit" class="btn btn-info" id="home-submit">Go!</button>
-    </form>
-    <form class="form-inline global-search">
-      {% if data %}
-      <h1>{{ output_message }}</h1>
-      {% for d in data %}
-      <br />
-      <p>{{ d }}</p>
-      {% endfor %} {% endif %}
     </form>
   </body>
 
