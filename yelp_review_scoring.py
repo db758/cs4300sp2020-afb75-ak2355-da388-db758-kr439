@@ -34,3 +34,4 @@ def tokenize_words(s):
 def create_term_doc(corpus):
   vectorizer = TfidfVectorizer()
   X = vectorizer.fit_transform(corpus)
+
