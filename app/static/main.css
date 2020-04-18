@@ -47,6 +47,10 @@ body {
   color: #e56a9c;
 }
 
+.pink-text {
+  color: #e56a9c;
+}
+
 .subtitle {
   color: #595758;
 }
@@ -54,4 +58,13 @@ body {
 .location-field {
   margin-top: 1%;
   margin-bottom: 1%;
+}
+
+/* RESULT PAGE */
+
+.result-card {
+  background-color: white;
+  border: 2px solid #e56a9c;
+  border-radius: 10px;
+  padding: 5% 7%;
 }
