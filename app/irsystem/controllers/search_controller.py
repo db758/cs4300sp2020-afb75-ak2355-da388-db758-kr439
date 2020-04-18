@@ -9,8 +9,7 @@ import string
 import time
 import numpy as np
 from nltk.tokenize import TreebankWordTokenizer
-import ast
-
+import csv
 
 project_name = "CUpids"
 net_id = "Alexa Batino (afb75), Divya Agrawal (da388), Keethu Ramalingam (kr439), Asma Khan (ak2355), Deb Bhattacharya (db758)"
@@ -24,26 +23,25 @@ def search():
 		output_message = ''
 	else:
 		output_message = "Your search: " + query
+		#restaurant = Restaurant.query.filter(Restaurant.name.contains(query)).first()
 		data = movie(query)
-		
 	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
-
 
 
 def movie(query):
 	query = query.lower()
 	input_movie_list = query.split(', ')
 
-	with open("movie.json") as f:
-		movies = json.load(f)
-	
+	f = open('new.csv')
+	movies = list(csv.DictReader(f))
+
 	movie_to_genre = {}
 	input_movie_genres = []
 
 	for each_movie in movies:
-		movie_to_genre[str(each_movie['Title']).lower()] = ast.literal_eval(each_movie['Genres'])
+		if each_movie["Genres"] != "":
+			movie_to_genre[str(each_movie["Title"]).lower()] = eval(each_movie["Genres"])
 
-	
 	for each_movie in input_movie_list:
 		input_movie_genres = input_movie_genres +  movie_to_genre[each_movie]
 
@@ -70,12 +68,7 @@ def movie(query):
 		index_movie = movie_rank[len(all_movies)-i]
 		if all_movies[index_movie] not in input_movie_list:
 			return all_movies[index_movie]
-				
-	
-	
 
-
-	
 
 
 
