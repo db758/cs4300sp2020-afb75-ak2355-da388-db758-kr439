@@ -37,21 +37,25 @@ def movie(query):
 	# 		# attrs = row[11]
 	# 		# print(cats)
 	# 		# print(attrs)
-	df = pd.read_csv('new.csv')
-	cat = []
-	att = []		
-	for index, row in df.iterrows():
+
+
+	# df = pd.read_csv('new.csv')
+	cat = ['Family']
+	att = ['romantic']		
+	# for index, row in df.iterrows():
+			# cat = df.at[index, 'categories']
+			# att = df.at[index, 'attributes']
+
+
 		# if df.at[index, 'Title'] == query:
 		# 	cat = df.at[index, 'categories']
 		# 	att = df.at[index, 'attributes']
-		cat = df.at[index, 'categories']
-		att = df.at[index, 'attributes']
 
-	print(cat)
-	print(att)
 
 	result = run(att, cat,'Phoenix', 'AZ')
+
 	print(result)
+	
 	return (cat, att)
 
 
