@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/main.css" />
+    <style></style>
+  </head>
+
+  <body>
+    <div class="global-search">
+      <h1 class="title">CUpids</h1>
+      <br />
+      <h5 class="subtitle">Find a restaurant and movie for you and yours!</h5>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card result-card">
+            <div class="card-body result-body">
+              <h4 class="card-title pink-text">Movie for You</h4>
+              <p class="card-text subtitle">
+                Movie Title: <span>{{ movieTitle }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Foods/Cuisines Featured: {% for word in movieWords %}
+                <span>{{ word }}, </span>
+                {% endfor %}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card result-card">
+            <div class="card-body result-body">
+              <h4 class="card-title pink-text">Restaurant for You</h4>
+              <p class="card-text subtitle">
+                Restaurant Name: <span>{{ restaurantName1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Location:
+                <span>{{ restaurantCity1 }}, {{ restaurantState1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Score: <span>{{ restaurantScore1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Matching Attributes: <span>{{ restaurantWords1 }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <div
+    class="footer"
+    style="font-weight: lighter; position: fixed; left: 0; bottom: 0;background-color: #e56a9c; width: 100%; color: white; text-align: center"
+  >
+    <p>{{ netid }}</p>
+  </div>
+</html>
