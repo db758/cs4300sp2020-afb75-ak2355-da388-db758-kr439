@@ -22,15 +22,34 @@ def search():
 		movie, foodCats, foodAttrs = movieResult[0], movieResult[1], movieResult[2]
 		
 		restaurants = getRestaurant(foodCats, foodAttrs, location_a, location_b)
-		restaurantName1 = restaurants['restaurant1']
-		restaurantCity1 = restaurants['city1']
-		restaurantState1 = restaurants['state1']
-		restaurantScore1 = restaurants['score1']
-		restaurantWords1 = restaurants['matchings']
 
-		return render_template('result.html', netid=net_id, restaurantName1=restaurantName1,
-		restaurantCity1=restaurantCity1, restaurantState1=restaurantState1, restaurantScore1=restaurantScore1,
-		restaurantWords1=restaurantWords1, movieTitle=movie, movieWords=foodCats + foodAttrs)
+		twoRestaurants = False
+		restaurantName1 = restaurants[0]['restaurant1']
+		restaurantCity1 = restaurants[0]['city1']
+		restaurantState1 = restaurants[0]['state1']
+		restaurantScore1 = restaurants[0]['score1']
+		restaurantWords1 = restaurants[0]['matchings']
+
+		restaurantName2 = ""
+		restaurantCity2 = ""
+		restaurantState2 = ""
+		restaurantScore2 = ""
+		restaurantWords2 = ""
+
+		if len(restaurants) == 2:
+			twoRestaurants = True
+			restaurantName2 = restaurants[1]['restaurant1']
+			restaurantCity2 = restaurants[1]['city1']
+			restaurantState2 = restaurants[1]['state1']
+			restaurantScore2 = restaurants[1]['score1']
+			restaurantWords2 = restaurants[1]['matchings']
+
+
+		return render_template('result.html', netid=net_id, movieTitle=movie, movieWords=foodCats + foodAttrs,
+		restaurantName1=restaurantName1, restaurantCity1=restaurantCity1, restaurantState1=restaurantState1, 
+		restaurantScore1=restaurantScore1, restaurantWords1=restaurantWords1, twoRestaurants=twoRestaurants,
+		restaurantName2=restaurantName2, restaurantCity2=restaurantCity2, restaurantState2=restaurantState2,
+		restaurantScore2=restaurantScore2, restaurantWords2=restaurantWords2)
 
 	return render_template('search.html', name=project_name, netid=net_id)
 
