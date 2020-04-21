@@ -7,4 +7,3 @@ vagrant/a4keypair.pem
 .idea/
 *.iml
 .env
-new.csv
