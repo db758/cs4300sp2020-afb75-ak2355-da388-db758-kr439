@@ -28,7 +28,7 @@ def getMovieAndFoodWords(user1_movies, user2_movies):
 	print(i)
 
 	#All the genres in the movies that the user inputted	
-	input_movie_genres = getMovieGenres (input_movie_list, movie_to_genre)
+	input_movie_genres = getMovieGenres(input_movie_list, movie_to_genre)
 	#All unique genres in the movies that the user inputted	
 	unique_input_movie_genres = list(set(input_movie_genres))
 	#List of all movies
@@ -45,6 +45,19 @@ def getMovieAndFoodWords(user1_movies, user2_movies):
 			return [all_movies[index_movie], movie_to_categories[all_movies[index_movie]], movie_to_attributes[all_movies[index_movie]]]
 	return["","",""]
 
+def getAllMovies():
+	"""Used for drop down for movie.
+	
+	Returns: a list with all the movie titles"""
+
+	movies = list(csv.DictReader(open('new.csv')))
+	all_movies = []
+	for each_movie in movies:
+		all_movies.append(str(each_movie["Title"].lower()))
+	
+	with open("all_movies.txt", "w") as output:
+		for mov in all_movies:
+			output.write(mov+ '\n')
 
 def getMovieNames(movie_name):
 	"""Given a the user input of movie names (which are split by commas)
@@ -87,3 +100,5 @@ def getMovieRanking(unique_input_movie_genres,input_movie_genres, all_movies, mo
 	#Multiplies the numpy matrix and the counts to get a scoring and the argsorts it
 	return np.argsort(np.sum((genresBYmovies.transpose())*genre_count, axis=1))
 
+
+getAllMovies()
