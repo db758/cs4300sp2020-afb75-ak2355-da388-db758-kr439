@@ -1,3 +1,5 @@
+from app.irsystem.models.helpers import *
+from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 import csv
 
 def getMovieAndFoodWords(user1_movies, user2_movies):
@@ -15,11 +17,15 @@ def getMovieAndFoodWords(user1_movies, user2_movies):
 	movie_to_attributes = {}
 
 	# Generate movie_to_genre, movie_to_categories, and movie_to_attributes dictionaries
+	i=0
 	for each_movie in movies:
 		if each_movie["Genres"] != "":
 			movie_to_genre[str(each_movie["Title"]).lower()] = eval(each_movie["Genres"])
+			i += 1
 			movie_to_categories[str(each_movie["Title"]).lower()] = eval(each_movie["categories"])
 			movie_to_attributes[str(each_movie["Title"]).lower()] = eval(each_movie["attributes"])
+	
+	print(i)
 
 	#All the genres in the movies that the user inputted	
 	input_movie_genres = getMovieGenres (input_movie_list, movie_to_genre)
