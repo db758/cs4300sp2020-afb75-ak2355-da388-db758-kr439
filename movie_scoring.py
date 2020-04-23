@@ -162,84 +162,87 @@ def compute_idf(inv_idx, n_docs, min_df=10, max_df_ratio=0.1):
 
 def compute_doc_norms(index, idf, n_docs):
 	"""
-	norms: np.array, size: n_docs, norms[i] = the norm of document i. 
+	norms: {movie title: norm of movie summary}
 	"""
-	norms = np.zeros((n_docs))
+	norms = {}
 	sum = 0
 	for word in idf.keys():
 		words = index[word]
 		for t in words:
 			power = math.pow(idf[word]*t[1], 2)
-			norms[t[0]] += power
-	norms = np.sqrt(norms)
+			if t[0] in norms:
+				norms[t[0]] += power
+			else:
+				norms[t[0]] = power
+	
+	for n in norms:
+		norms[n] = math.sqrt(norms[n])
 	return norms
 
-# def cosine_score(query_words, inv_index, idf, doc_norms):
+def cosine_score(query_words, inv_index, idf, doc_norms):
 	"""
-	results, list of tuples (score, doc_id)
+	results, list of tuples (score, movie title)
         Sorted list of results such that the first element has
         the highest score, and `doc_id` points to the document
         with the highest score.
 	"""
 
-	# results = []
+	results = []
 
-	# #get the counts for each word in user input/query
-	# count_query = {} #{word: count}
-	# for term in query_words:
-	# 	if term in count_query.keys():
-	# 		count_query[term] += 1
-	# 	else:
-	# 		count_query[term] = 1
+	#get the counts for each word in user input/query
+	count_query = {} #{word: count}
+	for term in query_words:
+		if term in count_query.keys():
+			count_query[term] += 1
+		else:
+			count_query[term] = 1
 	
-	# total = 0
-	# #WHAT TO DO HERE SINCE MOST OFTEN IT WONT HAVE IDF?
-	# query_numbers = {} #{word in query: tf*idf, ...} 
-	# for key in count_query.keys():
-	# 	if key in idf.keys():
-	# 		top = count_query[key] * idf[key]
-	# 		query_numbers[key] = top
-	# 		total += top**2
+	total = 0
+	#WHAT TO DO HERE SINCE MOST OFTEN IT WONT HAVE IDF?
+	#If the query has no words that relate, then it would just be 0?
+	query_numbers = {} #{word in query: tf*idf, ...} 
+	for key in count_query.keys():
+		if key in idf.keys():
+			top = count_query[key] * idf[key]
+			query_numbers[key] = top
+			total += top**2
 
-	# query_den = math.sqrt(total)
+	query_den = math.sqrt(total)
 	
-	# doc_dict = {} #{movie title: {word: count in movie, word: count in movie ...}
-	# for word in inv_index.keys():
-	# 	for tup in inv_index[word]:
-	# 		if tup[0] in doc_dict.keys():
-	# 			val = doc_dict[tup[0]]
-	# 			val[word] = tup[1]
-	# 			doc_dict[tup[0]] = val              
-	# 		else:
-	# 			val = {}
-	# 			val[word] = tup[1]
-	# 			doc_dict[tup[0]] = val
+	doc_dict = {} #{movie title: {word: count in movie, word: count in movie ...}
+	for word in inv_index.keys():
+		for tup in inv_index[word]:
+			if tup[0] in doc_dict.keys():
+				val = doc_dict[tup[0]]
+				val[word] = tup[1]
+				doc_dict[tup[0]] = val              
+			else:
+				val = {}
+				val[word] = tup[1]
+				doc_dict[tup[0]] = val
 	
-	# for document in doc_dict.keys():
-	# 	num = 0
-	# 	for word in query_numbers.keys():
-	# 		if word in doc_dict[document].keys():
-	# 			num += query_numbers[word]*doc_dict[document][word]*idf[word]
-        
-  #       den = query_den * doc_norms[document]
-  #       final_tuple = (num/den, document)
-  #       results += [final_tuple]
+	for document in doc_dict.keys():
+		num = 0
+		for word in query_numbers.keys():
+			if word in doc_dict[document].keys():
+				num += query_numbers[word]*doc_dict[document][word]*idf[word]
+				
+				den = query_den * doc_norms[document]
+				final_tuple = (num/den, document)
+				results += [final_tuple]
 	
-	# results.sort(key=lambda x: x[0])
-	# results.reverse()
-	# return results
-
-
+	results.sort(key=lambda x: x[0])
+	results.reverse()
+	return results
 
 
 def getCosine(movie_summaries, query_words):
 	movies = token(movie_summaries)
 	inv_idx = buildInvertedIndex(movies, query_words)
-	print("passed inv_idx")
 	idf = compute_idf(inv_idx, len(movie_summaries), min_df=10, max_df_ratio=0.1)
 	inv_idx = {key: val for key, val in inv_idx.items() if key in idf}
-	# doc_norms = compute_doc_norms(inv_idx, idf, len(movie_summaries))
-	return inv_idx
+	doc_norms = compute_doc_norms(inv_idx, idf, len(movie_summaries))
+	return cosine_score(query_words, inv_idx, idf, doc_norms)
 
 	
 def getAllMovies():
@@ -264,23 +267,17 @@ def test():
 		csv_reader = csv.DictReader(csv_file)
 		for row in csv_reader:
 			all_movies[row["Title"].lower()] = row["Plot"]
-
-	# movies = list(csv.DictReader(open('new.csv')))
-	# all_movies = {}
-	# csv_reader = csv.DictReader()
-  #   line_count = 0
-  #   for row in csv_reader:
-	# for each_movie in movies:
-	# 	all_movies[str(each_movie["Title"].lower())] = eval(each_movie["Plot"])
 	
-	i = getCosine(all_movies, ["Christmas", "village", "princess"])
+	i = getCosine(all_movies, ["christmas", "princess"])
+	print(i)
 	
-	with open("possible_inputs.txt", "w") as output:
-		for mov in i:
-			output.write(mov+ '\n')
+	# with open("possible_inputs.txt", "w") as output:
+	# 	for mov in i:
+	# 		output.write(mov+ '\n')
 
 print("Method")
 test()
+
 #CASES:
 #make sure that movie inputed is in database --> make sure its a dropdown list of movies
 
