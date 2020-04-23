@@ -1,5 +1,9 @@
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
+from nltk.tokenize import TreebankWordTokenizer
+from collections import Counter
+import math
+import numpy as np
 import csv
 
 def getMovieAndFoodWords(user1_movies, user2_movies):
@@ -16,6 +20,8 @@ def getMovieAndFoodWords(user1_movies, user2_movies):
 	# Dictionary with movie title as key and list of attributs as values
 	movie_to_attributes = {}
 
+	movie_summaries = {}
+
 	# Generate movie_to_genre, movie_to_categories, and movie_to_attributes dictionaries
 	for each_movie in movies:
 		#CHANGE THIS SO THAT WE CAN STILL DO COSINE
@@ -25,6 +31,8 @@ def getMovieAndFoodWords(user1_movies, user2_movies):
 			movie_to_genre[str(each_movie["Title"]).lower()] = eval(each_movie["Genres"])
 		movie_to_categories[str(each_movie["Title"]).lower()] = eval(each_movie["categories"])
 		movie_to_attributes[str(each_movie["Title"]).lower()] = eval(each_movie["attributes"])
+
+		movie_summaires[str(each_movie["Title"]).lower()] = eval(each_movie["Plot"])
 		## ADD A PLOT DICTIONARY for COSSINE
 
 
@@ -99,6 +107,141 @@ def getGenreScore(unique_input_movie_genres,input_movie_genres,input_movie_list,
 	# 		return movie_scoring[index_movie]
 	# 		#return [all_movies[index_movie], movie_to_categories[all_movies[index_movie]], movie_to_attributes[all_movies[index_movie]]]
 
+
+
+
+#Cosine Similarity
+
+def token(movie_summaries):
+	result = {}
+	for mov in movie_summaries:
+		result[mov] = movie_summaries[mov].lower().split(" ")
+	return result
+
+def tokenize_plot(movie_summaries):
+	result = {}
+	#use treebank tokenizer?
+	tokenizer = TreebankWordTokenizer()
+	for mov in movie_summaries:
+		result[mov] = tokenizer.tokenize(movie_summaries[mov].lower())
+	return result
+	
+
+#Build the inverted index - term - list of movies it is in
+def buildInvertedIndex(movie_summaries, query_words):
+	#input should be the a dictionary with key as movie title and value as movie_summaries
+	#takes in the list of words that the user inputted
+	"""
+	This just builds an inverted index with the movie summaries. {word: [(movie title, count of word), ...]}
+	
+	"""
+
+	inverted_index = {}
+	for mov in movie_summaries:
+		words = Counter(movie_summaries[mov]) #dictionary of word and its count
+		for word in words.keys():
+			if word in inverted_index.keys():
+				inverted_index[word].append((mov, words[word]))
+			else:
+				inverted_index[word] = [(mov, words[word])]
+	return inverted_index
+	#inverted index only has the query term words
+
+def compute_idf(inv_idx, n_docs, min_df=10, max_df_ratio=0.1):
+	"""
+	This just builds computes idf for the movie summaries. {word: idf value}
+	
+	"""
+	idf_dict = {}
+	for key in inv_idx.keys():
+		ratio = len(inv_idx[key])/n_docs
+		if ((len(inv_idx[key]) >= min_df) and (ratio <= max_df_ratio)):
+			idf = [n_docs/(1 + len(inv_idx[key]))]
+			idf_dict[key] = np.log2(idf)[0]
+	return idf_dict
+
+def compute_doc_norms(index, idf, n_docs):
+	"""
+	norms: np.array, size: n_docs, norms[i] = the norm of document i. 
+	"""
+	norms = np.zeros((n_docs))
+	sum = 0
+	for word in idf.keys():
+		words = index[word]
+		for t in words:
+			power = math.pow(idf[word]*t[1], 2)
+			norms[t[0]] += power
+	norms = np.sqrt(norms)
+	return norms
+
+# def cosine_score(query_words, inv_index, idf, doc_norms):
+	"""
+	results, list of tuples (score, doc_id)
+        Sorted list of results such that the first element has
+        the highest score, and `doc_id` points to the document
+        with the highest score.
+	"""
+
+	# results = []
+
+	# #get the counts for each word in user input/query
+	# count_query = {} #{word: count}
+	# for term in query_words:
+	# 	if term in count_query.keys():
+	# 		count_query[term] += 1
+	# 	else:
+	# 		count_query[term] = 1
+	
+	# total = 0
+	# #WHAT TO DO HERE SINCE MOST OFTEN IT WONT HAVE IDF?
+	# query_numbers = {} #{word in query: tf*idf, ...} 
+	# for key in count_query.keys():
+	# 	if key in idf.keys():
+	# 		top = count_query[key] * idf[key]
+	# 		query_numbers[key] = top
+	# 		total += top**2
+
+	# query_den = math.sqrt(total)
+	
+	# doc_dict = {} #{movie title: {word: count in movie, word: count in movie ...}
+	# for word in inv_index.keys():
+	# 	for tup in inv_index[word]:
+	# 		if tup[0] in doc_dict.keys():
+	# 			val = doc_dict[tup[0]]
+	# 			val[word] = tup[1]
+	# 			doc_dict[tup[0]] = val              
+	# 		else:
+	# 			val = {}
+	# 			val[word] = tup[1]
+	# 			doc_dict[tup[0]] = val
+	
+	# for document in doc_dict.keys():
+	# 	num = 0
+	# 	for word in query_numbers.keys():
+	# 		if word in doc_dict[document].keys():
+	# 			num += query_numbers[word]*doc_dict[document][word]*idf[word]
+        
+  #       den = query_den * doc_norms[document]
+  #       final_tuple = (num/den, document)
+  #       results += [final_tuple]
+	
+	# results.sort(key=lambda x: x[0])
+	# results.reverse()
+	# return results
+
+
+
+
+def getCosine(movie_summaries, query_words):
+	movies = token(movie_summaries)
+	inv_idx = buildInvertedIndex(movies, query_words)
+	print("passed inv_idx")
+	idf = compute_idf(inv_idx, len(movie_summaries), min_df=10, max_df_ratio=0.1)
+	inv_idx = {key: val for key, val in inv_idx.items() if key in idf}
+	# doc_norms = compute_doc_norms(inv_idx, idf, len(movie_summaries))
+	return inv_idx
+
+	
 def getAllMovies():
 	"""Used for drop down for movie.
 	
@@ -113,5 +256,37 @@ def getAllMovies():
 		for mov in all_movies:
 			output.write(mov+ '\n')
 
+def test():
 
-getAllMovies()
+	all_movies = {}
+
+	with open('new.csv', mode='r') as csv_file:
+		csv_reader = csv.DictReader(csv_file)
+		for row in csv_reader:
+			all_movies[row["Title"].lower()] = row["Plot"]
+
+	# movies = list(csv.DictReader(open('new.csv')))
+	# all_movies = {}
+	# csv_reader = csv.DictReader()
+  #   line_count = 0
+  #   for row in csv_reader:
+	# for each_movie in movies:
+	# 	all_movies[str(each_movie["Title"].lower())] = eval(each_movie["Plot"])
+	
+	i = getCosine(all_movies, ["Christmas", "village", "princess"])
+	
+	with open("possible_inputs.txt", "w") as output:
+		for mov in i:
+			output.write(mov+ '\n')
+
+print("Method")
+test()
+#CASES:
+#make sure that movie inputed is in database --> make sure its a dropdown list of movies
+
+#movie if it doesn't have a genre --> genre score should be 0
+#movie keywords - title and summary have cosine sim score of 0 
+
+#if genre + cosine sim score = 0 --> default movie
+
+#for food, if there is no restaurant, display popcorn is always a good option
