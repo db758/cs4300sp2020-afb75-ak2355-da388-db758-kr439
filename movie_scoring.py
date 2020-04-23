@@ -20,7 +20,7 @@ def getMovieAndFoodWords(user1_movies, user2_movies):
 	# Dictionary with movie title as key and list of attributs as values
 	movie_to_attributes = {}
 
-	movie_summaries = {}
+	movie_to_summaries = {}
 
 	# Generate movie_to_genre, movie_to_categories, and movie_to_attributes dictionaries
 	for each_movie in movies:
@@ -32,7 +32,7 @@ def getMovieAndFoodWords(user1_movies, user2_movies):
 		movie_to_categories[str(each_movie["Title"]).lower()] = eval(each_movie["categories"])
 		movie_to_attributes[str(each_movie["Title"]).lower()] = eval(each_movie["attributes"])
 
-		movie_summaires[str(each_movie["Title"]).lower()] = eval(each_movie["Plot"])
+		movie_to_summaries[str(each_movie["Title"]).lower()] = (each_movie["Plot"])
 		## ADD A PLOT DICTIONARY for COSSINE
 
 
@@ -46,13 +46,31 @@ def getMovieAndFoodWords(user1_movies, user2_movies):
 
 	#Genre Scores of All movies
 	genre_score_array = getGenreScore(unique_input_movie_genres,input_movie_genres, input_movie_list, all_movies, movie_to_genre)
-	# for i in range(0,len(genre_score_array)):
-	# 	if genre_score_array[i] > 0:
-	# 		print(all_movies[i], genre_score_array[i] )
+	genre_score_array = genre_score_array/(max(genre_score_array))
 
+	cosine_score_array = []
+	#Cosine Scores
+	cosine_score_dict = getCosine(movie_to_summaries, ["girls","night","in","drinks"])
+	for each_movie in all_movies:
+		if each_movie in cosine_score_dict:
+			cosine_score_array.append(cosine_score_dict[each_movie]*2)
+		else:
+			cosine_score_array.append(0)
 
-	##CHANGE -- currently returning nothing
-	return ["","",""] 
+	#Total Score
+	total_score = genre_score_array+cosine_score_array 
+	total_score_rank =  np.argsort(total_score)
+
+	movie = ""
+
+	for i in range(1,len(all_movies)):
+		index_movie = total_score_rank[len(all_movies)-i]
+		if all_movies[index_movie] not in input_movie_list:
+			movie = all_movies[index_movie]
+			break
+	
+	return [movie, movie_to_categories[movie], movie_to_attributes[movie]] 
+	#return["","",""]
 
 
 def getMovieNames(movie_name):
@@ -109,7 +127,6 @@ def getGenreScore(unique_input_movie_genres,input_movie_genres,input_movie_list,
 
 
 
-
 #Cosine Similarity
 
 def token(movie_summaries):
@@ -135,7 +152,6 @@ def buildInvertedIndex(movie_summaries, query_words):
 	This just builds an inverted index with the movie summaries. {word: [(movie title, count of word), ...]}
 	
 	"""
-
 	inverted_index = {}
 	for mov in movie_summaries:
 		words = Counter(movie_summaries[mov]) #dictionary of word and its count
@@ -185,7 +201,7 @@ def cosine_score(query_words, inv_index, idf, doc_norms):
 	the highest score.
 	"""
 
-	results = []
+	results = {}
 
 	#get the counts for each word in user input/query
 	count_query = {} #{word: count}
@@ -224,13 +240,13 @@ def cosine_score(query_words, inv_index, idf, doc_norms):
 		for word in query_numbers.keys():
 			if word in doc_dict[document].keys():
 				num += query_numbers[word]*doc_dict[document][word]*idf[word]
-				
 				den = query_den * doc_norms[document]
-				final_tuple = (num/den, document)
-				results += [final_tuple]
+				results[document] = num/den
+				# final_tuple = (num/den, document)
+				# results += [final_tuple]
 	
-	results.sort(key=lambda x: x[0])
-	results.reverse()
+	# results.sort(key=lambda x: x[0])
+	# results.reverse()
 	return results
 
 
