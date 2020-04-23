@@ -181,10 +181,8 @@ def compute_doc_norms(index, idf, n_docs):
 
 def cosine_score(query_words, inv_index, idf, doc_norms):
 	"""
-	results, list of tuples (score, movie title)
-        Sorted list of results such that the first element has
-        the highest score, and `doc_id` points to the document
-        with the highest score.
+	results, list of tuples (score, movie title) Sorted list of results such that the first element has
+	the highest score.
 	"""
 
 	results = []
@@ -237,6 +235,7 @@ def cosine_score(query_words, inv_index, idf, doc_norms):
 
 
 def getCosine(movie_summaries, query_words):
+	""" Main function for cosine! """
 	movies = token(movie_summaries)
 	inv_idx = buildInvertedIndex(movies, query_words)
 	idf = compute_idf(inv_idx, len(movie_summaries), min_df=10, max_df_ratio=0.1)
@@ -260,6 +259,10 @@ def getAllMovies():
 			output.write(mov+ '\n')
 
 def test():
+	"""
+	Used to test that cosine works. Cosine will return an empty list if there's
+	no matching.
+	"""
 
 	all_movies = {}
 
@@ -269,14 +272,15 @@ def test():
 			all_movies[row["Title"].lower()] = row["Plot"]
 	
 	i = getCosine(all_movies, ["christmas", "princess"])
-	print(i)
+	# print(i[0])
+	# print(all_movies[i[0][1]])
 	
 	# with open("possible_inputs.txt", "w") as output:
 	# 	for mov in i:
 	# 		output.write(mov+ '\n')
 
-print("Method")
-test()
+# print("Method")
+# test()
 
 #CASES:
 #make sure that movie inputed is in database --> make sure its a dropdown list of movies
