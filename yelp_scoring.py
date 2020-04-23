@@ -3,326 +3,353 @@ import json
 import operator
 import csv
 import re
+import pyzipcode 
 
-def create_python_dict():
-  """ Converts json (the yelp data set) to a list of restaurants and python 
-  dictionary to be used throughout the program.
-  
-  Returns: a tuple (list with each element as restaurant dictionary, python 
-  dictionary with business id of restaurant as key and the restaurant dictionary as value)
-  """
-  
-  jsonList = []
-  with open('yelp-restaurants.txt') as f:
+zcdb = pyzipcode.ZipCodeDatabase()
+
+class YelpScoring(object): 
+
+  def __init__(self):
+    self.avg_sentiments = self.get_avg_sentiment()
+    self.restaurants, self.restaurant_dict = self.create_python_dict(self.avg_sentiments)
+
+  def get_avg_sentiment(self):
+    sentiment_sums = {}
+    bids = []
+    with open('yelp-reviews.txt') as f:
+      for line in f.readlines():
+        review = eval(line)
+        bid = review['business_id']
+        bids.append(bid)
+        if bid in sentiment_sums:
+          sentiments = sentiment_sums[bid]
+          sentiments["pos"] = sentiments["pos"] + review['sentiment']['pos']
+          sentiments["neg"] = sentiments["neg"] + review['sentiment']['neg']
+          sentiments["neu"] = sentiments["neu"] + review['sentiment']['neu']
+          sentiments["count"] = sentiments["count"] + 1
+        else:
+          sentiments = {}
+          sentiments["pos"] = review['sentiment']['pos']
+          sentiments["neg"] = review['sentiment']['neg']
+          sentiments["neu"] = review['sentiment']['neu']
+          sentiments["count"] = 1
+          sentiment_sums[bid] = sentiments
+
+    avg_sentiments = {}
+    for bid in sentiment_sums.keys():
+      result = {}
+      sentiments = sentiment_sums[bid]
+      result['avg_pos'] = sentiments['pos'] / float(sentiments['count'])
+      result['avg_neu'] = sentiments['neu'] / float(sentiments['count'])
+      result['avg_neg'] = sentiments['neg'] / float(sentiments['count'])
+      avg_sentiments[bid] = result
+
+    return avg_sentiments
+
+
+  def create_python_dict(self, avg_sentiments):
+    """ Converts json (the yelp data set) to a list of restaurants and python 
+    dictionary to be used throughout the program.
+    
+    Returns: a tuple (list with each element as restaurant dictionary, python 
+    dictionary with business id of restaurant as key and the restaurant dictionary as value)
+    """
+    
+    jsonList = []
+
+    with open('yelp-restaurants.txt') as f:
       for jsonObj in f.readlines():
         obj = json.loads(jsonObj)
-        jsonList.append(obj)
+        jsonList.append(obj)    
 
-  tempList = []
-  tempDict = {}
-  for e in jsonList:
-    temp = {}
-    temp['business_id'] = e['business_id']
-    temp["name"] = e['name']
-    temp['address']  = e['address']
-    temp['city'] = e['city']
-    temp['state'] = e['state']
-    temp['stars'] = e['stars']
-    temp['review_count'] = e['review_count']
-    temp['attributes'] = e['attributes']
-    temp['categories'] = e['categories']
-    tempList.append(temp)
-    tempDict[temp["business_id"]] = temp
-  
-  return (tempList, tempDict)
-
-def run(mov_attributes, mov_categories, city1, state1, city2, state2):
-  """" Runs the main code. If the states are equal for both users, there will be
-  one output of a restaurant, otherwise there will be two separate restaurants.
-  
-  Parameters: city2 and state2 should be None if there is only one user 
-  Returns: dictionary of what is printed on app - restuarant, location, etc. """
-
-  #CHECK - what to print if any of the values are empty
-
-  restaurants, restaurant_dict = create_python_dict()
-
-  if state1 == state2:
-    #return a restaurant in the same state
+    tempList = []
+    tempDict = {}
     
-    restaurant_locations = restaurant_location(restaurants, state1, city1, city2)
-    restaurant_scores, key_words_dict = find_restaurants(mov_categories, mov_attributes, restaurants)
+    for e in jsonList:
+      temp = {}
+      temp['business_id'] = e['business_id']
+      temp["name"] = e['name']
+      temp['address']  = e['address']
+      temp['city'] = e['city']
+      temp['state'] = e['state']
+      temp['postal_code'] = e["postal_code"]
+      temp['stars'] = e['stars']
+      temp['review_count'] = e['review_count']
+      temp['attributes'] = e['attributes']
+      temp['categories'] = e['categories']
+      if e['business_id'] in avg_sentiments:
+        temp['avg_sentiments'] = avg_sentiments[e['business_id']]
+      else:
+        temp['avg_sentiments'] = {'avg_pos': 0.0, 'avg_neu': 0.0, 'avg_neg': 0.0}
+      tempList.append(temp)
+      tempDict[temp["business_id"]] = temp
+
+    return (tempList, tempDict)
+
+
+  def run(self, mov_attributes, mov_categories, zipcode1, zipcode2):
+    """" Runs the main code. If zipcode 2 is None, there will be
+    one output of a restaurant, otherwise there will be two separate restaurants.
+    
+    Parameters: zipcode2 should be None if there is only one user location 
+    Returns: dictionary of what is printed on app - restuarant, location, etc. """
+
+    # TODO - what to print if any of the values are empty
+
+    restaurant_locations = self.restaurant_location_by_zip(self.restaurants, zipcode1)
+    restaurant_scores, key_words_dict = self.find_restaurants(mov_categories, mov_attributes, self.restaurants)
     #key_words_dict is a dictionary with business id as key and value is the key words that intersect with the movie
 
-    final_result = combine_location(restaurant_scores, restaurant_locations)
+    final_result = self.combine_location(restaurant_scores, restaurant_locations)
     #final result is a dictionary with id of restaurant and the score
 
-    # for e in restaurant_locations:
-    #   if e['state'] != 'AZ':
-    #     print(e)
-
     if len(final_result) == 0:
-      # print("Could not find restaurant :( ")
-      return [{'restaurant1': "Could not find restaurant :( ", 'score1': 'N/A', 'city1': 'N/A', 'state1': 'N/A',
-      'matchings': 'N/A'}]
+        user1_result = [{'restaurant1': "Could not find restaurant :( ", 'score1': 'N/A', 'city1': 'N/A', 'state1': 'N/A',
+        'matchings': 'N/A'}]
 
     else:
       first_elem = list(final_result.keys())[0] #gets the first element id of the final result
       first_elem_score = final_result[first_elem] #gets the score
       i = key_words_dict[first_elem]
 
-      # print("Restaurant: " + restaurant_dict[first_elem]['name'] + ", Score: " + str(first_elem_score))
-      # print("Location: " + restaurant_dict[first_elem]['city'] + ", " +  restaurant_dict[first_elem]['state'] + ", Matchings: " + str(i)) 
-
-      return [{'restaurant1': restaurant_dict[first_elem]['name'], 'score1': str(first_elem_score), 
-      'city1': restaurant_dict[first_elem]['city'], 'state1': restaurant_dict[first_elem]['state'],
-      'matchings': str(i)}]
- 
-  elif state2 is None:
-    #if there is only one user
-    
-    restaurant_locations = restaurant_location_one_user(restaurants, city1, state1)
-    restaurant_scores, key_words_dict = find_restaurants(mov_categories, mov_attributes, restaurants)
-    final_result = combine_location(restaurant_scores, restaurant_locations)
-
-    if len(final_result) == 0:
-      # print("Could not find restaurant :( ")
-      return [{'restaurant1': "Could not find restaurant :( ", 'score1': 'N/A', 'city1': 'N/A', 'state1': 'N/A',
-      'matchings': 'N/A'}]
-    
-    else:
-      first_elem = list(final_result.keys())[0]
-      first_elem_score = final_result[first_elem]
-      i = key_words_dict[first_elem]
-      # print("Restaurant: " + restaurant_dict[first_elem]['name'] + ", Score: " + str(first_elem_score))
-      # print("Location: " + restaurant_dict[first_elem]['city'] + ", " +  restaurant_dict[first_elem]['state'] + ", Matchings: " + str(i)) 
-
-      return [{'restaurant1': restaurant_dict[first_elem]['name'], 'score1': str(first_elem_score), 
-      'city1': restaurant_dict[first_elem]['city'], 'state1': restaurant_dict[first_elem]['state'],
+      user1_result = [{'restaurant1': self.restaurant_dict[first_elem]['name'], 'score1': str(first_elem_score), 
+      'city1': self.restaurant_dict[first_elem]['city'], 'state1': self.restaurant_dict[first_elem]['state'],
       'matchings': str(i)}]
 
-  else:
-    #return two restaurants, one for each user
+    if zipcode2 is None: 
+      user2_result = []
 
-    user1_result = {}
-    user2_result = {}
+    else: # Find two restaurants
+      restaurant_locations2 = self.restaurant_location_by_zip(self.restaurants, zipcode2)
+      restaurant_scores2, key_words_dict2 = self.find_restaurants(mov_categories, mov_attributes, self.restaurants)
+      final_result2 = self.combine_location(restaurant_scores2, restaurant_locations2)
 
-    #user1
-    restaurant_locations1 = restaurant_location_one_user(restaurants, city1, state1)
-    restaurant_scores1, key_words_dict1 = find_restaurants(mov_categories, mov_attributes, restaurants)
-    final_result1 = combine_location(restaurant_scores1, restaurant_locations1)
+      if len(final_result2) == 0:
 
-    # print("User 1 Restaurant: ")
-    if len(final_result1) == 0:
-      # print("Could not find restaurant for user 1 :( ")
-      user1_result = {'restaurant1': "Could not find restaurant :( ", 'score1': 'N/A', 'city1': 'N/A', 'state1': 'N/A',
-      'matchings': 'N/A'}
-
-    else:
-      first_elem1 = list(final_result1.keys())[0]
-      first_elem_score1 = final_result1[first_elem1]
-      i1 = key_words_dict1[first_elem1]
+        user2_result = [{'restaurant2': "Could not find restaurant :( ", 'score2': 'N/A', 'city2': 'N/A', 'state2': 'N/A',
+        'matchings': 'N/A'}]
       
-      # print("Restaurant: " + restaurant_dict[first_elem1]['name'] + ", Score: " + str(first_elem_score1))
-      # print("Location: " + restaurant_dict[first_elem1]['city'] + ", " +  restaurant_dict[first_elem1]['state'] + ", Matchings: " + str(i1)) 
-      user1_result = {'restaurant1': restaurant_dict[first_elem1]['name'], 'score1': str(first_elem_score1), 
-      'city1': restaurant_dict[first_elem1]['city'], 'state1': restaurant_dict[first_elem1]['state'],
-      'matchings': str(i1)}
+      else:
+        first_elem2 = list(final_result2.keys())[0]
+        first_elem_score2 = final_result2[first_elem2]
+        i2 = key_words_dict2[first_elem2]
 
-    #user2
-    restaurant_locations2 = restaurant_location_one_user(restaurants, city2, state2)
-    restaurant_scores2, key_words_dict2 = find_restaurants(mov_categories, mov_attributes, restaurants)
-    final_result2 = combine_location(restaurant_scores2, restaurant_locations2)
-
-    # print("User 2 Restaurant: ")
-    if len(final_result2) == 0:
-      # print("Could not find restaurant for user 2 :( ")
-      user2_result = {'restaurant1': "Could not find restaurant :( ", 'score1': 'N/A', 'city1': 'N/A', 'state1': 'N/A',
-      'matchings': 'N/A'}
-    
-    else:
-      first_elem2 = list(final_result2.keys())[0]
-      first_elem_score2 = final_result2[first_elem2]
-      i2 = key_words_dict2[first_elem2]
-      # print("Restaurant: " + restaurant_dict[first_elem2]['name'] + ", Score: " + str(first_elem_score2))
-      # print("Location: " + restaurant_dict[first_elem2]['city'] + ", " +  restaurant_dict[first_elem2]['state'] + ", Matchings: " + str(i2)) 
-      user2_result = {'restaurant1': restaurant_dict[first_elem2]['name'], 'score1': str(first_elem_score2), 
-      'city1': restaurant_dict[first_elem2]['city'], 'state1': restaurant_dict[first_elem2]['state'],
-      'matchings': str(i2)}
-    
-    return [user1_result, user2_result]
+        user2_result = [{'restaurant2': self.restaurant_dict[first_elem2]['name'], 'score2': str(first_elem_score2), 
+        'city2': self.restaurant_dict[first_elem2]['city'], 'state2': self.restaurant_dict[first_elem2]['state'],
+        'matchings': str(i2)}]
       
-  
-def intersection_fun(set1, set2):
-  """" Gets the intersection of the two sets.
-  Returns: a set of the words in both sets. """
+    return user1_result + user2_result
+        
+    
+  def intersection_fun(self, set1, set2):
+    """" Gets the intersection of the two sets.
+    Returns: a set of the words in both sets. """
 
-  result = set()
-  for word1 in set1:
-    for word2 in set2:
-      if word1.lower() in word2.lower():
-        result.add(word1.lower())
-      elif word2.lower() in word1.lower():
-        result.add(word2.lower())
-  return result
+    result = set()
+    for word1 in set1:
+      for word2 in set2:
+        if word1.lower() in word2.lower():
+          result.add(word1.lower())
+        elif word2.lower() in word1.lower():
+          result.add(word2.lower())
+    return result
 
-def jaccard_sim(set1, set2):
-  """" Gets the simple Jaccard Similarity between the two sets.
-  Returns: a tuple with a simple Jaccard Similarity score for set1 and set2
-  and the set of intersecting words. """
+  def jaccard_sim(self, set1, set2):
+    """" Gets the simple Jaccard Similarity between the two sets.
+    Returns: a tuple with a simple Jaccard Similarity score for set1 and set2
+    and the set of intersecting words. """
 
-  #CHECK - condition when denominator is 0, when BOTH restaurant and movie sets have empty categories or empty attributes
-  #fix with smoothing!
+    #CHECK - condition when denominator is 0, when BOTH restaurant and movie sets have empty categories or empty attributes
+    #fix with smoothing!
 
-  intersection = intersection_fun(set1, set2)
-  numerator = len(intersection)
-  denominator = (len(set1) + len(set2)) - numerator
-  return (float(numerator) / (1.0 + float(denominator)), intersection)
+    intersection = self.intersection_fun(set1, set2)
+    numerator = len(intersection)
+    denominator = (len(set1) + len(set2)) - numerator
+    return (float(numerator) / (1.0 + float(denominator)), intersection)
 
-def restaurant_location_one_user(restaurants, city, state):
-  """" Takes in a dictionary of restaurants, a string city and a string state. 
-  Returns: an ordered list of restaurant dictionaries that are near the location,
-  where the beginning elements are the closest and the later are farther. 
-  The list will only contain restaurants in the state.
-  """
 
-  #CHECK - the result will be empty when there are no restaurants in that state (must handle this case)
+  def restaurant_location_by_zip(self, restaurants, zipcode):
+    """" Takes in a dictionary of restaurants, a string zipcode.
+    Returns: an ordered list of restaurant dictionaries that are near the location,
+    where the beginning elements are the closest and the later are farther """
 
-  result = []
-  for r in restaurants:
-    if r['state'] == state:
-      if r['city'] == city:
-        result = [r] + result
-      else:
-        result += [r]
-  return result
+    # Get all zipcodes in different sizes of radius from the input zipcode
 
-def restaurant_location(restaurants, state, city1, city2):
-  """" Takes in a dictionary of restaurants, a string city and a string state.
-  Returns: an ordered list of restaurant dictionaries that are near the location,
-  where the beginning elements are the closest and the later are farther """
+    radius_2 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 2)]) # All zipcodes with 2 miles of input
+    radius_5 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 5)]) - radius_2   # All zipcodes within 2 < zipcode <= 5
+    radius_10 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 10)]) - radius_2 - radius_5 # All zipcodes within 5 < zipcode <= 10
+    radius_15 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 15)]) - radius_2 - radius_5 - radius_10
+    radius_20 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 20)]) - radius_2 - radius_5 - radius_10 - radius_15
+    radius_25 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 25)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20
+    radius_30 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 30)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25
+    radius_45 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 45)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30
+    radius_50 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 50)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30 - radius_45
+    radius_60 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 60)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30 - radius_45 - radius_50
 
-  #CHECK - the result will be empty when there are no restaurants in that state (must handle this case)
+    res_same_zip = []
+    res_within_2 = []
+    res_within_5 = []
+    res_within_10 = []
+    res_within_15 = []
+    res_within_20 = []
+    res_within_25 = []
+    res_within_30 = []
+    res_within_45 = []
+    res_within_50 = []
+    res_within_60 = []
 
-  #function only called when the state of both users is the same and cities are different
-  result = []
-  for r in restaurants:
-    if r['state'] == state:
-      if r['city'] == city1 or r['city'] == city2:
-        result = [r] + result
-      else:
-        result += [r]
-  return result
+    for res in restaurants:
+      zcode = res["postal_code"]
+      if zcode == zipcode:
+        res["radius"] = 0
+        res_same_zip.append(res)
+      elif zcode in radius_2:
+        res["radius"] = 2
+        res_within_2.append(res)
+      elif zcode in radius_5:
+        res["radius"] = 5
+        res_within_5.append(res)
+      elif zcode in radius_10:
+        res["radius"] = 10
+        res_within_10.append(res)
+      elif zcode in radius_15:
+        res["radius"] = 15
+        res_within_15.append(res)
+      elif zcode in radius_20:
+        res["radius"] = 20
+        res_within_20.append(res)
+      elif zcode in radius_25:
+        res["radius"] = 25
+        res_within_25.append(res)
+      elif zcode in radius_30:
+        res["radius"] = 30
+        res_within_30.append(res)
+      elif zcode in radius_45:
+        res["radius"] = 45
+        res_within_45.append(res)
+      elif zcode in radius_50:
+        res["radius"] = 50
+        res_within_50.append(res)
+      elif zcode in radius_60:
+        res["radius"] = 60
+        res_within_60.append(res)
+      
+    result = (res_same_zip + res_within_2 + res_within_5 + res_within_10 + res_within_15 + res_within_20 +
+    res_within_25 + res_within_30 + res_within_45 + res_within_50 + res_within_60) 
 
-def find_restaurants(mov_categories, mov_attributes, restaurants):
-  """" Gets the score for each restaurant based on its Jaccard Similarity scores.
-  
-  Returns: a tuple (sorted dictionary of restuarants with id of restaurant and 
-  the similarity score to the mov_categories and mov_attributes, dictionary with id as key 
-  and value as the list of matching attributes and categories). """
+    return result
 
-  #CHECK - need to redistribute the weight of words/categories/attributes
 
-  result = {}
-  output = {}
-  for r in restaurants:
-    res_categories = set()
-    res_attributes = set()
-    if r['attributes'] is not None: #used to check if restaurant has this as empty
-      res_attributes = tokenize_attributes(r['attributes'])
-    if r['categories'] is not None:
-      res_categories = tokenize_categories(r['categories'])
-    jac_attribute = jaccard_sim(set(mov_attributes), res_attributes)
-    jac_cattegory = jaccard_sim(set(mov_categories), res_categories)
-    sim_attribute = jac_attribute[0]
-    sim_category = jac_cattegory[0]
+  def find_restaurants(self, mov_categories, mov_attributes, restaurants):
+    """" Gets the score for each restaurant based on its Jaccard Similarity scores.
+    
+    Returns: a tuple (sorted dictionary of restuarants with id of restaurant and 
+    the similarity score to the mov_categories and mov_attributes, dictionary with id as key 
+    and value as the list of matching attributes and categories). """
 
-    result[r['business_id']] = sim_attribute + sim_category
-    output[r['business_id']] = jac_attribute[1].union(jac_cattegory[1])
-  
-  sorted_dict = {r: result[r] for r in sorted(result, key=result.get, reverse=True)}
-  return (sorted_dict, output)
+    #CHECK - need to redistribute the weight of words/categories/attributes
 
-def combine_location(restaurant_scores, restaurant_locations):
-  """" Takes in a sorted dictionary of restaurant ids and similarity scores
-  and an ordered list of restaurants in a specific location range. 
+    result = {}
+    output = {}
+    for r in restaurants:
+      res_categories = set()
+      res_attributes = set()
+      if r['attributes'] is not None: #used to check if restaurant has this as empty
+        res_attributes = self.tokenize_attributes(r['attributes'])
+      if r['categories'] is not None:
+        res_categories = self.tokenize_categories(r['categories'])
+      jac_attribute = self.jaccard_sim(set(mov_attributes), res_attributes)
+      jac_cattegory = self.jaccard_sim(set(mov_categories), res_categories)
+      sim_attribute = jac_attribute[0]
+      sim_category = jac_cattegory[0]
 
-  Returns: a dictionary of restaurants sorted on the highest matching scores.
-  Will only include restaurants from the restaurant locations input.
-  """
+      result[r['business_id']] = sim_attribute + sim_category
+      output[r['business_id']] = jac_attribute[1].union(jac_cattegory[1])
+    
+    sorted_dict = {r: result[r] for r in sorted(result, key=result.get, reverse=True)}
+    return (sorted_dict, output)
 
-  #CHECK - fix weighting and somehow all the restaurants in restaurant locations isn't in the final result?
+  def combine_location(self, restaurant_scores, restaurant_locations):
+    """" Takes in a sorted dictionary of restaurant ids and similarity scores
+    and an ordered list of restaurants in a specific location range. 
 
-  weight = len(restaurant_locations)
-  #set the weight to decrease by 1 for each following location
+    Returns: a dictionary of restaurants sorted on the highest matching scores.
+    Will only include restaurants from the restaurant locations input.
+    """
 
-  result = {} 
-  for r in restaurant_locations:
-    score = restaurant_scores[r['business_id']] + weight
-    result[r['business_id']] = score
-  
-  # print(weight)
-  # print(len(result))
-  
+    #CHECK - fix weighting and somehow all the restaurants in restaurant locations isn't in the final result?
 
-  sorted_result = {r: result[r] for r in sorted(result, key=result.get, reverse=True)}
-  return sorted_result
+    # 11 bins for zipcodes - those w radius 0 get 11 points, with radius 2 (next bin) get 10 points
+    weight = {0: 11, 2: 10, 5: 9, 10: 8, 15: 7, 20: 6, 25: 5, 30: 4, 45: 3, 50: 2, 60: 1}
 
-def tokenize_categories(categories):
-  """" Takes in a category string and tokenizes it into separate words. 
-  Returns: a set of token words. """
+    result = {} 
+    for r in restaurant_locations:
+      score = restaurant_scores[r['business_id']] * 2 + weight[r['radius']]
+      sentiments = r['avg_sentiments']
 
-  new_categories = set()
-  c = set(categories.split(", "))
-  new_categories = new_categories.union(c)
-  
-  return new_categories
+      # ADD SENTIMENT TO SCORE 
+      score = score + sentiments['avg_pos'] - sentiments['avg_neg'] + 0.5*sentiments['avg_neu']
+      result[r['business_id']] = score
+    
+    sorted_result = {r: result[r] for r in sorted(result, key=result.get, reverse=True)}
+    return sorted_result
 
-def tokenize_attributes(attributes):
-  """" Takes in an attribute dictionary and tokenizes it into separate, key words. 
-  Returns: a set of token words. """
 
-  #CHECK - if this includes all attributes from yelp-restaurants that might be necessary
+  def tokenize_categories(self, categories):
+    """" Takes in a category string and tokenizes it into separate words. 
+    Returns: a set of token words. """
 
-  new_attributes = set()
-  for key in attributes:
-    try:
-      i = int(attributes[key])
-      if isinstance(i, int):
-        new_attributes.add(key)
-    except ValueError:  
-      if key == "Ambience":
-        text = attributes['Ambience']
-        new_attributes = new_attributes.union(set(re.split(r'[:,]\s*', text)))
-      elif attributes[key] != "False":
-        new_attributes.add(key)
-  
-  return new_attributes
+    new_categories = set()
+    c = set(categories.split(", "))
+    new_categories = new_categories.union(c)
+    
+    return new_categories
 
-def get_key_words():
-  """" Used to create the key words for the restaurant data set.
-  Returns: the category and attribute final list in csv called 'output'. 
-  """
-  
-  restaurants, restaurant_dict = create_python_dict()
-  result_cat = set()
-  result_att = set()
-  for res in restaurants:
-    if res['categories'] is not None:
-      c = tokenize_categories(res['categories'])
-      result_cat = result_cat.union(c)
-    if res['attributes'] is not None:
-      result_att = result_att.union(tokenize_attributes(res['attributes']))
-  
-  with open('output.csv', mode='w') as csv_file:
-    fieldnames = ['category', 'attribute']
-    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-    writer.writeheader()
-    length = max(len(result_att), len(result_cat))
-    for c in result_cat:
-      writer.writerow({'category': c})
-    for a in result_att:
-      writer.writerow({'attribute': a})
+  def tokenize_attributes(self, attributes):
+    """" Takes in an attribute dictionary and tokenizes it into separate, key words. 
+    Returns: a set of token words. """
+
+    #CHECK - if this includes all attributes from yelp-restaurants that might be necessary
+
+    new_attributes = set()
+    for key in attributes:
+      try:
+        i = int(attributes[key])
+        if isinstance(i, int):
+          new_attributes.add(key)
+      except ValueError:  
+        if key == "Ambience":
+          text = attributes['Ambience']
+          new_attributes = new_attributes.union(set(re.split(r'[:,]\s*', text)))
+        elif attributes[key] != "False":
+          new_attributes.add(key)
+    
+    return new_attributes
+
+  def get_key_words(self):
+    """" Used to create the key words for the restaurant data set.
+    Returns: the category and attribute final list in csv called 'output'. 
+    """
+    
+    restaurants, restaurant_dict = self.create_python_dict()
+    result_cat = set()
+    result_att = set()
+    for res in restaurants:
+      if res['categories'] is not None:
+        c = self.tokenize_categories(res['categories'])
+        result_cat = result_cat.union(c)
+      if res['attributes'] is not None:
+        result_att = result_att.union(self.tokenize_attributes(res['attributes']))
+    
+    with open('output.csv', mode='w') as csv_file:
+      fieldnames = ['category', 'attribute']
+      writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+      writer.writeheader()
+      length = max(len(result_att), len(result_cat))
+      for c in result_cat:
+        writer.writerow({'category': c})
+      for a in result_att:
+        writer.writerow({'attribute': a})
 
 
 #TESTING
@@ -339,7 +366,6 @@ def get_key_words():
 
 
 
-
 # res = create_python_dict()
 # loc = restaurant_location(res, 'Phoenix', 'AZ')
 # f = find_restaurants(['Family', 'Waffle'], ['romantic', 'casual'], res)
@@ -349,3 +375,7 @@ def get_key_words():
 # print(result[k])
 # print(result[k2])
 
+# run(['romantic, hipster'],['Family', 'bagel'], "85013", None)
+# run(['romantic, hipster'],['Family', 'bagel'], "85013", "28277")
+
+#print(run(['trendy'],['British', 'coffee', 'street', 'bagel'], "85013", "28277"))

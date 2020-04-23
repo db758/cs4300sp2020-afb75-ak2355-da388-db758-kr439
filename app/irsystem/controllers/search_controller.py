@@ -2,11 +2,12 @@ from . import *
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 import csv
-from yelp_scoring import run
+import yelp_scoring
 
 project_name = "CUpids"
 net_id = "Alexa Batino (afb75), Divya Agrawal (da388), Keethu Ramalingam (kr439), Asma Khan (ak2355), Debasmita Bhattacharya (db758)"
 
+yelp = yelp_scoring.YelpScoring()
 
 @irsystem.route('/', methods=['GET'])
 def search():
@@ -38,10 +39,10 @@ def search():
 
 		if len(restaurants) == 2:
 			twoRestaurants = True
-			restaurantName2 = restaurants[1]['restaurant1']
-			restaurantCity2 = restaurants[1]['city1']
-			restaurantState2 = restaurants[1]['state1']
-			restaurantScore2 = restaurants[1]['score1']
+			restaurantName2 = restaurants[1]['restaurant2']
+			restaurantCity2 = restaurants[1]['city2']
+			restaurantState2 = restaurants[1]['state2']
+			restaurantScore2 = restaurants[1]['score2']
 			restaurantWords2 = restaurants[1]['matchings']
 
 
@@ -105,17 +106,12 @@ def getMovieAndFoodWords(movie_a, movie_b):
 			return [all_movies[index_movie], movie_to_categories[all_movies[index_movie]], movie_to_attributes[all_movies[index_movie]]]
 			
 
-def getRestaurant(categories, attributes, location_a, location_b):
-	city_state = location_a.split(", ")
-	cityA, stateA = city_state[0].capitalize(), city_state[1].upper()
-	if location_b: 
-		city_stateB = location_b.split(", ")
-		cityB, stateB = city_stateB[0].capitalize(), city_stateB[1].upper()
-	else: 
-		cityB, stateB = None, None
-
-	restaurants = run(attributes, categories, cityA, stateA, cityB, stateB)
+def getRestaurant(categories, attributes, zipcode1, zipcode2):
 	
+	if len(zipcode2) < 1:
+		zipcode2 = None
+	restaurants = yelp.run(attributes, categories, zipcode1, zipcode2)
+
 	return restaurants
 
 
