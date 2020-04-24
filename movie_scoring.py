@@ -6,9 +6,12 @@ import math
 import numpy as np
 import csv
 
-def getMovieAndFoodWords(user1_movies, user2_movies):
+def getMovieAndFoodWords(user1_movies, user2_movies, user1_keywords, user2_keywords):
+	# List of inputted key words
+	input_keywords_list = getKeywords(user1_keywords, user2_keywords)
+	
 	# List of all movie names inputted by both users 
-	input_movie_list = getMovieNames(user1_movies) + getMovieNames(user2_movies)
+	input_movie_list = getMovieNames(user1_movies, user2_movies)
 
 	# Read in the csv of movies
 	movies = list(csv.DictReader(open('new.csv')))
@@ -17,52 +20,59 @@ def getMovieAndFoodWords(user1_movies, user2_movies):
 	movie_to_genre = {}
 	# Dictionary with movie title as key and list of categories as values
 	movie_to_categories = {}
-	# Dictionary with movie title as key and list of attributs as values
+	# Dictionary with movie title as key and list of attributes as values
 	movie_to_attributes = {}
-
+	# Dictionary with movie title as key and list of summaries as values
 	movie_to_summaries = {}
 
-	# Generate movie_to_genre, movie_to_categories, and movie_to_attributes dictionaries
+	# Generate dictionaries
 	for each_movie in movies:
-		#CHANGE THIS SO THAT WE CAN STILL DO COSINE
 		if each_movie["Genres"] == "":
 			movie_to_genre[str(each_movie["Title"]).lower()] = []
 		else:
 			movie_to_genre[str(each_movie["Title"]).lower()] = eval(each_movie["Genres"])
 		movie_to_categories[str(each_movie["Title"]).lower()] = eval(each_movie["categories"])
 		movie_to_attributes[str(each_movie["Title"]).lower()] = eval(each_movie["attributes"])
-
 		movie_to_summaries[str(each_movie["Title"]).lower()] = (each_movie["Plot"])
-		## ADD A PLOT DICTIONARY for COSSINE
 
-
-	#All the genres in the movies that the user inputted	
-	input_movie_genres = getMovieGenres (input_movie_list, movie_to_genre)
-	#All unique genres in the movies that the user inputted	
-	unique_input_movie_genres = list(set(input_movie_genres))
-	
 	#List of all movies
 	all_movies = list(movie_to_genre.keys())
 
-	#Genre Scores of All movies
-	genre_score_array = getGenreScore(unique_input_movie_genres,input_movie_genres, input_movie_list, all_movies, movie_to_genre)
-	genre_score_array = genre_score_array/(max(genre_score_array))
 
-	cosine_score_array = []
-	#Cosine Scores
-	cosine_score_dict = getCosine(movie_to_summaries, ["girls","night","in","drinks"])
-	for each_movie in all_movies:
-		if each_movie in cosine_score_dict:
-			cosine_score_array.append(cosine_score_dict[each_movie]*2)
-		else:
-			cosine_score_array.append(0)
+	input_movie_list, input_keywords_list = cleanInputMovieList(input_movie_list, input_keywords_list, all_movies)
+	print(input_movie_list)
+	print(input_keywords_list)
 
-	#Total Score
+	#GENRE SCORES
+	if len(input_movie_list) == 0:
+		genre_score_array = np.zeros((len(all_movies)))
+	else:
+		#All the genres in the movies that the user inputted	
+		input_movie_genres = getMovieGenres (input_movie_list, movie_to_genre)
+		#All unique genres in the movies that the user inputted	
+		unique_input_movie_genres = list(set(input_movie_genres))
+		#Genre Scores of All movies
+		genre_score_array = getGenreScore(unique_input_movie_genres,input_movie_genres, input_movie_list, all_movies, movie_to_genre)
+		genre_score_array = genre_score_array/(max(genre_score_array))
+
+	#COSSINE SCORES
+	if len(input_keywords_list) == 0:
+		cosine_score_array = np.zeros((len(all_movies)))
+	else:
+		cosine_score_array = []
+		cosine_score_dict = getCosine(movie_to_summaries, input_keywords_list)
+		for each_movie in all_movies:
+			if each_movie in cosine_score_dict:
+				cosine_score_array.append(cosine_score_dict[each_movie]*2)
+			else:
+				cosine_score_array.append(0)
+
+	#TOTAL SCORE
 	total_score = genre_score_array+cosine_score_array 
 	total_score_rank =  np.argsort(total_score)
 
+	#FINDING BEST MOVIE FROM ALL RANKED MOVIES
 	movie = ""
-
 	for i in range(1,len(all_movies)):
 		index_movie = total_score_rank[len(all_movies)-i]
 		if all_movies[index_movie] not in input_movie_list:
@@ -73,7 +83,21 @@ def getMovieAndFoodWords(user1_movies, user2_movies):
 	#return["","",""]
 
 
-def getMovieNames(movie_name):
+def getKeywords(user1_keywords,user2_keywords):
+	""" Give the inputted keywords of both users returns a list with all the keywords
+	"""
+	if len(user1_keywords) == 0 and len(user2_keywords) == 0 :
+		return []
+	elif len(user1_keywords) == 0:
+		return user2_keywords.lower().split(' ')
+	elif len(user2_keywords) == 0 :
+		return user1_keywords.lower().split(' ')
+	else:
+		keywords = user1_keywords+ " " + user2_keywords
+		return keywords.lower().split(' ')
+
+
+def getMovieNames(user1_movies, user2_movies):
 	"""Given a the user input of movie names (which are split by commas)
 	the function returns the movie names as a list
 	
@@ -81,8 +105,26 @@ def getMovieNames(movie_name):
 	movie_name: a string that has one (or multiple) movie titles
 	
 	Returns: a list with all the movie titles"""
+	if len(user1_movies) == 0 and len(user2_movies) == 0 :
+		return []
+	elif len(user1_movies) == 0:
+		return user2_movies.lower().split(', ')
+	elif len(user2_movies) == 0 :
+		return user1_movies.lower().split(', ')
+	else:
+		movies = user1_movies+ ", " + user2_movies
+		return movies.lower().split(', ')
 
-	return movie_name.lower().split(', ')
+def cleanInputMovieList(input_movie_list, input_keywords_list, all_movies):
+	"""
+	Check if all inputted movies are in the db otherwise appends them to keywords
+	"""
+	for each_movie in input_movie_list:
+		if each_movie not in all_movies:
+			input_movie_list.remove(each_movie)
+			input_keywords_list.append(each_movie)
+	return input_movie_list, input_keywords_list
+
 
 def getMovieGenres (input_movie_list, movie_to_genre):
 	"""Returns a list of all the genres in all of the inputted movies"""
