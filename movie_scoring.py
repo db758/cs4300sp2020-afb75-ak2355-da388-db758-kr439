@@ -2,6 +2,7 @@ from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 from nltk.tokenize import TreebankWordTokenizer
 from collections import Counter
+import operator
 import math
 import numpy as np
 import csv
@@ -24,13 +25,17 @@ def getMovieAndFoodWords(user1_movies, user2_movies, user1_keywords, user2_keywo
 	movie_to_attributes = {}
 	# Dictionary with movie title as key and list of summaries as values
 	movie_to_summaries = {}
+	# Dictionary with movie title as key and list of actors as value
+	movie_to_cast = {}
 
 	# Generate dictionaries
 	for each_movie in movies:
+		#Creates the genre list
 		if each_movie["Genres"] == "":
 			movie_to_genre[str(each_movie["Title"]).lower()] = []
 		else:
 			movie_to_genre[str(each_movie["Title"]).lower()] = eval(each_movie["Genres"])
+		
 		movie_to_categories[str(each_movie["Title"]).lower()] = eval(each_movie["categories"])
 		movie_to_attributes[str(each_movie["Title"]).lower()] = eval(each_movie["attributes"])
 		movie_to_summaries[str(each_movie["Title"]).lower()] = (each_movie["Plot"])
@@ -301,6 +306,7 @@ def getCosine(movie_summaries, query_words):
 	doc_norms = compute_doc_norms(inv_idx, idf, len(movie_summaries))
 	return cosine_score(query_words, inv_idx, idf, doc_norms)
 
+
 	
 def getAllMovies():
 	"""Used for drop down for movie.
@@ -316,6 +322,49 @@ def getAllMovies():
 		for mov in all_movies:
 			output.write(mov+ '\n')
 
+
+def getActorsScore(movies_to_cast, actors):
+	"""
+	Assumes parameter is a list of words that are divided based on commas (list of actors), all lowercase.
+	
+	Returns: sorted list: [(movie title, score), ...]. Will be empty if no inputed actors
+	match any of the movie cast members.
+
+	"""
+	movie_act_dict = {}
+	for mov in movies_to_cast:
+		movie_actors = (movies_to_cast[mov].lower()).split(", ")
+		for actor in movie_actors:
+			if actor in actors:
+				if mov in movie_act_dict:
+					movie_act_dict[mov] += 1
+				else:
+					movie_act_dict[mov] = 1
+	movie_act_dict_sorted = sorted(movie_act_dict.items(), key=operator.itemgetter(1))
+	return movie_act_dict_sorted
+
+def getTitleScore(movie_titles, keywords):
+	"""
+	Parameter: list of movie titles, list of user inputed keywords all lowercase
+	
+	Returns: sorted list: [(movie title, score), ...]. Will be empty if no keywords
+					 match the words in the movie titles.
+	"""
+
+	title_dict = {}
+	for mov in movie_titles:
+		#tokenize movie title based on space
+		title = mov.lower().split(" ")
+		for word in keywords:
+			if word in title:
+				if mov in title_dict:
+					title_dict[mov] += 1
+				else:
+					title_dict[mov] = 1
+	title_dict_sorted = sorted(title_dict.items(), key=operator.itemgetter(1))
+	return title_dict_sorted
+
+
 def test():
 	"""
 	Used to test that cosine works. Cosine will return an empty list if there's
@@ -324,12 +373,17 @@ def test():
 
 	all_movies = {}
 
-	with open('new.csv', mode='r') as csv_file:
-		csv_reader = csv.DictReader(csv_file)
-		for row in csv_reader:
-			all_movies[row["Title"].lower()] = row["Plot"]
+	# with open('new_cast.csv', mode='r') as csv_file:
+	# 	csv_reader = csv.DictReader(csv_file)
+	# 	for row in csv_reader:
+	# 		if row["Cast"] != "":
+	# 			all_movies[row["Title"].lower()] = row["Cast"]
+
+	# a = ['maleficent', 'guardians of the galaxy', 'the legend of tarzan']
+	# print(getTitleScore(a, []))
+
 	
-	i = getCosine(all_movies, ["christmas", "princess"])
+	# i = getCosine(all_movies, ["christmas", "princess"])
 	# print(i[0])
 	# print(all_movies[i[0][1]])
 	
@@ -340,7 +394,12 @@ def test():
 # print("Method")
 # test()
 
+
 #CASES:
+#check that the movie returned isnt a movie inputted
+#pre-computed inverted index
+#return a default movie!
+
 #make sure that movie inputed is in database --> make sure its a dropdown list of movies
 
 #movie if it doesn't have a genre --> genre score should be 0
@@ -349,3 +408,9 @@ def test():
 #if genre + cosine sim score = 0 --> default movie
 
 #for food, if there is no restaurant, display popcorn is always a good option
+
+# Questions:
+# movie categories/attributes if empty
+# how are we dividing user input (actors have to be full names & exact)
+
+
