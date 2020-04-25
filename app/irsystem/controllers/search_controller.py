@@ -17,11 +17,13 @@ def search():
 	location_b = request.args.get('location-b')
 	keywords_a = request.args.get('keywords-a')
 	keywords_b = request.args.get('keywords-b')
+	actors_a = request.args.get('actors-a')
+	actors_b = request.args.get('actors-b')
 
 	if not movie_a and not keywords_a:
 		data = []
 	else:
-		movieResult = getMovieAndFoodWords(movie_a, movie_b, keywords_a, keywords_b)
+		movieResult = getMovieAndFoodWords(movie_a, movie_b, keywords_a, keywords_b, actors_a, actors_b)
 		movie, foodCats, foodAttrs = movieResult[0], movieResult[1], movieResult[2]
 		
 		restaurants = getRestaurant(foodCats, foodAttrs, location_a, location_b)

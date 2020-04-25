@@ -7,7 +7,7 @@ import math
 import numpy as np
 import csv
 
-def getMovieAndFoodWords(user1_movies, user2_movies, user1_keywords, user2_keywords):
+def getMovieAndFoodWords(user1_movies, user2_movies, user1_keywords, user2_keywords, user1_actors, user2_actors):
 	# List of inputted key words
 	input_keywords_list = getKeywords(user1_keywords, user2_keywords)
 	
@@ -16,6 +16,7 @@ def getMovieAndFoodWords(user1_movies, user2_movies, user1_keywords, user2_keywo
 
 	# Read in the csv of movies
 	movies = list(csv.DictReader(open('new.csv')))
+	actors = list(csv.DictReader(open('new_only_cast.csv')))
 
 	# Dictionary with movie title as key and list of genres as values
 	movie_to_genre = {}
@@ -40,13 +41,20 @@ def getMovieAndFoodWords(user1_movies, user2_movies, user1_keywords, user2_keywo
 		movie_to_attributes[str(each_movie["Title"]).lower()] = eval(each_movie["attributes"])
 		movie_to_summaries[str(each_movie["Title"]).lower()] = (each_movie["Plot"])
 
+	for each_movie in actors:
+		movie_to_cast[str(each_movie["Title"]).lower()] = each_movie["Cast"].lower().split(', ')
+
+
 	#List of all movies
 	all_movies = list(movie_to_genre.keys())
 
-
+	# print(input_movie_list)
 	input_movie_list, input_keywords_list = cleanInputMovieList(input_movie_list, input_keywords_list, all_movies)
-	print(input_movie_list)
-	print(input_keywords_list)
+	# print(input_movie_list)
+	# print(input_keywords_list)
+	#List of all actros inputted and in inputtted movie -- this can only be done after we have cleaned input movie list
+	input_actor_list = getActors(user1_actors, user2_actors, input_movie_list, movie_to_cast)
+	# print(input_actor_list)
 
 	#GENRE SCORES
 	if len(input_movie_list) == 0:
@@ -60,31 +68,69 @@ def getMovieAndFoodWords(user1_movies, user2_movies, user1_keywords, user2_keywo
 		genre_score_array = getGenreScore(unique_input_movie_genres,input_movie_genres, input_movie_list, all_movies, movie_to_genre)
 		genre_score_array = genre_score_array/(max(genre_score_array))
 
-	#COSSINE SCORES
+	#KEYWORDS SCORES && KEYWORDS IN TITLE SCORE
 	if len(input_keywords_list) == 0:
-		cosine_score_array = np.zeros((len(all_movies)))
+		keywords_score_array = np.zeros((len(all_movies)))
+		title_score_array = np.zeros((len(all_movies)))
 	else:
-		cosine_score_array = []
-		cosine_score_dict = getCosine(movie_to_summaries, input_keywords_list)
+		keywords_score_array = []
+		keywords_dict = getCosine(movie_to_summaries, input_keywords_list)
+
+		title_score_array = []
+		title_dict = getTitleScore(all_movies, input_keywords_list)
+
 		for each_movie in all_movies:
-			if each_movie in cosine_score_dict:
-				cosine_score_array.append(cosine_score_dict[each_movie]*2)
+			if each_movie in keywords_dict:
+				keywords_score_array.append(keywords_dict[each_movie]*1.5)
 			else:
-				cosine_score_array.append(0)
+				keywords_score_array.append(0)
+			
+			if each_movie in title_dict:
+				title_score_array.append(title_dict[each_movie]*1.5)
+			else:
+				title_score_array.append(0)
+	
+	#ACTOR SCORE
+	if len(input_actor_list) == 0:
+		actors_score_array = np.zeros((len(all_movies)))
+	else:
+		actors_score_array = []
+		actors_dict = getActorsScore(movie_to_cast, input_actor_list)
+		# print(actors_dict)
+		for each_movie in all_movies:
+			if each_movie in actors_dict:
+				actors_score_array.append(actors_dict[each_movie]*2)
+			else:
+				actors_score_array.append(0)
 
 	#TOTAL SCORE
-	total_score = genre_score_array+cosine_score_array 
+	total_score = genre_score_array+keywords_score_array+title_score_array+actors_score_array
 	total_score_rank =  np.argsort(total_score)
 
 	#FINDING BEST MOVIE FROM ALL RANKED MOVIES
-	movie = ""
-	for i in range(1,len(all_movies)):
+	movie = []
+	#counter for going from the back of the list
+	i = 1
+	#counter for only having 3 movies returned
+	x = 0 
+	while i<len(all_movies) and x<3:
 		index_movie = total_score_rank[len(all_movies)-i]
 		if all_movies[index_movie] not in input_movie_list:
-			movie = all_movies[index_movie]
-			break
+			movie_name = all_movies[index_movie]
+			movie.append(movie_name)
+			movie.append(movie_to_categories[movie_name])
+			movie.append(movie_to_attributes[movie_name])
+			x +=1
+		i += 1
+	# print(movie)
+
+	# for i in range(1,len(all_movies)):
+	# 	index_movie = total_score_rank[len(all_movies)-i]
+	# 	if all_movies[index_movie] not in input_movie_list:
+	# 		movie = all_movies[index_movie]
+	# 		break
 	
-	return [movie, movie_to_categories[movie], movie_to_attributes[movie]] 
+	return movie
 	#return["","",""]
 
 
@@ -124,11 +170,27 @@ def cleanInputMovieList(input_movie_list, input_keywords_list, all_movies):
 	"""
 	Check if all inputted movies are in the db otherwise appends them to keywords
 	"""
+	cleaned_input_movie_list = []
 	for each_movie in input_movie_list:
-		if each_movie not in all_movies:
-			input_movie_list.remove(each_movie)
-			input_keywords_list.append(each_movie)
-	return input_movie_list, input_keywords_list
+		if each_movie in all_movies:
+			cleaned_input_movie_list.append(each_movie)
+		input_keywords_list += each_movie.split(' ')
+	return cleaned_input_movie_list, input_keywords_list
+
+def getActors(user1_actors, user2_actors, input_movie_list, movie_to_cast):
+	"""
+	Gets a list of actors that are inputted and are in the inputted movies
+	"""
+	actors = []
+	actors += user1_actors.lower().split(', ')
+	actors += user2_actors.lower().split(', ')
+
+	for each_movie in input_movie_list:
+		if each_movie in movie_to_cast:
+			actors += movie_to_cast[each_movie]
+	
+	return actors
+
 
 
 def getMovieGenres (input_movie_list, movie_to_genre):
@@ -161,17 +223,6 @@ def getGenreScore(unique_input_movie_genres,input_movie_genres,input_movie_list,
 
 	movie_scoring = np.sum((genresBYmovies.transpose())*genre_count, axis=1)
 	return movie_scoring
-	# #Multiplies the numpy matrix and the counts to get a scoring and the argsorts it
-	# movie_rank =  np.argsort(movie_scoring)
-
-	# #Goes through the movie ranking starting from the back
-	# #If the movie is not one of the inputted movies, then returns the movie
-	# for i in range(1,len(all_movies)):
-	# 	index_movie = movie_rank[len(all_movies)-i]
-	# 	if all_movies[index_movie] not in input_movie_list:
-	# 		return movie_scoring[index_movie]
-	# 		#return [all_movies[index_movie], movie_to_categories[all_movies[index_movie]], movie_to_attributes[all_movies[index_movie]]]
-
 
 
 #Cosine Similarity
@@ -323,7 +374,7 @@ def getAllMovies():
 			output.write(mov+ '\n')
 
 
-def getActorsScore(movies_to_cast, actors):
+def getActorsScore(movie_to_cast, inputted_movie_actors):
 	"""
 	Assumes parameter is a list of words that are divided based on commas (list of actors), all lowercase.
 	
@@ -332,16 +383,24 @@ def getActorsScore(movies_to_cast, actors):
 
 	"""
 	movie_act_dict = {}
-	for mov in movies_to_cast:
-		movie_actors = (movies_to_cast[mov].lower()).split(", ")
-		for actor in movie_actors:
-			if actor in actors:
-				if mov in movie_act_dict:
-					movie_act_dict[mov] += 1
-				else:
-					movie_act_dict[mov] = 1
-	movie_act_dict_sorted = sorted(movie_act_dict.items(), key=operator.itemgetter(1))
-	return movie_act_dict_sorted
+
+	for each_movie in movie_to_cast:
+		for each_actor in movie_to_cast[each_movie]:
+			for each_inputted_actor in inputted_movie_actors:
+				if each_inputted_actor == each_actor:
+					if each_movie in movie_act_dict:
+						movie_act_dict[each_movie] += 1
+					else:
+						movie_act_dict[each_movie] = 1
+
+	# for mov in movies_to_cast:
+	# 	for actor in movie_actors:
+	# 		if mov in movie_act_dict:
+	# 			movie_act_dict[mov] += 1
+	# 		else:
+	# 			movie_act_dict[mov] = 1
+	# movie_act_dict_sorted = sorted(movie_act_dict.items(), key=operator.itemgetter(1))
+	return movie_act_dict
 
 def getTitleScore(movie_titles, keywords):
 	"""
@@ -350,7 +409,6 @@ def getTitleScore(movie_titles, keywords):
 	Returns: sorted list: [(movie title, score), ...]. Will be empty if no keywords
 					 match the words in the movie titles.
 	"""
-
 	title_dict = {}
 	for mov in movie_titles:
 		#tokenize movie title based on space
@@ -361,8 +419,7 @@ def getTitleScore(movie_titles, keywords):
 					title_dict[mov] += 1
 				else:
 					title_dict[mov] = 1
-	title_dict_sorted = sorted(title_dict.items(), key=operator.itemgetter(1))
-	return title_dict_sorted
+	return title_dict
 
 
 def test():
