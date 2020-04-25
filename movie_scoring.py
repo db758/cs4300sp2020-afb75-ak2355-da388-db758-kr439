@@ -107,6 +107,10 @@ def getMovieAndFoodWords(user1_movies, user2_movies, user1_keywords, user2_keywo
 	total_score = genre_score_array+keywords_score_array+title_score_array+actors_score_array
 	total_score_rank =  np.argsort(total_score)
 
+	#DEFAULT MOVIE
+	if np.all(total_score==0):
+		return ["Ferris Bueller's Day Off", [], ['New', ' Room', ' Day', ' Pita', ' Family']]
+
 	#FINDING BEST MOVIE FROM ALL RANKED MOVIES
 	movie = []
 	#counter for going from the back of the list
@@ -428,7 +432,7 @@ def test():
 	no matching.
 	"""
 
-	all_movies = {}
+	# all_movies = {}
 
 	# with open('new_cast.csv', mode='r') as csv_file:
 	# 	csv_reader = csv.DictReader(csv_file)
@@ -448,8 +452,8 @@ def test():
 	# 	for mov in i:
 	# 		output.write(mov+ '\n')
 
-# print("Method")
-# test()
+print("Method")
+test()
 
 
 #CASES:
@@ -469,5 +473,7 @@ def test():
 # Questions:
 # movie categories/attributes if empty
 # how are we dividing user input (actors have to be full names & exact)
+
+#Create a class to pre-compute the inverted index
 
 
