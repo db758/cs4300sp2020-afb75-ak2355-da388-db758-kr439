@@ -9,6 +9,16 @@ net_id = "Alexa Batino (afb75), Divya Agrawal (da388), Keethu Ramalingam (kr439)
 
 yelp = yelp_scoring.YelpScoring()
 
+def getMovieTitles():
+	movies = []
+	with open('all_movies.txt') as f:
+		for movie in f.readlines():
+			movies.append(movie.title())
+		movies = sorted(movies)
+	return movies
+
+movies = getMovieTitles()
+
 @irsystem.route('/', methods=['GET'])
 def search():
 	movie_a = request.args.get('movie-a')
