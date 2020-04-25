@@ -112,9 +112,9 @@ class YelpScoring(object):
     for word1 in set1:
       for word2 in set2:
         if word1.lower() in word2.lower():
-          result.add(word2.lower())
+          result.add(word2.capitalize())
         elif word2.lower() in word1.lower():
-          result.add(word1.lower())
+          result.add(word1.capitalize())
     return result
 
   def jaccard_sim(self, set1, set2):
@@ -126,6 +126,7 @@ class YelpScoring(object):
     #fix with smoothing!
 
     intersection = self.intersection_fun(set1, set2)
+    print(intersection)
     numerator = len(intersection)
     denominator = (len(set1) + len(set2)) - numerator
     return (float(numerator) / (1.0 + float(denominator)), intersection)
