@@ -10,44 +10,10 @@ zcdb = pyzipcode.ZipCodeDatabase()
 class YelpScoring(object): 
 
   def __init__(self):
-    self.avg_sentiments = self.get_avg_sentiment()
-    self.restaurants, self.restaurant_dict = self.create_python_dict(self.avg_sentiments)
-
-  def get_avg_sentiment(self):
-    sentiment_sums = {}
-    bids = []
-    with open('yelp-reviews.txt') as f:
-      for line in f.readlines():
-        review = eval(line)
-        bid = review['business_id']
-        bids.append(bid)
-        if bid in sentiment_sums:
-          sentiments = sentiment_sums[bid]
-          sentiments["pos"] = sentiments["pos"] + review['sentiment']['pos']
-          sentiments["neg"] = sentiments["neg"] + review['sentiment']['neg']
-          sentiments["neu"] = sentiments["neu"] + review['sentiment']['neu']
-          sentiments["count"] = sentiments["count"] + 1
-        else:
-          sentiments = {}
-          sentiments["pos"] = review['sentiment']['pos']
-          sentiments["neg"] = review['sentiment']['neg']
-          sentiments["neu"] = review['sentiment']['neu']
-          sentiments["count"] = 1
-          sentiment_sums[bid] = sentiments
-
-    avg_sentiments = {}
-    for bid in sentiment_sums.keys():
-      result = {}
-      sentiments = sentiment_sums[bid]
-      result['avg_pos'] = sentiments['pos'] / float(sentiments['count'])
-      result['avg_neu'] = sentiments['neu'] / float(sentiments['count'])
-      result['avg_neg'] = sentiments['neg'] / float(sentiments['count'])
-      avg_sentiments[bid] = result
-
-    return avg_sentiments
+    self.restaurants, self.restaurant_dict = self.create_python_dict()
 
 
-  def create_python_dict(self, avg_sentiments):
+  def create_python_dict(self):
     """ Converts json (the yelp data set) to a list of restaurants and python 
     dictionary to be used throughout the program.
     
@@ -60,7 +26,7 @@ class YelpScoring(object):
     with open('yelp-restaurants.txt') as f:
       for jsonObj in f.readlines():
         obj = json.loads(jsonObj)
-        jsonList.append(obj)    
+        jsonList.append(obj)   
 
     tempList = []
     tempDict = {}
@@ -77,10 +43,7 @@ class YelpScoring(object):
       temp['review_count'] = e['review_count']
       temp['attributes'] = e['attributes']
       temp['categories'] = e['categories']
-      if e['business_id'] in avg_sentiments:
-        temp['avg_sentiments'] = avg_sentiments[e['business_id']]
-      else:
-        temp['avg_sentiments'] = {'avg_pos': 0.0, 'avg_neu': 0.0, 'avg_neg': 0.0}
+      temp['avg_sentiments'] = e['avg_sentiments']
       tempList.append(temp)
       tempDict[temp["business_id"]] = temp
 
@@ -247,7 +210,7 @@ class YelpScoring(object):
     the similarity score to the mov_categories and mov_attributes, dictionary with id as key 
     and value as the list of matching attributes and categories). """
 
-    #CHECK - need to redistribute the weight of words/categories/attributes
+    # TODO - need to redistribute the weight of words/categories/attributes
 
     result = {}
     output = {}
@@ -276,9 +239,6 @@ class YelpScoring(object):
     Returns: a dictionary of restaurants sorted on the highest matching scores.
     Will only include restaurants from the restaurant locations input.
     """
-
-    #CHECK - fix weighting and somehow all the restaurants in restaurant locations isn't in the final result?
-
     # 11 bins for zipcodes - those w radius 0 get 11 points, with radius 2 (next bin) get 10 points
     weight = {0: 11, 2: 10, 5: 9, 10: 8, 15: 7, 20: 6, 25: 5, 30: 4, 45: 3, 50: 2, 60: 1}
 
@@ -351,6 +311,8 @@ class YelpScoring(object):
       for a in result_att:
         writer.writerow({'attribute': a})
 
+
+YelpScoring()
 
 #TESTING
 
