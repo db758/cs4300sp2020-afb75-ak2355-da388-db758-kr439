@@ -25,7 +25,9 @@ def search():
 		data = []
 	else:
 		movieResult = movieClass.getMovieAndFoodWords(movie_a, movie_b, keywords_a, keywords_b, actors_a, actors_b)
-		movie, foodCats, foodAttrs = movieResult[0], movieResult[1], movieResult[2]
+		movie, foodCats, foodAttrs = movieResult[0].title(), movieResult[1], movieResult[2]
+		# Elements 3-5 in movieResult are the second ranked movie
+		# Elements 6-8 in movieResult are the third ranked movie
 		
 		restaurants = getRestaurant(foodCats, foodAttrs, location_a, location_b)
 

@@ -101,14 +101,17 @@ class MovieScoring(object):
 
 			for each_movie in self.all_movies:
 				if each_movie in keywords_dict:
-					keywords_score_array.append(keywords_dict[each_movie]*1.5)
+					keywords_score_array.append(keywords_dict[each_movie])
 				else:
 					keywords_score_array.append(0)
 				
 				if each_movie in title_dict:
-					title_score_array.append(title_dict[each_movie]*1.5)
+					title_score_array.append(title_dict[each_movie])
 				else:
 					title_score_array.append(0)
+
+			keywords_score_array = (np.asarray(keywords_score_array))/(max(keywords_score_array))
+			title_score_array =  (np.asarray(title_score_array))/(max(title_score_array))
 		
 		#ACTOR SCORE
 		if len(input_actor_list) == 0:
@@ -146,13 +149,11 @@ class MovieScoring(object):
 				movie.append(self.movie_to_attributes[movie_name])
 				x +=1
 			i += 1
-		# print(movie)
 
-		# for i in range(1,len(all_movies)):
-		# 	index_movie = total_score_rank[len(all_movies)-i]
-		# 	if all_movies[index_movie] not in input_movie_list:
-		# 		movie = all_movies[index_movie]
-		# 		break
+		# #prints the total scores of all movie (use to check)
+		# for i in range(0,len(self.all_movies)):
+		# 	index_movie = total_score_rank[i]
+		# 	print(self.all_movies[index_movie], total_score[index_movie])
 		
 		return movie
 		#return["","",""]
