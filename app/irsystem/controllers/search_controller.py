@@ -2,12 +2,13 @@ from . import *
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 import csv
-from movie_scoring import getMovieAndFoodWords
+import movie_scoring
 from yelp_scoring import run
 
 project_name = "CUpids"
 net_id = "Alexa Batino (afb75), Divya Agrawal (da388), Keethu Ramalingam (kr439), Asma Khan (ak2355), Debasmita Bhattacharya (db758)"
 
+movieClass = movie_scoring.MovieScoring()
 
 @irsystem.route('/', methods=['GET'])
 def search():
@@ -23,7 +24,7 @@ def search():
 	if not movie_a and not keywords_a:
 		data = []
 	else:
-		movieResult = getMovieAndFoodWords(movie_a, movie_b, keywords_a, keywords_b, actors_a, actors_b)
+		movieResult = movieClass.getMovieAndFoodWords(movie_a, movie_b, keywords_a, keywords_b, actors_a, actors_b)
 		movie, foodCats, foodAttrs = movieResult[0], movieResult[1], movieResult[2]
 		
 		restaurants = getRestaurant(foodCats, foodAttrs, location_a, location_b)
@@ -57,8 +58,6 @@ def search():
 		restaurantScore2=restaurantScore2, restaurantWords2=restaurantWords2)
 
 	return render_template('search.html', name=project_name, netid=net_id)
-
-
 
 def getRestaurant(categories, attributes, location_a, location_b):
 	city_state = location_a.split(", ")
