@@ -2,6 +2,10 @@
   <head>
     <link rel="stylesheet" href="/static/bootstrap.min.css" />
     <link rel="stylesheet" href="/static/main.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300;0,400;0,600;0,700;0,900;1,300;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
     <style></style>
   </head>
 
@@ -9,24 +13,65 @@
     <form class="form-inline global-search">
       <h1 class="title">CUpids</h1>
       <br />
-      <h5 class="subtitle">Find a restaurant and movie for you and yours!</h5>
+      <h4 class="subtitle">Find a restaurant and movie for you and yours!</h4>
 
       <br /><br />
 
       <div class="form-group">
-        <input
+        <div class="autocomplete" style="width:500px;">
+          <input
+            id="input-movie-a"
+            type="text"
+            name="movie-a"
+            class="form-control"
+            placeholder="Pulp Fiction"
+          />
+        </div>
+        <!-- <input
           id="input-movie-a"
           type="text"
           name="movie-a"
           class="form-control"
           placeholder="Pulp Fiction"
-        />
+        /> -->
         <input
           id="input-movie-b"
           type="text"
           name="movie-b"
           class="form-control"
           placeholder="What movie do they like?"
+        />
+        <br />
+        <br />
+        <input
+          id="input"
+          type="text"
+          name="keywords-a"
+          class="form-control"
+          placeholder="What type of movie are you looking for? #FIX WORDING"
+        />
+        <input
+          id="input"
+          type="text"
+          name="keywords-b"
+          class="form-control"
+          placeholder="What type of movie are you looking for? #FIX WORDING"
+        />
+        <br />
+        <br />
+        <input
+          id="input"
+          type="text"
+          name="actors-a"
+          class="form-control"
+          placeholder="What actors do you like? #FIX WORDING"
+        />
+        <input
+          id="input"
+          type="text"
+          name="actors-b"
+          class="form-control"
+          placeholder="What actor do you like? #FIX WORDING"
         />
         <br />
         <input
@@ -55,11 +100,113 @@
 
   <div
     class="footer"
-    style="font-weight: lighter; position: fixed; left: 0; bottom: 0;background-color: #e56a9c; width: 100%; color: white; text-align: center"
+    style="font-weight: lighter; position: fixed; left: 0; bottom: 0; width: 100%; color: e56a9c; text-align: center"
   >
     <p>{{ netid }}</p>
   </div>
   <script>
+    var all_movies = {{ all_movies|safe }};
+
+    function autocomplete(inp, arr) {
+      /*the autocomplete function takes two arguments,
+      the text field element and an array of possible autocompleted values:*/
+      var currentFocus;
+      /*execute a function when someone writes in the text field:*/
+      inp.addEventListener("input", function(e) {
+          var a, b, i, val = this.value;
+          /*close any already open lists of autocompleted values*/
+          closeAllLists();
+          if (!val) { return false;}
+          currentFocus = -1;
+          /*create a DIV element that will contain the items (values):*/
+          a = document.createElement("DIV");
+          a.setAttribute("id", this.id + "autocomplete-list");
+          a.setAttribute("class", "autocomplete-items");
+          /*append the DIV element as a child of the autocomplete container:*/
+          this.parentNode.appendChild(a);
+          /*for each item in the array...*/
+          for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+              /*create a DIV element for each matching element:*/
+              b = document.createElement("DIV");
+              /*make the matching letters bold:*/
+              b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+              b.innerHTML += arr[i].substr(val.length);
+              /*insert a input field that will hold the current array item's value:*/
+              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+              /*execute a function when someone clicks on the item value (DIV element):*/
+                  b.addEventListener("click", function(e) {
+                  /*insert the value for the autocomplete text field:*/
+                  inp.value = this.getElementsByTagName("input")[0].value;
+                  /*close the list of autocompleted values,
+                  (or any other open lists of autocompleted values:*/
+                  closeAllLists();
+              });
+              a.appendChild(b);
+            }
+          }
+      });
+      /*execute a function presses a key on the keyboard:*/
+      inp.addEventListener("keydown", function(e) {
+          var x = document.getElementById(this.id + "autocomplete-list");
+          if (x) x = x.getElementsByTagName("div");
+          if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+          } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+          } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+              /*and simulate a click on the "active" item:*/
+              if (x) x[currentFocus].click();
+            }
+          }
+      });
+      function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+      }
+      function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+          x[i].classList.remove("autocomplete-active");
+        }
+      }
+      function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+          if (elmnt != x[i] && elmnt != inp) {
+          x[i].parentNode.removeChild(x[i]);
+        }
+      }
+    }
+    /*execute a function when someone clicks in the document:*/
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+    }
+
+    autocomplete(document.getElementById("input-movie-a"), all_movies);
+
+
     var location_btn = document.getElementById("location-btn");
     var location_b = document.getElementsByClassName("location-b")[0];
 

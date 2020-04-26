@@ -126,7 +126,6 @@ class YelpScoring(object):
     #fix with smoothing!
 
     intersection = self.intersection_fun(set1, set2)
-    print(intersection)
     numerator = len(intersection)
     denominator = (len(set1) + len(set2)) - numerator
     return (float(numerator) / (1.0 + float(denominator)), intersection)
