@@ -14,7 +14,7 @@
     <div class="global-search results-heading">
       <h1 class="title">You and Yours</h1>
       <br />
-      <h4 class="subtitle">Get a movie and restaurant recommendation pair for a date!</h4>
+      <h4 class="subtitle">Here's a movie and restaurant pairing you might like!</h4>
     <div class="container">
       {% if twoRestaurants %}
       <div class="row">
@@ -77,6 +77,136 @@
           </div>
         </div>
       </div>
+      <div class="row"> 
+        <div class ="col-sm text-center"> 
+          <h4 class="subtitle">~OR~</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6" style="margin-bottom: 2%">
+          <div class="card result-card">
+            <div class="card-body result-body">
+              <h4 class="card-title pink-text">Movie for You and Yours</h4>
+              <p class="card-text subtitle">
+                Movie Title: <span>{{ movie2Title }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Foods/Cuisines Featured: {% for word in movie2Words %}
+                <span>{{ word }}, </span>
+                {% endfor %}
+              </p>
+            </div>
+          </div>
+        <div class="col-sm-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card result-card">
+            <div class="card-body result-body">
+              <h4 class="card-title pink-text">Restaurant for You</h4>
+              <p class="card-text subtitle">
+                Restaurant Name: <span>{{ restaurant2Name1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Location:
+                <span>{{ restaurant2City1 }}, {{ restaurant2State1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Score: <span>{{ restaurant2Score1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Matching Attributes: <span>{{ restaurant2Words1 }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card result-card">
+            <div class="card-body result-body">
+              <h4 class="card-title pink-text">Restaurant for Them</h4>
+              <p class="card-text subtitle">
+                Restaurant Name: <span>{{ restaurant2Name2 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Location:
+                <span>{{ restaurant2City2 }}, {{ restaurant2State2 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Score: <span>{{ restaurant2Score2 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Matching Attributes: <span>{{ restaurant2Words2 }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row"> 
+        <div class ="col-sm text-center"> 
+          <h4 class="subtitle">~OR~</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6" style="margin-bottom: 2%">
+          <div class="card result-card">
+            <div class="card-body result-body">
+              <h4 class="card-title pink-text">Movie for You and Yours</h4>
+              <p class="card-text subtitle">
+                Movie Title: <span>{{ movie3Title }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Foods/Cuisines Featured: {% for word in movie3Words %}
+                <span>{{ word }}, </span>
+                {% endfor %}
+              </p>
+            </div>
+          </div>
+        <div class="col-sm-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card result-card">
+            <div class="card-body result-body">
+              <h4 class="card-title pink-text">Restaurant for You</h4>
+              <p class="card-text subtitle">
+                Restaurant Name: <span>{{ restaurant3Name1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Location:
+                <span>{{ restaurant3City1 }}, {{ restaurant3State1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Score: <span>{{ restaurant3Score1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Matching Attributes: <span>{{ restaurant3Words1 }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card result-card">
+            <div class="card-body result-body">
+              <h4 class="card-title pink-text">Restaurant for Them</h4>
+              <p class="card-text subtitle">
+                Restaurant Name: <span>{{ restaurant3Name2 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Location:
+                <span>{{ restaurant3City2 }}, {{ restaurant3State2 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Score: <span>{{ restaurant3Score2 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Matching Attributes: <span>{{ restaurant3Words2 }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
       {% else %}
       <div class="row">
         <div class="col-sm-6">
@@ -110,6 +240,90 @@
               </p>
               <p class="card-text subtitle">
                 Matching Attributes: <span>{{ restaurantWords1 }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row"> 
+        <div class ="col-sm text-center"> 
+          <h4 class="subtitle">~OR~</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card result-card">
+            <div class="card-body result-body">
+              <h4 class="card-title pink-text">Movie for You and Yours</h4>
+              <p class="card-text subtitle">
+                Movie Title: <span>{{ movie2Title }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Foods/Cuisines Featured: {% for word in movie2Words %}
+                <span>{{ word }}, </span>
+                {% endfor %}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card result-card">
+            <div class="card-body result-body">
+              <h4 class="card-title pink-text">Restaurant for You</h4>
+              <p class="card-text subtitle">
+                Restaurant Name: <span>{{ restaurant2Name1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Location:
+                <span>{{ restaurant2City1 }}, {{ restaurant2State1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Score: <span>{{ restaurant2Score1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Matching Attributes: <span>{{ restaurant2Words1 }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row"> 
+        <div class ="col-sm text-center"> 
+          <h4 class="subtitle">~OR~</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card result-card">
+            <div class="card-body result-body">
+              <h4 class="card-title pink-text">Movie for You and Yours</h4>
+              <p class="card-text subtitle">
+                Movie Title: <span>{{ movie3Title }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Foods/Cuisines Featured: {% for word in movie3Words %}
+                <span>{{ word }}, </span>
+                {% endfor %}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card result-card">
+            <div class="card-body result-body">
+              <h4 class="card-title pink-text">Restaurant for You</h4>
+              <p class="card-text subtitle">
+                Restaurant Name: <span>{{ restaurant3Name1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Location:
+                <span>{{ restaurant3City1 }}, {{ restaurant3State1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Restaurant Score: <span>{{ restaurant3Score1 }}</span>
+              </p>
+              <p class="card-text subtitle">
+                Matching Attributes: <span>{{ restaurant3Words1 }}</span>
               </p>
             </div>
           </div>
