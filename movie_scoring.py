@@ -110,7 +110,7 @@ class MovieScoring(object):
 				else:
 					title_score_array.append(0)
 
-			keywords_score_array = (np.asarray(keywords_score_array))/(max(keywords_score_array))
+			keywords_score_array = (np.asarray(keywords_score_array))/(max(keywords_score_array)/2)
 			title_score_array =  (np.asarray(title_score_array))/(max(title_score_array))
 		
 		#ACTOR SCORE
@@ -125,6 +125,12 @@ class MovieScoring(object):
 					actors_score_array.append(actors_dict[each_movie]*2)
 				else:
 					actors_score_array.append(0)
+			actors_score_array = (np.asarray(actors_score_array))/(max(actors_score_array))
+		
+
+		if len(input_actor_list) == 0:
+			genre_score_array = genre_score_array * 1.5
+			title_score_array = title_score_array * 1.5
 
 		#TOTAL SCORE
 		total_score = genre_score_array+keywords_score_array+title_score_array+actors_score_array
@@ -211,8 +217,10 @@ class MovieScoring(object):
 		Gets a list of actors that are inputted and are in the inputted movies
 		"""
 		actors = []
-		actors += user1_actors.lower().split(', ')
-		actors += user2_actors.lower().split(', ')
+		if len(user1_actors) != 0:
+			actors += user1_actors.lower().split(', ')
+		if len(user2_actors) != 0 :
+			actors += user2_actors.lower().split(', ')
 
 		for each_movie in input_movie_list:
 			if each_movie in movie_to_cast:
