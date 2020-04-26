@@ -11,15 +11,8 @@ net_id = "Alexa Batino (afb75), Divya Agrawal (da388), Keethu Ramalingam (kr439)
 movieClass = movie_scoring.MovieScoring()
 yelp = yelp_scoring.YelpScoring()
 
-def getMovieTitles():
-	movies = []
-	with open('all_movies.txt') as f:
-		for movie in f.readlines():
-			movies.append(movie.title())
-		movies = sorted(movies)
-	return movies
-
-movies = getMovieTitles()
+all_movies = [mov.title() for mov in movieClass.all_movies]
+zipcodes = yelp.zipcodes
 
 @irsystem.route('/', methods=['GET'])
 def search():
@@ -32,7 +25,7 @@ def search():
 	actors_a = request.args.get('actors-a')
 	actors_b = request.args.get('actors-b')
 
-	all_movies = movieClass.all_movies
+
 
 	if not movie_a and not keywords_a:
 		data = []
@@ -72,7 +65,7 @@ def search():
 		restaurantName2=restaurantName2, restaurantCity2=restaurantCity2, restaurantState2=restaurantState2,
 		restaurantScore2=restaurantScore2, restaurantWords2=restaurantWords2)
 
-	return render_template('search.html', name=project_name, netid=net_id, all_movies=all_movies)
+	return render_template('search.html', name=project_name, netid=net_id, all_movies=all_movies, zipcodes=zipcodes)
 
 
 def getRestaurant(categories, attributes, zipcode1, zipcode2):

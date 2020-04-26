@@ -10,7 +10,10 @@ zcdb = pyzipcode.ZipCodeDatabase()
 class YelpScoring(object): 
 
   def __init__(self):
-    self.restaurants, self.restaurant_dict = self.create_python_dict()
+    self.data = self.create_python_dict()
+    self.restaurants = self.data[0]
+    self.restaurant_dict = self.data[1]
+    self.zipcodes = self.data[2]
 
 
   def create_python_dict(self):
@@ -30,6 +33,7 @@ class YelpScoring(object):
 
     tempList = []
     tempDict = {}
+    zipcodes = set()
     
     for e in jsonList:
       temp = {}
@@ -39,6 +43,7 @@ class YelpScoring(object):
       temp['city'] = e['city']
       temp['state'] = e['state']
       temp['postal_code'] = e["postal_code"]
+      zipcodes.add(e["postal_code"])
       temp['stars'] = e['stars']
       temp['review_count'] = e['review_count']
       temp['attributes'] = e['attributes']
@@ -46,8 +51,10 @@ class YelpScoring(object):
       temp['avg_sentiments'] = e['avg_sentiments']
       tempList.append(temp)
       tempDict[temp["business_id"]] = temp
+    
+    zipcodes = list(zipcodes)
 
-    return (tempList, tempDict)
+    return [tempList, tempDict, zipcodes]
 
 
   def run(self, mov_attributes, mov_categories, zipcode1, zipcode2):

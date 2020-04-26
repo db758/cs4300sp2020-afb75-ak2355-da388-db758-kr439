@@ -10,102 +10,154 @@
   </head>
 
   <body>
+    <div class="logo-left">
+      <img src="../static/cinema.png" class="left-img" alt="" />
+      <img src="../static/restaurant.png" class="left-img" alt="" />
+    </div>
     <form class="form-inline global-search">
-      <h1 class="title">CUpids</h1>
+      <h1 class="title">You and Yours</h1>
       <br />
-      <h4 class="subtitle">Find a restaurant and movie for you and yours!</h4>
-
-      <br /><br />
-
+      <h4 class="subtitle" style="margin-bottom: 2%">
+        Get a movie and restaurant recommendation pair for a date!
+      </h4>
+      <br />
       <div class="form-group">
-        <div class="autocomplete" style="width:500px;">
+        <div id="movie-inputs">
+          <div class="autocomplete" style="width:300px;">
+            <label for="input-movie-a" class="pink-text"
+              >Enter Your Favorite Movie</label
+            >
+            <input
+              id="input-movie-a"
+              type="text"
+              name="movie-a"
+              class="form-control"
+              placeholder="Pulp Fiction"
+            />
+          </div>
+          <div class="autocomplete" style="width:300px;">
+            <label for="input-movie-b" class="pink-text"
+              >Enter Their Favorite Movie</label
+            >
+            <input
+              id="input-movie-b"
+              type="text"
+              name="movie-b"
+              class="form-control"
+              placeholder="Despicable Me"
+            />
+          </div>
+        </div>
+        <br />
+        <br />
+        <div style="width:300px">
+          <label for="input-keywords-a" class="pink-text"
+            >Your Ideal Movie Keywords</label
+          ><br />
           <input
-            id="input-movie-a"
+            id="input-keywords-a"
             type="text"
-            name="movie-a"
+            name="keywords-a"
             class="form-control"
-            placeholder="Pulp Fiction"
+            placeholder="Crime, Violence"
           />
         </div>
-        <!-- <input
-          id="input-movie-a"
-          type="text"
-          name="movie-a"
-          class="form-control"
-          placeholder="Pulp Fiction"
-        /> -->
-        <input
-          id="input-movie-b"
-          type="text"
-          name="movie-b"
-          class="form-control"
-          placeholder="What movie do they like?"
-        />
+        <div style="width: 300px">
+          <label for="input-keywords-b" class="pink-text"
+            >Their Ideal Movie Keywords</label
+          >
+          <input
+            id="input-keywords-b"
+            type="text"
+            name="keywords-b"
+            class="form-control"
+            placeholder="Minions, Animated"
+          />
+        </div>
+
         <br />
         <br />
-        <input
-          id="input"
-          type="text"
-          name="keywords-a"
-          class="form-control"
-          placeholder="What type of movie are you looking for? #FIX WORDING"
-        />
-        <input
-          id="input"
-          type="text"
-          name="keywords-b"
-          class="form-control"
-          placeholder="What type of movie are you looking for? #FIX WORDING"
-        />
+        <div class="actors-input" style="display: none">
+          <div style="width: 300px;">
+            <label for="input-actors-a" class="pink-text"
+              >Your Favorite Actors</label
+            >
+            <input
+              id="input-actors-a"
+              type="text"
+              name="actors-a"
+              class="form-control"
+              placeholder="John Travolta, Uma Thurman"
+            />
+          </div>
+          <div style="width: 300px;">
+            <label for="input-actors-b" class="pink-text"
+              >Their Favorite Actors</label
+            >
+            <input
+              id="input-actors-b"
+              type="text"
+              name="actors-b"
+              class="form-control"
+              placeholder="Steve Carell, Miranda Cosgrove"
+            />
+          </div>
+          <br />
+          <br />
+        </div>
+        <div class="autocomplete" style="width:300px;">
+          <label for="input-location-a" class="pink-text">Your Zipcode</label>
+          <input
+            id="input-location-a"
+            type="text"
+            name="location-a"
+            class="form-control location-field"
+            placeholder="85013"
+          />
+        </div>
+        <div class="location-b" style="display: none">
+          <div class="autocomplete" style="width:300px; ">
+            <label for="input-location-b" class="pink-text"
+              >Their Zipcode</label
+            >
+            <input
+              id="input-location-b"
+              type="text"
+              name="location-b"
+              class="form-control location-field"
+              placeholder="60616"
+            />
+          </div>
+        </div>
         <br />
         <br />
-        <input
-          id="input"
-          type="text"
-          name="actors-a"
-          class="form-control"
-          placeholder="What actors do you like? #FIX WORDING"
-        />
-        <input
-          id="input"
-          type="text"
-          name="actors-b"
-          class="form-control"
-          placeholder="What actor do you like? #FIX WORDING"
-        />
-        <br />
-        <input
-          id="input"
-          type="text"
-          name="location-a"
-          class="form-control location-field"
-          placeholder="Your Zipcode"
-        />
-        <input
-          id="input"
-          type="text"
-          name="location-b"
-          class="form-control location-field location-b"
-          style="display: none"
-          placeholder="Their Zipcode"
-        />
+        <input type="checkbox" id="actors-btn" onclick="showActors()" />
+        <label for="actors-btn">We'd like to input our favorite actors</label>
         <br />
         <input type="checkbox" id="location-btn" onclick="showLocationB()" />
         <label for="location-btn">We are in different locations</label>
       </div>
       <br />
+      <br />
       <button type="submit" class="btn btn-info" id="home-submit">Go!</button>
     </form>
+
+    <img
+      class="right-img"
+      src="../static/undraw_social_friends_nsbv.png"
+      alt=""
+    />
   </body>
 
   <div
     class="footer"
-    style="font-weight: lighter; position: fixed; left: 0; bottom: 0; width: 100%; color: e56a9c; text-align: center"
+    style="font-size: 10px; font-weight: lighter; position: fixed; left: 0; bottom: 0; width: 100%; color: e56a9c; text-align: center"
   >
     <p>{{ netid }}</p>
   </div>
   <script>
     var all_movies = {{ all_movies|safe }};
+    var zipcodes = {{ zipcodes|safe }};
 
     function autocomplete(inp, arr) {
       /*the autocomplete function takes two arguments,
@@ -205,6 +257,9 @@
     }
 
     autocomplete(document.getElementById("input-movie-a"), all_movies);
+    autocomplete(document.getElementById("input-movie-b"), all_movies);
+    autocomplete(document.getElementById("input-location-a"), zipcodes);
+    autocomplete(document.getElementById("input-location-b"), zipcodes);
 
 
     var location_btn = document.getElementById("location-btn");
@@ -215,6 +270,16 @@
         location_b.style.display = "inline";
       } else {
         location_b.style.display = "none";
+      }
+    }
+
+    var actors_btn = document.getElementById("actors-btn");
+    var actors_input = document.getElementsByClassName("actors-input")[0];
+    function showActors() {
+      if (actors_btn.checked == true) {
+        actors_input.style.display = "inline";
+      } else {
+        actors_input.style.display = "none";
       }
     }
   </script>
