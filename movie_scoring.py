@@ -128,13 +128,12 @@ class MovieScoring(object):
 			actors_score_array = (np.asarray(actors_score_array))/(max(actors_score_array))
 		
 
-		if len(input_actor_list) == 0:
-			genre_score_array = genre_score_array * 1.5
-			title_score_array = title_score_array * 1.5
-
 		#TOTAL SCORE
 		total_score = genre_score_array+keywords_score_array+title_score_array+actors_score_array
+		total_score = ((np.asarray(total_score))/(max(total_score)))*5
 		total_score_rank =  np.argsort(total_score)
+
+
 
 		#DEFAULT MOVIE
 		if np.all(total_score==0):
