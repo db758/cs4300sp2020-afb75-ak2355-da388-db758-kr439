@@ -29,25 +29,30 @@ class MovieScoring(object):
 
 		with open("inv_idx.txt", "r") as output:
 			self.inv_idx = json.load(output)
+			output.close()
 		
 		with open("idf.txt", "r") as output:
 			self.idf = json.load(output)
+			output.close()
 		
 		with open("doc_norms.txt", "r") as output:
 			self.doc_norms = json.load(output)
+			output.close()
 
 	def getCSVs(self):
 		with open("inv_idx.txt", "w") as output:
 			output.write(json.dumps(self.inv_idx))
+			output.close()
 		with open("idf.txt", "w") as output:
 			output.write(json.dumps(self.idf))
+			output.close()
 		with open("doc_norms.txt", "w") as output:
 			output.write(json.dumps(self.doc_norms))
+			output.close()
 
 	
 	def getMovieDictionaries(self):
 		# Read in the csv of movies
-		print("enter get movies")
 		with open('new_cast.csv') as file:
 			movies = list(csv.DictReader(file))
 			file.close()
@@ -83,7 +88,6 @@ class MovieScoring(object):
 			else:
 				movie_to_cast[str(each_movie["Title"]).lower()] = each_movie["Cast"].lower().split(', ')
 		
-		print("exit get movies")
 		return [movie_to_genre, movie_to_categories, movie_to_attributes, movie_to_summaries, movie_to_cast]
 		
 	def getMovieAndFoodWords(self, user1_movies, user2_movies, user1_keywords, user2_keywords, user1_actors, user2_actors):
