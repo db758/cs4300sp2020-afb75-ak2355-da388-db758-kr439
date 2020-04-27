@@ -501,7 +501,8 @@ class MovieScoring(object):
 
 # print("Method")
 # movieClass = MovieScoring()
-# print(movieClass.inv_idx)
+# movieClass.getCSVs()
+#print(movieClass.inv_idx)
 
 
 #CASES:
