@@ -11,9 +11,7 @@ net_id = "Alexa Batino (afb75), Divya Agrawal (da388), Keethu Ramalingam (kr439)
 
 movieClass = movie_scoring.MovieScoring()
 all_movies = [mov.title() for mov in movieClass.all_movies]
-print("enter yelp")
 yelp = yelp_scoring.YelpScoring()
-print("done yelp")
 
 zipcodes = yelp.zipcodes
 
