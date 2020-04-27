@@ -81,7 +81,7 @@ class MovieScoring(object):
 			
 			movie_to_categories[str(each_movie["Title"]).lower()] = eval(each_movie["categories"])
 			movie_to_attributes[str(each_movie["Title"]).lower()] = eval(each_movie["attributes"])
-			movie_to_summaries[str(each_movie["Title"]).lower()] = (each_movie["Plot"])
+			#movie_to_summaries[str(each_movie["Title"]).lower()] = (each_movie["Plot"])
 
 			if each_movie["Cast"] == "":
 				movie_to_cast[str(each_movie["Title"]).lower()] = []
