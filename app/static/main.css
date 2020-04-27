@@ -17,7 +17,7 @@
     padding: 10px;
   }
   .global-search .form-control {
-    width: 500px;
+    width: 300px;
   }
   .global-search * {
     display: inline-block;
@@ -38,12 +38,21 @@
 }
 
 body {
-  background-color: #f2b7c6;
-  font-family: "Futura";
+  background-color: white;
+  font-family: "Libre Franklin", sans-serif;
+}
+
+.light-pink {
+  color: #f2b7c6;
+}
+
+.link:hover {
+  color: #e56a9c;
 }
 
 .title {
   font-size: 55px;
+  font-weight: 700;
   color: #e56a9c;
 }
 
@@ -64,11 +73,114 @@ body {
   margin-bottom: 1%;
 }
 
+.logo-left {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+
+.left-img {
+  width: auto;
+  height: 50px;
+}
+
+.right-img {
+  position: absolute;
+  bottom: 50px;
+  right: 70px;
+  width: 250px;
+  height: auto;
+}
+
+/* AUTOCOMPLETE STYLING */
+* {
+  box-sizing: border-box;
+}
+
+.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: inline-block;
+}
+input {
+  border: 1px solid transparent;
+  border-radius: 2px;
+  padding: 10px;
+}
+input[type="text"] {
+  width: 100%;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+  width: 100%;
+}
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: #f2b7c6;
+}
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: #f2b7c6 !important;
+  color: #ffffff;
+}
+
 /* RESULT PAGE */
+.results-heading {
+  margin-bottom: 2%;
+}
+
+.results-container {
+  width: 800px;
+}
 
 .result-card {
   background-color: white;
   border: 2px solid #e56a9c;
   border-radius: 10px;
   padding: 5% 7%;
+}
+
+.pairing-accordion {
+  cursor: pointer;
+  padding: 0.75em 1.5em;
+  width: 100%;
+  text-align: left;
+  border-top: 0.25px solid rgba(34, 36, 38, 0.9);
+  border-left: none;
+  border-right: none;
+  border-bottom: 0.25px solid rgba(34, 36, 38, 0.9);
+  outline: none;
+  transition: 0.4s;
+}
+
+.active,
+.pairing-accordion:hover {
+  background-color: #f2b7c6;
+}
+
+.treaty-panel {
+  padding: 1.2em 1em;
+  background-color: white;
+  display: none;
+  overflow: hidden;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-weight: lighter;
+  padding: 0.75em 1.5em;
 }

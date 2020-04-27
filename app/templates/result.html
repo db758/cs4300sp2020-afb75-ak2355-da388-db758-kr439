@@ -2,127 +2,125 @@
   <head>
     <link rel="stylesheet" href="/static/bootstrap.min.css" />
     <link rel="stylesheet" href="/static/main.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300;0,400;0,600;0,700;0,900;1,300;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
     <style></style>
   </head>
 
   <body>
+    <div class="logo-left">
+      <a href="/">
+        <img src="../static/cinema.png" class="left-img" alt="" />
+        <img src="../static/restaurant.png" class="left-img" alt="" />
+      </a>
+    </div>
     <div class="topcorner">
-      <a href="https://cu-pids.herokuapp.com" class="subtitle link">Prototype 1</a> | 
-      <a href="https://cupids-v2.herokuapp.com" class="subtitle link">Prototype 2</a>
+      <a href="https://cu-pids.herokuapp.com" class="subtitle link"
+        >Prototype 1</a
+      >
+      |
+      <a href="https://cupids-v2.herokuapp.com" class="subtitle link"
+        >Prototype 2</a
+      >
     </div>
     <div class="global-search results-heading">
-      <h1 class="title">CUpids</h1>
+      <h1 class="title">You and Yours</h1>
       <br />
-      <h5 class="subtitle">Find a restaurant and movie for you and yours!</h5>
+      <h4 class="subtitle">
+        Here are movie and restaurants pairings you might like!
+      </h4>
+      <br />
+      <h6 class="subtitle">Click on the listing to see more information</h6>
     </div>
-    <div class="container">
-      {% if twoRestaurants %}
-      <div class="row">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-6" style="margin-bottom: 2%">
-          <div class="card result-card">
-            <div class="card-body result-body">
-              <h4 class="card-title pink-text">Movie for You and Yours</h4>
-              <p class="card-text subtitle">
-                Movie Title: <span>{{ movieTitle }}</span>
-              </p>
-              <p class="card-text subtitle">
-                Foods/Cuisines Featured: {% for word in movieWords %}
-                <span>{{ word }}, </span>
-                {% endfor %}
-              </p>
-            </div>
-          </div>
-        <div class="col-sm-3"></div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="card result-card">
-            <div class="card-body result-body">
-              <h4 class="card-title pink-text">Restaurant for You</h4>
-              <p class="card-text subtitle">
-                Restaurant Name: <span>{{ restaurantName1 }}</span>
-              </p>
-              <p class="card-text subtitle">
-                Restaurant Location:
-                <span>{{ restaurantCity1 }}, {{ restaurantState1 }}</span>
-              </p>
-              <p class="card-text subtitle">
-                Restaurant Score: <span>{{ restaurantScore1 }}</span>
-              </p>
-              <p class="card-text subtitle">
-                Matching Attributes: <span>{{ restaurantWords1 }}</span>
-              </p>
-            </div>
-          </div>
+    <div class="container results-container">
+      {% for i in range(3) %} {% if twoRestaurants %}
+      <button class="pairing-accordion">
+        <strong>Pairing {{ i + 1 }}: </strong
+        ><i>{{ movieList[i]["title"] }}</i> &
+        {{ user1Restaurants[i]["restaurant1"] }} &
+        {{ user2Restaurants[i]["restaurant2"] }}
+      </button>
+      <div class="treaty-panel row">
+        <div class="col-sm-4">
+          <h5>Movie: {{ movieList[i]["title"] }}</h5>
+          <p>
+            Food-Related Words: {% for word in movieList[i]["food_words"] %}
+            {{ word }}{{"," if not loop.last}} {% endfor %}
+          </p>
         </div>
-        <div class="col-sm-6">
-          <div class="card result-card">
-            <div class="card-body result-body">
-              <h4 class="card-title pink-text">Restaurant for Them</h4>
-              <p class="card-text subtitle">
-                Restaurant Name: <span>{{ restaurantName2 }}</span>
-              </p>
-              <p class="card-text subtitle">
-                Restaurant Location:
-                <span>{{ restaurantCity2 }}, {{ restaurantState2 }}</span>
-              </p>
-              <p class="card-text subtitle">
-                Restaurant Score: <span>{{ restaurantScore2 }}</span>
-              </p>
-              <p class="card-text subtitle">
-                Matching Attributes: <span>{{ restaurantWords2 }}</span>
-              </p>
-            </div>
-          </div>
+        <div class="col-sm-4">
+          <h5>Restaurant for You: {{ user1Restaurants[i]["restaurant1"] }}</h5>
+          <p>
+            Location: {{ user1Restaurants[i]["city1"] }},
+            {{ user1Restaurants[i]["state1"] }}
+          </p>
+          <p>Matching Attributes: {{ user1Restaurants[i]["matchings"] }}</p>
+          <p>Score: {{ user1Restaurants[i]["score1"] }}</p>
+        </div>
+        <div class="col-sm-4">
+          <h5>Restaurant for Them: {{ user2Restaurants[i]["restaurant2"] }}</h5>
+          <p>
+            Location: {{ user2Restaurants[i]["city2"] }},
+            {{ user2Restaurants[i]["state2"] }}
+          </p>
+          <p>Matching Attributes: {{ user2Restaurants[i]["matchings"] }}</p>
+          <p>Score: {{ user2Restaurants[i]["score2"] }}</p>
         </div>
       </div>
       {% else %}
-      <div class="row">
+      <button class="pairing-accordion">
+        <strong>Pairing {{ i + 1 }}: </strong
+        ><i>{{ movieList[i]["title"] }}</i> &
+        {{ user1Restaurants[i]["restaurant1"] }}
+      </button>
+      <div class="treaty-panel row">
         <div class="col-sm-6">
-          <div class="card result-card">
-            <div class="card-body result-body">
-              <h4 class="card-title pink-text">Movie for You and Yours</h4>
-              <p class="card-text subtitle">
-                Movie Title: <span>{{ movieTitle }}</span>
-              </p>
-              <p class="card-text subtitle">
-                Foods/Cuisines Featured: {% for word in movieWords %}
-                <span>{{ word }}, </span>
-                {% endfor %}
-              </p>
-            </div>
-          </div>
+          <h5>Movie Title: {{ movieList[i]["title"] }}</h5>
+          <p>
+            Food-Related Words: {% for word in movieList[i]["food_words"] %}
+            {{ word }}{{"," if not loop.last}} {% endfor %}
+          </p>
         </div>
         <div class="col-sm-6">
-          <div class="card result-card">
-            <div class="card-body result-body">
-              <h4 class="card-title pink-text">Restaurant for You</h4>
-              <p class="card-text subtitle">
-                Restaurant Name: <span>{{ restaurantName1 }}</span>
-              </p>
-              <p class="card-text subtitle">
-                Restaurant Location:
-                <span>{{ restaurantCity1 }}, {{ restaurantState1 }}</span>
-              </p>
-              <p class="card-text subtitle">
-                Restaurant Score: <span>{{ restaurantScore1 }}</span>
-              </p>
-              <p class="card-text subtitle">
-                Matching Attributes: <span>{{ restaurantWords1 }}</span>
-              </p>
-            </div>
-          </div>
+          <h5>Restaurant for You: {{ user1Restaurants[i]["restaurant1"] }}</h5>
+          <p>
+            Location: {{ user1Restaurants[i]["city1"] }},
+            {{ user1Restaurants[i]["state1"] }}
+          </p>
+          <p>Matching Attributes: {{ user1Restaurants[i]["matchings"] }}</p>
+          <p>Score: {{ user1Restaurants[i]["score1"] }}</p>
         </div>
       </div>
-      {% endif %}
+      {% endif %} {% endfor %}
     </div>
+
+    <div style="margin-bottom: 5%"></div>
   </body>
 
   <div
     class="footer"
-    style="font-weight: lighter; position: fixed; left: 0; bottom: 0;background-color: #e56a9c; width: 100%; color: white; text-align: center"
+    style="font-size: 10px; font-weight: lighter; left: 0; bottom: 0; width: 100%; color: e56a9c; text-align: center"
   >
     <p>{{ netid }}</p>
   </div>
+  <script>
+    var acc = document.getElementsByClassName("pairing-accordion");
+    var i;
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+        this.classList.toggle("active");
+        /* Toggle between hiding and showing the active panel */
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+          panel.style.display = "none";
+        } else {
+          panel.style.display = "block";
+        }
+      });
+    }
+  </script>
 </html>
