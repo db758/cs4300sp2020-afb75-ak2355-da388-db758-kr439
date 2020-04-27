@@ -10,46 +10,15 @@ import csv
 class MovieScoring(object): 
 	
 	def __init__(self):
-		# dictionaries = self.getMovieDictionaries()
-		# self.movie_to_genre = dictionaries[0]
-		# self.movie_to_categories = dictionaries[1]
-		# self.movie_to_attributes = dictionaries[2]
-		# self.movie_to_summaries = dictionaries[3]
-		# self.movie_to_cast = dictionaries[4]
-
-		# with open("movie_genres.txt", "w") as output:
-		# 	output.write(json.dumps(self.movie_to_genre))
-		# 	output.close()
-		# with open("movie_categories.txt", "w") as output:
-		# 	output.write(json.dumps(self.movie_to_categories))
-		# 	output.close()
-		# with open("movie_attributes.txt", "w") as output:
-		# 	output.write(json.dumps(self.movie_to_attributes))
-		# 	output.close()
-		# with open("movie_cast.txt", "w") as output:
-		# 	output.write(json.dumps(self.movie_to_cast))
-		# 	output.close()
-
-		with open("movie_genres.txt", "r") as output:
-			self.movie_to_genre = json.load(output)
-			output.close()
+		dictionaries = self.getMovieDictionaries()
+		self.movie_to_genre = dictionaries[0]
+		self.movie_to_categories = dictionaries[1]
+		self.movie_to_attributes = dictionaries[2]
+		self.movie_to_summaries = dictionaries[3]
+		self.movie_to_cast = dictionaries[4]
 		
-		with open("movie_categories.txt", "r") as output:
-			self.movie_to_categories = json.load(output)
-			output.close()
-		
-		with open("movie_attributes.txt", "r") as output:
-			self.movie_to_attributes = json.load(output)
-			output.close()
-		
-		with open("movie_cast.txt", "r") as output:
-			self.movie_to_cast = json.load(output)
-			output.close()
-	
 		#List of all movies
 		self.all_movies = list(self.movie_to_genre.keys())
-
-
 
 		#Initialize the Cosine parts
 		# self.movies_tokens = self.token(self.movie_to_summaries)
@@ -118,7 +87,7 @@ class MovieScoring(object):
 				movie_to_cast[str(each_movie["Title"]).lower()] = []
 			else:
 				movie_to_cast[str(each_movie["Title"]).lower()] = each_movie["Cast"].lower().split(', ')
-
+		
 		return [movie_to_genre, movie_to_categories, movie_to_attributes, movie_to_summaries, movie_to_cast]
 		
 	def getMovieAndFoodWords(self, user1_movies, user2_movies, user1_keywords, user2_keywords, user1_actors, user2_actors):
