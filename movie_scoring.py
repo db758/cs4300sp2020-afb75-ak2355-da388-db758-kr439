@@ -88,6 +88,8 @@ class MovieScoring(object):
 			genre_score_array = self.getGenreScore(unique_input_movie_genres,input_movie_genres, input_movie_list, self.all_movies, self.movie_to_genre)
 			genre_score_array = genre_score_array/(max(genre_score_array))
 
+		print(input_keywords_list)
+		
 		#KEYWORDS SCORES && KEYWORDS IN TITLE SCORE
 		if len(input_keywords_list) == 0:
 			keywords_score_array = np.zeros((len(self.all_movies)))
@@ -175,12 +177,12 @@ class MovieScoring(object):
 		if len(user1_keywords) == 0 and len(user2_keywords) == 0 :
 			return []
 		elif len(user1_keywords) == 0:
-			return user2_keywords.lower().split(' ')
+			return user2_keywords.lower().split(', ')
 		elif len(user2_keywords) == 0 :
-			return user1_keywords.lower().split(' ')
+			return user1_keywords.lower().split(', ')
 		else:
-			keywords = user1_keywords+ " " + user2_keywords
-			return keywords.lower().split(' ')
+			keywords = user1_keywords+ ", " + user2_keywords
+			return keywords.lower().split(', ')
 
 	def getMovieNames(self, user1_movies, user2_movies):
 		"""Given a the user input of movie names (which are split by commas)
