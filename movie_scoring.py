@@ -29,25 +29,35 @@ class MovieScoring(object):
 
 		with open("inv_idx.txt", "r") as output:
 			self.inv_idx = json.load(output)
+			output.close()
 		
 		with open("idf.txt", "r") as output:
 			self.idf = json.load(output)
+			output.close()
 		
 		with open("doc_norms.txt", "r") as output:
 			self.doc_norms = json.load(output)
+			output.close()
 
 	def getCSVs(self):
 		with open("inv_idx.txt", "w") as output:
 			output.write(json.dumps(self.inv_idx))
+			output.close()
 		with open("idf.txt", "w") as output:
 			output.write(json.dumps(self.idf))
+			output.close()
 		with open("doc_norms.txt", "w") as output:
 			output.write(json.dumps(self.doc_norms))
+			output.close()
 
 	
 	def getMovieDictionaries(self):
 		# Read in the csv of movies
-		movies = list(csv.DictReader(open('new_cast.csv')))
+		with open('new_cast.csv') as file:
+			movies = list(csv.DictReader(file))
+			file.close()
+			# garbage collect
+		
 		# actors = list(csv.DictReader(open('new_only_cast.csv')))
 
 		# Dictionary with movie title as key and list of genres as values
@@ -463,11 +473,11 @@ class MovieScoring(object):
 						title_dict[mov] = 1
 		return title_dict
 
-	def test(self):
-		"""
-		Used to test that cosine works. Cosine will return an empty list if there's
-		no matching.
-		"""
+	# def test(self):
+	# 	"""
+	# 	Used to test that cosine works. Cosine will return an empty list if there's
+	# 	no matching.
+	# 	"""
 
 		# all_movies = {}
 

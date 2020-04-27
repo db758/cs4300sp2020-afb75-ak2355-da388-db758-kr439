@@ -29,7 +29,8 @@ class YelpScoring(object):
     with open('yelp-restaurants.txt') as f:
       for jsonObj in f.readlines():
         obj = json.loads(jsonObj)
-        jsonList.append(obj)   
+        jsonList.append(obj) 
+      f.close()  
 
     tempList = []
     tempDict = {}
