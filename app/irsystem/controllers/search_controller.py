@@ -8,6 +8,9 @@ import movie_scoring
 project_name = "CUpids"
 net_id = "Alexa Batino (afb75), Divya Agrawal (da388), Keethu Ramalingam (kr439), Asma Khan (ak2355), Debasmita Bhattacharya (db758)"
 
+
+movieClass = movie_scoring.MovieScoring()
+all_movies = [mov.title() for mov in movieClass.all_movies]
 print("enter yelp")
 yelp = yelp_scoring.YelpScoring()
 print("done yelp")
@@ -16,10 +19,6 @@ zipcodes = yelp.zipcodes
 
 @irsystem.route('/', methods=['GET'])
 def search():
-	movieClass = movie_scoring.MovieScoring()
-	all_movies = [mov.title() for mov in movieClass.all_movies]
-
-
 	movie_a = request.args.get('movie-a')
 	movie_b = request.args.get('movie-b')
 	location_a = request.args.get('location-a')
