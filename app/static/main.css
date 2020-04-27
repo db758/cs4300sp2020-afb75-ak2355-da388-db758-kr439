@@ -46,6 +46,10 @@ body {
   color: #f2b7c6;
 }
 
+.link:hover {
+  color: #e56a9c;
+}
+
 .title {
   font-size: 55px;
   font-weight: 700;
