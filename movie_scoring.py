@@ -30,7 +30,7 @@ class MovieScoring(object):
 	
 	def getMovieDictionaries(self):
 		# Read in the csv of movies
-		movies = list(csv.DictReader(open('new_cast.csv')))
+		movies = list(csv.DictReader(open('new_cast_short.csv')))
 		# actors = list(csv.DictReader(open('new_only_cast.csv')))
 
 		# Dictionary with movie title as key and list of genres as values
