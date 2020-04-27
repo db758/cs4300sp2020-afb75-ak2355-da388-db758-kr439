@@ -30,7 +30,12 @@ class MovieScoring(object):
 	
 	def getMovieDictionaries(self):
 		# Read in the csv of movies
-		movies = list(csv.DictReader(open('new_cast.csv')))
+		print("enter get movies")
+		with open('new_cast.csv') as file:
+			movies = list(csv.DictReader(file))
+			file.close()
+			# garbage collect
+		
 		# actors = list(csv.DictReader(open('new_only_cast.csv')))
 
 		# Dictionary with movie title as key and list of genres as values
@@ -61,6 +66,7 @@ class MovieScoring(object):
 			else:
 				movie_to_cast[str(each_movie["Title"]).lower()] = each_movie["Cast"].lower().split(', ')
 		
+		print("exit get movies")
 		return [movie_to_genre, movie_to_categories, movie_to_attributes, movie_to_summaries, movie_to_cast]
 		
 	def getMovieAndFoodWords(self, user1_movies, user2_movies, user1_keywords, user2_keywords, user1_actors, user2_actors):
