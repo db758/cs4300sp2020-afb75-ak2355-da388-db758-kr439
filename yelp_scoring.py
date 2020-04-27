@@ -74,8 +74,8 @@ class YelpScoring(object):
     #final result is a dictionary with id of restaurant and the score
 
     if len(final_result) == 0:
-        user1_result = [{'restaurant1': "Could not find restaurant :( ", 'score1': 'N/A', 'city1': 'N/A', 'state1': 'N/A',
-        'matchings': 'N/A'}]
+        user1_result = [{'restaurant1': "Could not find restaurant :( but popcorn is always a good option! ", 'score1': '', 'city1': '', 'state1': '',
+        'matchings': ''}]
 
     else:
       first_elem = list(final_result.keys())[0] #gets the first element id of the final result
@@ -96,8 +96,8 @@ class YelpScoring(object):
 
       if len(final_result2) == 0:
 
-        user2_result = [{'restaurant2': "Could not find restaurant :( ", 'score2': 'N/A', 'city2': 'N/A', 'state2': 'N/A',
-        'matchings': 'N/A'}]
+        user2_result = [{'restaurant2': "Could not find restaurant :( but popcorn is always a good option! ", 'score2': '', 'city2': '', 'state2': '',
+        'matchings': ''}]
       
       else:
         first_elem2 = list(final_result2.keys())[0]
