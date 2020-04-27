@@ -21,11 +21,28 @@ class MovieScoring(object):
 		self.all_movies = list(self.movie_to_genre.keys())
 
 		#Initialize the Cosine parts
-		self.movies_tokens = self.token(self.movie_to_summaries)
-		self.inv_idx = self.buildInvertedIndex(self.movies_tokens)
-		self.idf = self.compute_idf(self.inv_idx, len(self.movie_to_summaries), min_df=10, max_df_ratio=0.1)
-		self.inv_idx = {key: val for key, val in self.inv_idx.items() if key in self.idf}
-		self.doc_norms = self.compute_doc_norms(self.inv_idx, self.idf, len(self.movie_to_summaries))
+		# self.movies_tokens = self.token(self.movie_to_summaries)
+		# self.inv_idx = self.buildInvertedIndex(self.movies_tokens)
+		# self.idf = self.compute_idf(self.inv_idx, len(self.movie_to_summaries), min_df=10, max_df_ratio=0.1)
+		# self.inv_idx = {key: val for key, val in self.inv_idx.items() if key in self.idf}
+		# self.doc_norms = self.compute_doc_norms(self.inv_idx, self.idf, len(self.movie_to_summaries))
+
+		with open("inv_idx.txt", "r") as output:
+			self.inv_idx = json.load(output)
+		
+		with open("idf.txt", "r") as output:
+			self.idf = json.load(output)
+		
+		with open("doc_norms.txt", "r") as output:
+			self.doc_norms = json.load(output)
+
+	def getCSVs(self):
+		with open("inv_idx.txt", "w") as output:
+			output.write(json.dumps(self.inv_idx))
+		with open("idf.txt", "w") as output:
+			output.write(json.dumps(self.idf))
+		with open("doc_norms.txt", "w") as output:
+			output.write(json.dumps(self.doc_norms))
 
 	
 	def getMovieDictionaries(self):
