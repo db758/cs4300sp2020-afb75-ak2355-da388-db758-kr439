@@ -452,11 +452,11 @@ class MovieScoring(object):
 						title_dict[mov] = 1
 		return title_dict
 
-	def test(self):
-		"""
-		Used to test that cosine works. Cosine will return an empty list if there's
-		no matching.
-		"""
+	# def test(self):
+	# 	"""
+	# 	Used to test that cosine works. Cosine will return an empty list if there's
+	# 	no matching.
+	# 	"""
 
 		# all_movies = {}
 

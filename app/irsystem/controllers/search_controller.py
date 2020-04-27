@@ -12,12 +12,13 @@ print("enter yelp")
 yelp = yelp_scoring.YelpScoring()
 print("done yelp")
 
-all_movies = [mov.title() for mov in movieClass.all_movies]
 zipcodes = yelp.zipcodes
 
 @irsystem.route('/', methods=['GET'])
 def search():
 	movieClass = movie_scoring.MovieScoring()
+	all_movies = [mov.title() for mov in movieClass.all_movies]
+
 
 	movie_a = request.args.get('movie-a')
 	movie_b = request.args.get('movie-b')
