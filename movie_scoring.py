@@ -115,8 +115,6 @@ class MovieScoring(object):
 			#Genre Scores of All movies
 			genre_score_array = self.getGenreScore(unique_input_movie_genres,input_movie_genres, input_movie_list, self.all_movies, self.movie_to_genre)
 			genre_score_array = genre_score_array/(max(genre_score_array))
-
-		print(input_keywords_list)
 		
 		#KEYWORDS SCORES && KEYWORDS IN TITLE SCORE
 		if len(input_keywords_list) == 0:
