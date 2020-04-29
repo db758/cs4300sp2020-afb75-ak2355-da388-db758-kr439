@@ -27,7 +27,7 @@ def search():
 	actors_b = request.args.get('actors-b')
 
 
-	if not movie_a and not keywords_a:
+	if not movie_a and not keywords_a or not location_a:
 		data = []
 	else:
 		movieResult = movieClass.getMovieAndFoodWords(movie_a, movie_b, keywords_a, keywords_b, actors_a, actors_b)
