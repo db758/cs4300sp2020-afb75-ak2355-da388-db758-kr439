@@ -309,7 +309,7 @@ class YelpScoring(object):
     Returns: the category and attribute final list in csv called 'output'. 
     """
     
-    restaurants, restaurant_dict = self.create_python_dict()
+    restaurants, restaurant_dict = self.create_python_dict()[0:2]
     result_cat = set()
     result_att = set()
     for res in restaurants:
@@ -328,6 +328,9 @@ class YelpScoring(object):
         writer.writerow({'category': c})
       for a in result_att:
         writer.writerow({'attribute': a})
+
+yelp = YelpScoring()
+yelp.get_key_words()
 
 
 #TESTING
