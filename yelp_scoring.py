@@ -83,9 +83,14 @@ class YelpScoring(object):
       first_elem_score = final_result[first_elem] #gets the score
       i = key_words_dict[first_elem]
 
+      if len(i) == 0:
+        i = ''
+      else:
+        i = str(i)
+
       user1_result = [{'restaurant1': self.restaurant_dict[first_elem]['name'], 'score1': str(first_elem_score), 
       'city1': self.restaurant_dict[first_elem]['city'], 'state1': self.restaurant_dict[first_elem]['state'],
-      'matchings': str(i)}]
+      'matchings': i}]
 
     if zipcode2 is None: 
       user2_result = []
@@ -105,9 +110,14 @@ class YelpScoring(object):
         first_elem_score2 = final_result2[first_elem2]
         i2 = key_words_dict2[first_elem2]
 
+        if len(i2) == 0:
+          i2 = ''
+        else:
+          i2 = str(i2)
+
         user2_result = [{'restaurant2': self.restaurant_dict[first_elem2]['name'], 'score2': str(first_elem_score2), 
         'city2': self.restaurant_dict[first_elem2]['city'], 'state2': self.restaurant_dict[first_elem2]['state'],
-        'matchings': str(i2)}]
+        'matchings': i2}]
       
     return user1_result + user2_result
         

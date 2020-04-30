@@ -31,15 +31,18 @@ def search():
 		data = []
 	else:
 		movieResult = movieClass.getMovieAndFoodWords(movie_a, movie_b, keywords_a, keywords_b, actors_a, actors_b)
-		movie, foodCats, foodAttrs = movieResult[0].title(), movieResult[1], movieResult[2]
-		movie2, foodCats2, foodAttrs2 = movieResult[3].title(), movieResult[4], movieResult[5]
-		movie3, foodCats3, foodAttrs3 = movieResult[6].title(), movieResult[7], movieResult[8]
+		movie, foodCats, foodAttrs, plot = movieResult[0].title(), movieResult[1], movieResult[2], movieResult[3]
+		movie2, foodCats2, foodAttrs2, plot2 = movieResult[4].title(), movieResult[5], movieResult[6], movieResult[7]
+		movie3, foodCats3, foodAttrs3, plot3 = movieResult[8].title(), movieResult[9], movieResult[10], movieResult[11]
 		# Elements 3-5 in movieResult are the second ranked movie
 		# Elements 6-8 in movieResult are the third ranked movie
 
 		movie1 = {"title": movie, "food_words": foodCats+foodAttrs}
 		movie2 = {"title": movie2, "food_words": foodCats2+foodAttrs2}
 		movie3 = {"title": movie3, "food_words": foodCats3+foodAttrs3}
+		# movie1 = {"title": movie, "Plot": plot}
+		# movie2 = {"title": movie2, "Plot": plot2}
+		# movie3 = {"title": movie3, "Plot": plot3}
 		movieList = [movie1, movie2, movie3]
 		
 		yelp_result1 = getRestaurant(foodCats, foodAttrs, location_a, location_b)

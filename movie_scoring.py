@@ -11,12 +11,32 @@ import re
 class MovieScoring(object): 
 	
 	def __init__(self):
-		dictionaries = self.getMovieDictionaries()
-		self.movie_to_genre = dictionaries[0]
-		self.movie_to_categories = dictionaries[1]
-		self.movie_to_attributes = dictionaries[2]
-		self.movie_to_summaries = dictionaries[3]
-		self.movie_to_cast = dictionaries[4]
+		# dictionaries = self.getMovieDictionaries()
+		# self.movie_to_genre = dictionaries[0]
+		# self.movie_to_categories = dictionaries[1]
+		# self.movie_to_attributes = dictionaries[2]
+		# self.movie_to_summaries = dictionaries[3]
+		# self.movie_to_cast = dictionaries[4]
+
+		with open("wiki_links.txt", "r") as output:
+			self.wiki_links = json.load(output)
+			output.close()
+		with open("movie_genre.txt", "r") as output:
+			self.movie_to_genre = json.load(output)
+			output.close()
+		with open("movie_categories.txt", "r") as output:
+			self.movie_to_categories = json.load(output)
+			output.close()
+		with open("movie_attributes.txt", "r") as output:
+			self.movie_to_attributes = json.load(output)
+			output.close()
+		# with open("movie_summaries.txt", "r") as output:
+		# 	self.movie_to_summaries = json.load(output)
+		# 	output.close()
+		with open("movie_cast.txt", "r") as output:
+			self.movie_to_cast = json.load(output)
+			output.close()
+
 		
 		#List of all movies
 		self.all_movies = list(self.movie_to_genre.keys())
@@ -50,11 +70,30 @@ class MovieScoring(object):
 		with open("doc_norms.txt", "w") as output:
 			output.write(json.dumps(self.doc_norms))
 			output.close()
+		
+		with open("wiki_links.txt", "w") as output:
+			output.write(json.dumps(self.wiki_links))
+			output.close()
+		with open("movie_genre.txt", "w") as output:
+			output.write(json.dumps(self.movie_to_genre))
+			output.close()
+		with open("movie_categories.txt", "w") as output:
+			output.write(json.dumps(self.movie_to_categories))
+			output.close()
+		with open("movie_attributes.txt", "w") as output:
+			output.write(json.dumps(self.movie_to_attributes))
+			output.close()
+		with open("movie_summaries.txt", "w") as output:
+			output.write(json.dumps(self.movie_to_summaries))
+			output.close()
+		with open("movie_cast.txt", "w") as output:
+			output.write(json.dumps(self.movie_to_cast))
+			output.close()
 
 	
 	def getMovieDictionaries(self):
 		# Read in the csv of movies
-		with open('new_cast.csv') as file:
+		with open('movies_with_wiki_cast.csv') as file:
 			movies = list(csv.DictReader(file))
 			file.close()
 			# garbage collect
@@ -71,6 +110,7 @@ class MovieScoring(object):
 		movie_to_summaries = {}
 		# Dictionary with movie title as key and list of actors as value
 		movie_to_cast = {}
+		wiki_links = {}
 
 		# Generate dictionaries
 		for each_movie in movies:
@@ -82,7 +122,8 @@ class MovieScoring(object):
 			
 			movie_to_categories[str(each_movie["Title"]).lower()] = eval(each_movie["categories"])
 			movie_to_attributes[str(each_movie["Title"]).lower()] = eval(each_movie["attributes"])
-			# movie_to_summaries[str(each_movie["Title"]).lower()] = (each_movie["Plot"])
+			movie_to_summaries[str(each_movie["Title"]).lower()] = (each_movie["Plot"])
+			wiki_links[str(each_movie["Title"]).lower()] = (each_movie["Wiki Page"])
 
 			if each_movie["Cast"] == "":
 				movie_to_cast[str(each_movie["Title"]).lower()] = []
@@ -180,6 +221,7 @@ class MovieScoring(object):
 				movie.append(movie_name)
 				movie.append(self.movie_to_categories[movie_name])
 				movie.append(self.movie_to_attributes[movie_name])
+				movie.append(self.wiki_links[movie_name])
 				x +=1
 			i += 1
 
@@ -507,7 +549,9 @@ class MovieScoring(object):
 # print("Method")
 # movieClass = MovieScoring()
 # # movieClass.getCSVs()
-# print(len(movieClass.inv_idx.keys()))
+# print(len(movieClass.all_movies))
+# print(len(movieClass.wiki_links))
+# print(len(movieClass.movie_to_cast))
 
 
 #CASES:
