@@ -23,5 +23,4 @@ GoodForKids
 breakfast
 touristy
 intimate
-sunday
 halal
