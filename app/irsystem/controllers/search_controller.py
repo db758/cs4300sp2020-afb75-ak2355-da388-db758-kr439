@@ -37,9 +37,9 @@ def search():
 		# Elements 3-5 in movieResult are the second ranked movie
 		# Elements 6-8 in movieResult are the third ranked movie
 
-		movie1 = {"title": movie, "food_words": foodCats+foodAttrs}
-		movie2 = {"title": movie2, "food_words": foodCats2+foodAttrs2}
-		movie3 = {"title": movie3, "food_words": foodCats3+foodAttrs3}
+		movie1 = {"title": movie, "food_words": foodCats+foodAttrs, "link": plot}
+		movie2 = {"title": movie2, "food_words": foodCats2+foodAttrs2, "link": plot2}
+		movie3 = {"title": movie3, "food_words": foodCats3+foodAttrs3, "link": plot3}
 		# movie1 = {"title": movie, "Plot": plot}
 		# movie2 = {"title": movie2, "Plot": plot2}
 		# movie3 = {"title": movie3, "Plot": plot3}

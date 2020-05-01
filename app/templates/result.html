@@ -39,7 +39,7 @@
     </button>
     <div class="treaty-panel row">
       <div class="col-sm-4">
-        <h5>Movie: {{ movieList[i]["title"] }}</h5>
+        <h5>Movie: <a href="{{movieList[i]["link"]}}">{{ movieList[i]["title"] }}</a></h5>
         <p>
           Food-Related Words: {% for word in movieList[i]["food_words"] %}
           {{ word }}{{"," if not loop.last}} {% endfor %}
@@ -71,7 +71,7 @@
     </button>
     <div class="treaty-panel row">
       <div class="col-sm-6">
-        <h5>Movie Title: {{ movieList[i]["title"] }}</h5>
+        <h5>Movie Title: <a href="{{movieList[i]["link"]}}"> {{ movieList[i]["title"] }}</a></h5>
         <p>
           Food-Related Words: {% for word in movieList[i]["food_words"] %}
           {{ word }}{{"," if not loop.last}} {% endfor %}
