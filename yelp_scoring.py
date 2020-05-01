@@ -26,7 +26,7 @@ class YelpScoring(object):
     
     jsonList = []
 
-    with open('good_zipcode_yelp.txt') as f:
+    with open('yelp-restaurants.txt') as f:
       for jsonObj in f.readlines():
         obj = json.loads(jsonObj)
         jsonList.append(obj) 
@@ -329,8 +329,33 @@ class YelpScoring(object):
       for a in result_att:
         writer.writerow({'attribute': a})
 
-yelp = YelpScoring()
-yelp.get_key_words()
+  def get_restaurants_az(self):
+
+    categories = set()
+    attributes = set()
+    with open('yelp-restaurants.txt') as f:
+      for line in f.readlines():
+        obj = json.loads(line)
+        if obj["attributes"]:
+          attribute = eval(str(obj["attributes"]))
+          for key in attribute.keys():
+            if isinstance(eval(attribute[key]),dict):
+              for k in eval(attribute[key]).keys():
+                attributes.add(k)
+            else:
+              attributes.add(key)
+
+    with open('yelp-attributes.txt', 'w') as f:
+      for a in attributes:
+        f.write(a)
+        f.write("\n")
+      f.close()
+    
+    # with open('yelp-categories.txt', 'w') as f:
+    #   for cat in categories:
+    #     f.write(cat)
+    #     f.write("\n")
+    #   f.close()
 
 
 #TESTING
