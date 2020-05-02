@@ -17,6 +17,7 @@ class MovieScoring(object):
 		# self.movie_to_attributes = dictionaries[2]
 		# self.movie_to_summaries = dictionaries[3]
 		# self.movie_to_cast = dictionaries[4]
+		# self.wiki_links = dictionaries[5]
 
 		with open("wiki_links.txt", "r") as output:
 			self.wiki_links = json.load(output)
@@ -93,7 +94,7 @@ class MovieScoring(object):
 	
 	def getMovieDictionaries(self):
 		# Read in the csv of movies
-		with open('movies_with_wiki_cast.csv') as file:
+		with open('predicted.csv') as file:
 			movies = list(csv.DictReader(file))
 			file.close()
 			# garbage collect
@@ -120,8 +121,8 @@ class MovieScoring(object):
 			else:
 				movie_to_genre[str(each_movie["Title"]).lower()] = eval(each_movie["Genres"])
 			
-			movie_to_categories[str(each_movie["Title"]).lower()] = eval(each_movie["categories"])
-			movie_to_attributes[str(each_movie["Title"]).lower()] = eval(each_movie["attributes"])
+			movie_to_categories[str(each_movie["Title"]).lower()] = (each_movie["categories"]).split(", ")
+			movie_to_attributes[str(each_movie["Title"]).lower()] = (each_movie["attributes"]).split(", ")
 			movie_to_summaries[str(each_movie["Title"]).lower()] = (each_movie["Plot"])
 			wiki_links[str(each_movie["Title"]).lower()] = (each_movie["Wiki Page"])
 
@@ -130,7 +131,7 @@ class MovieScoring(object):
 			else:
 				movie_to_cast[str(each_movie["Title"]).lower()] = each_movie["Cast"].lower().split(', ')
 		
-		return [movie_to_genre, movie_to_categories, movie_to_attributes, movie_to_summaries, movie_to_cast]
+		return [movie_to_genre, movie_to_categories, movie_to_attributes, movie_to_summaries, movie_to_cast, wiki_links]
 		
 	def getMovieAndFoodWords(self, user1_movies, user2_movies, user1_keywords, user2_keywords, user1_actors, user2_actors):
 		# List of inputted key words
@@ -548,7 +549,7 @@ class MovieScoring(object):
 
 # print("Method")
 # movieClass = MovieScoring()
-# # movieClass.getCSVs()
+# movieClass.getCSVs()
 # print(len(movieClass.all_movies))
 # print(len(movieClass.wiki_links))
 # print(len(movieClass.movie_to_cast))
