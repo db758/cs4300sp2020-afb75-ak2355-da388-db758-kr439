@@ -291,13 +291,26 @@ class YelpScoring(object):
 
     new_attributes = set()
     attrs = eval(str(attributes))
+
     for key in attrs.keys():
-      if isinstance(eval(attrs[key]),dict):
-        for k in eval(attrs[key]).keys():
-          if k == True:
-            new_attributes.add(k)
-      else:
+
+      if isinstance(eval(attrs[key]), bool):
         new_attributes.add(key)
+
+      else:
+
+        if isinstance(eval(attrs[key]), dict):
+          val = eval(attrs[key])
+          for k in val.keys():
+            if isinstance(val[k], bool):
+              if val[k] == True:
+                new_attributes.add(k)
+            if isinstance(val[k], dict):
+              val2 = val[k]
+              for k2 in val2.keys():
+                if isinstance(val2[k2], bool):
+                  if k2 == True:
+                    new_attributes.add(k2)
     
     return new_attributes
 
@@ -366,7 +379,33 @@ class YelpScoring(object):
 #bugs
 # run(['trendy', 'hipster'],['Kid'],'Mesa', 'AZ', 'Mesa', 'AZ')
 
+# print("Method")
+# yelp = YelpScoring()
+# a = []
+# countAtt = 0
+# countNot = 0
+# att = []
+# for r in yelp.restaurants:
+#   if r['attributes'] is not None:
+#     att.append(r['attributes'])
+#     countAtt += 1
+#     temp = yelp.tokenize_attributes(r['attributes'])
+#     for t in temp:
+#       if t not in a:
+#         a.append(t)
+#   else:
+#     countNot += 1
+# with open('attribute-test.txt', 'w') as f:
+#   for e in a:
+#     f.write(e + "\n")
+# # with open('attribute-rest.txt', 'w') as f:
+# #   for at in att:
+# #     f.write(json.dumps(at))
+# #     f.write("\n")
 
+# print(len(a))
+# print(countAtt)
+print(countNot)
 
 
 # res = create_python_dict()
