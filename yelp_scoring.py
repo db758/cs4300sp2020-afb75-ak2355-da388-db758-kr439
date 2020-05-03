@@ -262,7 +262,7 @@ class YelpScoring(object):
 
     result = {} 
     for r in restaurant_locations:
-      score = restaurant_scores[r['business_id']] * 2 + weight[r['radius']]
+      score = restaurant_scores[r['business_id']] * 3 + (weight[r['radius']] / 11)
       sentiments = r['avg_sentiments']
 
       # ADD SENTIMENT TO SCORE 
@@ -290,17 +290,14 @@ class YelpScoring(object):
     #CHECK - if this includes all attributes from yelp-restaurants that might be necessary
 
     new_attributes = set()
-    for key in attributes:
-      try:
-        i = int(attributes[key])
-        if isinstance(i, int):
-          new_attributes.add(key)
-      except ValueError:  
-        if key == "Ambience":
-          text = attributes['Ambience']
-          new_attributes = new_attributes.union(set(re.split(r'[:,]\s*', text)))
-        elif attributes[key] != "False":
-          new_attributes.add(key)
+    attrs = eval(str(attributes))
+    for key in attrs.keys():
+      if isinstance(eval(attrs[key]),dict):
+        for k in eval(attrs[key]).keys():
+          if k == True:
+            new_attributes.add(k)
+      else:
+        new_attributes.add(key)
     
     return new_attributes
 

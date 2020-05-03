@@ -27,7 +27,8 @@ def search():
 	actors_b = request.args.get('actors-b')
 
 
-	if not movie_a and not keywords_a or not location_a:
+	# if not movie_a and not keywords_a or not location_a:
+	if (not movie_a or not movie_b or not keywords_a or not location_a):
 		data = []
 	else:
 		movieResult = movieClass.getMovieAndFoodWords(movie_a, movie_b, keywords_a, keywords_b, actors_a, actors_b)
@@ -50,6 +51,7 @@ def search():
 		yelp_result3 = getRestaurant(foodCats3, foodAttrs3, location_a, location_b)
 
 		twoRestaurants = False
+		theirZipcode = False
 		their_restaurant1 = {}
 		their_restaurant2 = {}
 		their_restaurant3 = {}
@@ -58,6 +60,7 @@ def search():
 			their_restaurant1 = yelp_result1[1]
 			their_restaurant2 = yelp_result2[1]
 			their_restaurant3 = yelp_result3[1]
+			theirZipcode = location_b
 
 		your_restaurant1 = yelp_result1[0]
 		your_restaurant2 = yelp_result2[0]
@@ -68,7 +71,8 @@ def search():
 
 		return render_template('result.html', netid=net_id, movieList=movieList, 
 		twoRestaurants=twoRestaurants, user1Restaurants=user1Restaurants, 
-		user2Restaurants=user2Restaurants)
+		user2Restaurants=user2Restaurants, yourMovie=movie_a, theirMovie=movie_b,
+		yourZipcode=location_a, theirZipcode=location_b)
 
 
 	return render_template('search.html', name=project_name, netid=net_id, all_movies=all_movies, zipcodes=zipcodes)
