@@ -94,7 +94,7 @@ class MovieScoring(object):
 	
 	def getMovieDictionaries(self):
 		# Read in the csv of movies
-		with open('predicted.csv') as file:
+		with open('list_final_predicted.csv') as file:
 			movies = list(csv.DictReader(file))
 			file.close()
 			# garbage collect
@@ -121,8 +121,12 @@ class MovieScoring(object):
 			else:
 				movie_to_genre[str(each_movie["Title"]).lower()] = eval(each_movie["Genres"])
 			
-			movie_to_categories[str(each_movie["Title"]).lower()] = (each_movie["categories"]).split(", ")
-			movie_to_attributes[str(each_movie["Title"]).lower()] = (each_movie["attributes"]).split(", ")
+			if eval(each_movie["categories"]) != ['']:
+				movie_to_categories[str(each_movie["Title"]).lower()] = eval(each_movie["categories"])
+			else:
+				movie_to_categories[str(each_movie["Title"]).lower()] = []
+			
+			movie_to_attributes[str(each_movie["Title"]).lower()] = eval(each_movie["attributes"])
 			movie_to_summaries[str(each_movie["Title"]).lower()] = (each_movie["Plot"])
 			wiki_links[str(each_movie["Title"]).lower()] = (each_movie["Wiki Page"])
 
@@ -551,7 +555,7 @@ class MovieScoring(object):
 # movieClass = MovieScoring()
 # movieClass.getCSVs()
 # print(len(movieClass.all_movies))
-# print(len(movieClass.wiki_links))
+# print(len(movieClass.inv_idx))
 # print(len(movieClass.movie_to_cast))
 
 
