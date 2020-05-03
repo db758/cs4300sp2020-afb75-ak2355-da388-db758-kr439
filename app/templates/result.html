@@ -34,7 +34,7 @@
   <div class="container results-container">
     {% for i in range(3) %} {% if twoRestaurants %}
     <button class="pairing-accordion">
-      <strong>Pairing {{ i + 1 }}: </strong><i>{{ movieList[i]["title"] }}</i> &
+      <strong> Pairing {{ i + 1 }}: </strong><i>{{ movieList[i]["title"] }}</i> &
       {{ user1Restaurants[i]["restaurant1"] }} &
       {{ user2Restaurants[i]["restaurant2"] }}
     </button>
@@ -67,8 +67,9 @@
     </div>
     {% else %}
     <button class="pairing-accordion">
-      <strong>Pairing {{ i + 1 }}: </strong><i>{{ movieList[i]["title"] }}</i> &
+      <strong> Pairing {{ i + 1 }}: </strong><i>{{ movieList[i]["title"] }}</i> &
       {{ user1Restaurants[i]["restaurant1"] }}
+      <img src="../static/arrow.png" alt="arrow"  align="right" style="width:13px;height:10px;"/>
     </button>
     <div class="treaty-panel row">
       <div class="col-sm-6">
