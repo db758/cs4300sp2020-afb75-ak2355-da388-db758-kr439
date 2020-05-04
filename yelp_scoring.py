@@ -303,20 +303,20 @@ class YelpScoring(object):
       if isinstance(eval(attrs[key]), bool):
         new_attributes.add(key)
 
-      else:
+      # else:
 
-        if isinstance(eval(attrs[key]), dict):
-          val = eval(attrs[key])
-          for k in val.keys():
-            if isinstance(val[k], bool):
-              if val[k] == True:
-                new_attributes.add(k)
-            if isinstance(val[k], dict):
-              val2 = val[k]
-              for k2 in val2.keys():
-                if isinstance(val2[k2], bool):
-                  if k2 == True:
-                    new_attributes.add(k2)
+      #   if isinstance(eval(attrs[key]), dict):
+      #     val = eval(attrs[key])
+      #     for k in val.keys():
+      #       if isinstance(val[k], bool):
+      #         if val[k] == True:
+      #           new_attributes.add(k)
+      #       if isinstance(val[k], dict):
+      #         val2 = val[k]
+      #         for k2 in val2.keys():
+      #           if isinstance(val2[k2], bool):
+      #             if k2 == True:
+      #               new_attributes.add(k2)
     
     return new_attributes
 
