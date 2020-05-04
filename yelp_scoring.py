@@ -242,7 +242,7 @@ class YelpScoring(object):
       res_categories = set()
       res_attributes = set()
       if r['attributes'] is not None: #used to check if restaurant has this as empty
-        res_attributes = self.tokenize_attributes(r['attributes'])
+        res_attributes = r['attributes']
       if r['categories'] is not None:
         res_categories = self.tokenize_categories(r['categories'])
       jac_attribute = self.jaccard_sim(set(mov_attributes), res_attributes)
@@ -303,20 +303,20 @@ class YelpScoring(object):
       if isinstance(eval(attrs[key]), bool):
         new_attributes.add(key)
 
-      # else:
+      else:
 
-      #   if isinstance(eval(attrs[key]), dict):
-      #     val = eval(attrs[key])
-      #     for k in val.keys():
-      #       if isinstance(val[k], bool):
-      #         if val[k] == True:
-      #           new_attributes.add(k)
-      #       if isinstance(val[k], dict):
-      #         val2 = val[k]
-      #         for k2 in val2.keys():
-      #           if isinstance(val2[k2], bool):
-      #             if k2 == True:
-      #               new_attributes.add(k2)
+        if isinstance(eval(attrs[key]), dict):
+          val = eval(attrs[key])
+          for k in val.keys():
+            if isinstance(val[k], bool):
+              if val[k] == True:
+                new_attributes.add(k)
+            if isinstance(val[k], dict):
+              val2 = val[k]
+              for k2 in val2.keys():
+                if isinstance(val2[k2], bool):
+                  if k2 == True:
+                    new_attributes.add(k2)
     
     return new_attributes
 
@@ -347,25 +347,33 @@ class YelpScoring(object):
 
   def get_restaurants_az(self):
 
-    categories = set()
-    attributes = set()
     with open('yelp-restaurants.txt') as f:
+      outF = open('yelp-restaurant.txt', 'w')
       for line in f.readlines():
         obj = json.loads(line)
         if obj["attributes"]:
-          attribute = eval(str(obj["attributes"]))
-          for key in attribute.keys():
-            if isinstance(eval(attribute[key]),dict):
-              for k in eval(attribute[key]).keys():
-                attributes.add(k)
-            else:
-              attributes.add(key)
+          new_attributes = []
+          attributes = eval(str(obj["attributes"]))
+          for key in attributes.keys():
+            if isinstance(eval(attributes[key]),bool):
+              if eval(attributes[key]) == True:
+                new_attributes.append(key)
+            elif isinstance(eval(attributes[key]), dict):
+              val = eval(attributes[key])
+              for k in val.keys():
+                if isinstance(val[k], bool):
+                  if val[k] == True:
+                    new_attributes.append(k)
+                if isinstance(val[k], dict):
+                  val2 = val[k]
+                  for k2 in val2.keys():
+                    if isinstance(val2[k2], bool):
+                      if k2 == True:
+                        new_attributes.append(k2)
+          obj['attributes'] = new_attributes
+        outF.write(json.dumps(obj))
+        outF.write('\n')
 
-    with open('yelp-attributes.txt', 'w') as f:
-      for a in attributes:
-        f.write(a)
-        f.write("\n")
-      f.close()
     
     # with open('yelp-categories.txt', 'w') as f:
     #   for cat in categories:
