@@ -251,12 +251,13 @@ class MovieScoring(object):
 		if len(user1_keywords) == 0 and len(user2_keywords) == 0 :
 			return []
 		elif len(user1_keywords) == 0:
-			return user2_keywords.lower().split(', ')
+			return re.split('\s[,]\s|\s',user2_keywords.lower())
 		elif len(user2_keywords) == 0 :
-			return user1_keywords.lower().split(', ')
+			return re.split('\s[,]\s|\s',user1_keywords.lower())
 		else:
-			keywords = user1_keywords+ ", " + user2_keywords
-			return keywords.lower().split(', ')
+			keywords = user1_keywords.lower()+ ", " + user2_keywords.lower()
+			return re.split('\s[,]\s|\s',keywords)
+
 
 	def getMovieNames(self, user1_movies, user2_movies):
 		"""Given a the user input of movie names (which are split by commas)
