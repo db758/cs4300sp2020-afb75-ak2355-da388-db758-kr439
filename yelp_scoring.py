@@ -258,7 +258,7 @@ class YelpScoring(object):
     Will only include restaurants from the restaurant locations input.
     """
     # 11 bins for zipcodes - those w radius 0 get 11 points, with radius 2 (next bin) get 10 points
-    weight = {0: 11, 2: 10, 5: 9, 10: 8, 15: 7, 20: 6, 25: 5, 30: 4, 45: 3, 50: 2, 60: 1}
+    weight = {0: 8, 2: 8, 5: 8, 10: 7, 15: 7, 20: 6, 25: 5, 30: 5, 45: 2, 50: 2, 60: 2}
 
     result = {} 
     for r in restaurant_locations:
@@ -405,7 +405,7 @@ class YelpScoring(object):
 
 # print(len(a))
 # print(countAtt)
-print(countNot)
+# print(countNot)
 
 
 # res = create_python_dict()
