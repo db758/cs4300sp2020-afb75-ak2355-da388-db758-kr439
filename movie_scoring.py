@@ -148,7 +148,6 @@ class MovieScoring(object):
 
 		#List of all actros inputted and in inputtted movie -- this can only be done after we have cleaned input movie list
 		input_actor_list = self.getActors(user1_actors, user2_actors, input_movie_list, self.movie_to_cast)
-		# print(input_actor_list)
 
 		#All the genres in the movies that the user inputted	
 		input_movie_genres = self.getMovieGenres (input_movie_list, self.movie_to_genre)
@@ -162,7 +161,7 @@ class MovieScoring(object):
 			#Genre Scores of All movies
 			genre_score_array = self.getGenreScore(unique_input_movie_genres,input_movie_genres, input_movie_list, self.all_movies, self.movie_to_genre)
 			genre_score_array = genre_score_array/(max(genre_score_array))
-		
+
 		#KEYWORDS SCORES && KEYWORDS IN TITLE SCORE
 		if len(input_keywords_list) == 0:
 			keywords_score_array = np.zeros((len(self.all_movies)))
@@ -173,46 +172,55 @@ class MovieScoring(object):
 
 			title_score_array = []
 			title_dict = self.getTitleScore(self.all_movies, input_keywords_list)
-
+			p = 0 
+			t = 0
 			for each_movie in self.all_movies:
 				if each_movie in keywords_dict:
+					p+=1
 					keywords_score_array.append(keywords_dict[each_movie])
 				else:
 					keywords_score_array.append(0)
 				
 				if each_movie in title_dict:
+					t+=1
 					title_score_array.append(title_dict[each_movie])
 				else:
 					title_score_array.append(0)
 
-			keywords_score_array = (np.asarray(keywords_score_array))/(max(keywords_score_array)/2)
-			title_score_array =  (np.asarray(title_score_array))/(max(title_score_array))
-		
+			if p > 0:
+				keywords_score_array = (np.asarray(keywords_score_array))/(max(keywords_score_array)/2)
+			if t > 2:
+				title_score_array =  (np.asarray(title_score_array))/(max(title_score_array))
+
 		#ACTOR SCORE
 		if len(input_actor_list) == 0:
 			actors_score_array = np.zeros((len(self.all_movies)))
 		else:
 			actors_score_array = []
 			actors_dict = self.getActorsScore(self.movie_to_cast, input_actor_list)
-			# print(actors_dict)
+			
+			a = 0
 			for each_movie in self.all_movies:
 				if each_movie in actors_dict:
+					a += 1
 					actors_score_array.append(actors_dict[each_movie]*2)
 				else:
 					actors_score_array.append(0)
-			actors_score_array = (np.asarray(actors_score_array))/(max(actors_score_array))
+
+			if a > 2:
+				actors_score_array = (np.asarray(actors_score_array))/(max(actors_score_array))
 		
 
 		#TOTAL SCORE
 		total_score = genre_score_array+keywords_score_array+title_score_array+actors_score_array
+		#DEFAULT MOVIE
+		if (np.sum(total_score)<=2):
+			return ["Brave", ['Cake'], ['romantic'], "https://en.wikipedia.org/wiki/Brave_(2012_film)",
+					"Inside Out", [], ['romantic'], "https://en.wikipedia.org/wiki/Inside_Out_(2015_film)",
+					"The Legend of Tarzan", ['British', ' Indian', ' African', ' Belgian'], ['dinner'], "https://en.wikipedia.org/wiki/The_Legend_of_Tarzan_(film)"]
+		
 		total_score = ((np.asarray(total_score))/(max(total_score)))*5
 		total_score_rank =  np.argsort(total_score)
-
-
-
-		#DEFAULT MOVIE
-		if np.all(total_score==0):
-			return ["Ferris Bueller's Day Off", [], ['New', ' Room', ' Day', ' Pita', ' Family']]
 
 		#FINDING BEST MOVIE FROM ALL RANKED MOVIES
 		movie = []
