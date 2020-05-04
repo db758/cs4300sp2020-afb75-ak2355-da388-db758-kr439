@@ -300,16 +300,21 @@ class MovieScoring(object):
 		"""
 		Gets a list of actors that are inputted and are in the inputted movies
 		"""
-		actors = []
+		movie_actors = ['leonardo dicaprio', 'kate winslet', 'gloria stuart', 'will smith', 'salma hayek', 'bai ling', 'nick stahl', 'm.c. gainey', 'carolyn hennesy', 'tom hanks', 'eddie deezen', 'peter scolari', 'j.k. simmons', 'james franco', 'kirsten dunst', 'jim broadbent', 'kiran shah', 'shane rangi', 'naomi watts', 'thomas kretschmann', 'evan parke', 'johnny depp', 'orlando bloom', 'jack davenport', 'christopher lee', 'eva green', 'kristin scott thomas', 'peter dinklage', 'pierfrancesco favino', 'damián alcázar', 'harrison ford', 'ray winstone', 'robert downey jr.', 'jeff bridges', 'jon favreau', 'robin wright', 'colin firth', 'gary oldman', 'joseph gordon-levitt', 'dennis quaid', 'leo howard', 'alan rickman', 'daniel radcliffe', 'rupert grint', 'amy poehler', 'rainn wilson', 'stephen colbert', 'christian bale', 'bryce dallas howard', 'common', 'glenn morshower', 'kevin dunn', 'ramon rodriguez', 'john ratzenberger', 'delroy lindo', 'jess harnell', 'anne hathaway', 'tom hardy', 'scarlett johansson', 'brad garrett', 'donna murphy', 'don rickles', 'joe mantegna', 'eddie izzard', 'chloë grace moretz', 'sam claflin', 'stephen graham', 'lester speight', 'liam neeson', 'alexander skarsgård', 'tadanobu asano', 'kelly macdonald', 'julie walters', 'michael stuhlbarg', 'nicole scherzinger', 'don cheadle', 'henry cavill', 'christopher meloni', 'harry lennix', 'tim holmes', 'mila kunis', 'chris evans', 'hayley atwell', 'jennifer lawrence', 'hugh jackman', 'judy greer', 'kodi smit-mcphee', 'bradley cooper', 'vin diesel', 'djimon hounsou', 'matthew mcconaughey', 'mackenzie foy', 'channing tatum', 'eddie redmayne', 'jason statham', 'paul walker', 'chris hemsworth', 'chris bauer', 'thomas robinson', 'omar sy', 'mindy kaling', 'phyllis smith', 'lauren cohan', 'alan d. purwin', 'bill murray', 'garry shandling', 'michael fassbender', 'tye sheridan', 'christoph waltz', 'casper crump', 'robin atkin downes', 'ike barinholtz']
+		actors_input = []
 		if len(user1_actors) != 0:
-			actors += user1_actors.lower().split(', ')
+			actors_input += user1_actors.lower().split(', ')
 		if len(user2_actors) != 0 :
-			actors += user2_actors.lower().split(', ')
+			actors_input += user2_actors.lower().split(', ')
+
+		actors = []
+		for each in actors_input:
+			if each in movie_actors:
+				actors.append(each)
 
 		for each_movie in input_movie_list:
 			if each_movie in movie_to_cast:
 				actors += movie_to_cast[each_movie]
-		
 		return actors
 
 	def getMovieGenres (self, input_movie_list, movie_to_genre):
