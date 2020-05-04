@@ -85,7 +85,11 @@
             {{ user1Restaurants[i]["state1"] }}
           </p>
           <p>Zipcode: {{ user1Restaurants[i]["zipcode"] }}</p>
-          <p>Stars: {{ user1Restaurants[i]["star"] }}</p>
+          <p>Rating: 
+            <!-- {{ user1Restaurants[i]["star"] }} -->
+            {% for j in range(1,6) if (j <= user1Restaurants[i]["star"])%}&#9829{% endfor %}
+            {% for j in range(1,6) if (j > user1Restaurants[i]["star"])%}&#9825{% endfor %}
+          </p>
           <!-- <p>Matching Attributes: {{ user1Restaurants[i]["matchings"] }}</p> -->
         </div>
         <div class="col-sm-4">
@@ -98,7 +102,11 @@
             {{ user2Restaurants[i]["state2"] }}
           </p>
           <p>Zipcode: {{ user2Restaurants[i]["zipcode"] }}</p>
-          <p>Stars: {{ user2Restaurants[i]["star"] }}</p>
+          <p>Rating: 
+            <!-- {{ user2Restaurants[i]["star"] }} -->
+            {% for j in range(1,6) if (j <= user2Restaurants[i]["star"])%}&#9829{% endfor %}
+            {% for j in range(1,6) if (j > user2Restaurants[i]["star"])%}&#9825{% endfor %}
+          </p>
           <!-- <p>Matching Attributes: {{ user2Restaurants[i]["matchings"] }}</p> -->
         </div>
       </div>
@@ -139,7 +147,12 @@
             {{ user1Restaurants[i]["state1"] }}
           </p>
           <p>Zipcode: {{ user1Restaurants[i]["zipcode"] }}</p>
-          <p>Stars: {{ user1Restaurants[i]["star"] }}</p>
+          <p>Rating: 
+            <!-- {{ user1Restaurants[i]["star"] }} -->
+            {% for j in range(1,6) if (j <= user1Restaurants[i]["star"]+0.5)%}&#9829{% endfor %}
+            {% for j in range(1,6) if (j > user1Restaurants[i]["star"]+0.5)%}&#9825{% endfor %}
+            
+          </p>
           <!-- <p>Matching Attributes: {{ user1Restaurants[i]["matchings"] }}</p> -->
         </div>
       </div>
