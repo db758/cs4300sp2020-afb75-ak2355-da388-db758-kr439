@@ -24,34 +24,17 @@ class YelpScoring(object):
     dictionary with business id of restaurant as key and the restaurant dictionary as value)
     """
     
-    jsonList = []
+    tempList = []
+    tempDict = {}
+    zipcodes = set()
 
     with open('yelp-restaurants.txt') as f:
       for jsonObj in f.readlines():
         obj = json.loads(jsonObj)
-        jsonList.append(obj) 
+        zipcodes.add(obj['postal_code'])
+        tempList.append(obj) 
+        tempDict[obj["business_id"]] = obj
       f.close()  
-
-    tempList = []
-    tempDict = {}
-    zipcodes = set()
-    
-    for e in jsonList:
-      temp = {}
-      temp['business_id'] = e['business_id']
-      temp["name"] = e['name']
-      temp['address']  = e['address']
-      temp['city'] = e['city']
-      temp['state'] = e['state']
-      temp['postal_code'] = e["postal_code"]
-      zipcodes.add(e["postal_code"])
-      temp['stars'] = e['stars']
-      temp['review_count'] = e['review_count']
-      temp['attributes'] = e['attributes']
-      temp['categories'] = e['categories']
-      temp['avg_sentiments'] = e['avg_sentiments']
-      tempList.append(temp)
-      tempDict[temp["business_id"]] = temp
     
     zipcodes = list(zipcodes)
 
