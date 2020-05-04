@@ -150,12 +150,13 @@ class MovieScoring(object):
 		input_actor_list = self.getActors(user1_actors, user2_actors, input_movie_list, self.movie_to_cast)
 		# print(input_actor_list)
 
+		#All the genres in the movies that the user inputted	
+		input_movie_genres = self.getMovieGenres (input_movie_list, self.movie_to_genre)
+
 		#GENRE SCORES
-		if len(input_movie_list) == 0:
+		if len(input_movie_genres) == 0:
 			genre_score_array = np.zeros((len(self.all_movies)))
 		else:
-			#All the genres in the movies that the user inputted	
-			input_movie_genres = self.getMovieGenres (input_movie_list, self.movie_to_genre)
 			#All unique genres in the movies that the user inputted	
 			unique_input_movie_genres = list(set(input_movie_genres))
 			#Genre Scores of All movies
