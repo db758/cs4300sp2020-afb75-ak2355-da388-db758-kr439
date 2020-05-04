@@ -1,5 +1,6 @@
 <html>
   <head>
+    <title>CUpids</title>
     <link rel="stylesheet" href="/static/bootstrap.min.css" />
     <link rel="stylesheet" href="/static/main.css" />
     <link
@@ -29,11 +30,22 @@
       <h1 class="title">You and Yours</h1>
       <br />
       <h4 class="subtitle">
-        Here are movie and restaurants pairings you might like!
+        Here are pairings related to
+        <span class="pink-text">{{ yourMovie }}</span> and
+        <span class="pink-text">{{ theirMovie }}</span
+        >,<br />
+        matched with similar restaurants in
+        <span class="pink-text">{{ yourZipcode }}</span
+        >{% if theirZipcode %} and
+        <span class="pink-text">{{ theirZipcode }}</span
+        >{% endif %}.
       </h4>
       <br />
-      <h6 class="subtitle">Click on the listing to see more information</h6>
+      <h6 class="subtitle">
+        Click on the pairing cell to see more information
+      </h6>
     </div>
+    <div></div>
     <div class="container results-container">
       {% for i in range(3) %} {% if twoRestaurants %}
       <button class="pairing-accordion">
@@ -41,10 +53,16 @@
         ><i>{{ movieList[i]["title"] }}</i> &
         {{ user1Restaurants[i]["restaurant1"] }} &
         {{ user2Restaurants[i]["restaurant2"] }}
+        <img src="../static/arrow.png"  alt="arrow" align="right" style="width:15px;height:10px;" />
       </button>
       <div class="treaty-panel row">
         <div class="col-sm-4">
-          <h5>Movie: {{ movieList[i]["title"] }}</h5>
+          <h5>
+            Movie: {{ movieList[i]["title"] }}
+            <a class="pink-text link" href="{{ movieList[i]['link'] }}"
+              >See Movie Info</a
+            >
+          </h5>
           <p>
             Food-Related Words: {% for word in movieList[i]["food_words"] %}
             {{ word }}{{"," if not loop.last}} {% endfor %}
@@ -57,7 +75,6 @@
             {{ user1Restaurants[i]["state1"] }}
           </p>
           <p>Matching Attributes: {{ user1Restaurants[i]["matchings"] }}</p>
-          <p>Score: {{ user1Restaurants[i]["score1"] }}</p>
         </div>
         <div class="col-sm-4">
           <h5>Restaurant for Them: {{ user2Restaurants[i]["restaurant2"] }}</h5>
@@ -66,7 +83,6 @@
             {{ user2Restaurants[i]["state2"] }}
           </p>
           <p>Matching Attributes: {{ user2Restaurants[i]["matchings"] }}</p>
-          <p>Score: {{ user2Restaurants[i]["score2"] }}</p>
         </div>
       </div>
       {% else %}
@@ -74,10 +90,16 @@
         <strong>Pairing {{ i + 1 }}: </strong
         ><i>{{ movieList[i]["title"] }}</i> &
         {{ user1Restaurants[i]["restaurant1"] }}
+        <img src="../static/arrow.png"  alt="arrow" align="right" style="width:15px;height:10px;" />
       </button>
       <div class="treaty-panel row">
         <div class="col-sm-6">
-          <h5>Movie Title: {{ movieList[i]["title"] }}</h5>
+          <h5>
+            Movie: {{ movieList[i]["title"] }}
+            <a class="pink-text link" href="{{ movieList[i]['link'] }}"
+              >See Movie Info</a
+            >
+          </h5>
           <p>
             Food-Related Words: {% for word in movieList[i]["food_words"] %}
             {{ word }}{{"," if not loop.last}} {% endfor %}
@@ -90,7 +112,6 @@
             {{ user1Restaurants[i]["state1"] }}
           </p>
           <p>Matching Attributes: {{ user1Restaurants[i]["matchings"] }}</p>
-          <p>Score: {{ user1Restaurants[i]["score1"] }}</p>
         </div>
       </div>
       {% endif %} {% endfor %}
@@ -111,7 +132,7 @@
     for (i = 0; i < acc.length; i++) {
       acc[i].addEventListener("click", function() {
         /* Toggle between adding and removing the "active" class,
-    to highlight the button that controls the panel */
+  to highlight the button that controls the panel */
         this.classList.toggle("active");
         /* Toggle between hiding and showing the active panel */
         var panel = this.nextElementSibling;

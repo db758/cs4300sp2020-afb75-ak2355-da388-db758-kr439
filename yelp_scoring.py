@@ -83,9 +83,14 @@ class YelpScoring(object):
       first_elem_score = final_result[first_elem] #gets the score
       i = key_words_dict[first_elem]
 
+      if len(i) == 0:
+        i = ''
+      else:
+        i = str(i)
+
       user1_result = [{'restaurant1': self.restaurant_dict[first_elem]['name'], 'score1': str(first_elem_score), 
       'city1': self.restaurant_dict[first_elem]['city'], 'state1': self.restaurant_dict[first_elem]['state'],
-      'matchings': str(i)}]
+      'matchings': i}]
 
     if zipcode2 is None: 
       user2_result = []
@@ -105,9 +110,14 @@ class YelpScoring(object):
         first_elem_score2 = final_result2[first_elem2]
         i2 = key_words_dict2[first_elem2]
 
+        if len(i2) == 0:
+          i2 = ''
+        else:
+          i2 = str(i2)
+
         user2_result = [{'restaurant2': self.restaurant_dict[first_elem2]['name'], 'score2': str(first_elem_score2), 
         'city2': self.restaurant_dict[first_elem2]['city'], 'state2': self.restaurant_dict[first_elem2]['state'],
-        'matchings': str(i2)}]
+        'matchings': i2}]
       
     return user1_result + user2_result
         
@@ -248,11 +258,11 @@ class YelpScoring(object):
     Will only include restaurants from the restaurant locations input.
     """
     # 11 bins for zipcodes - those w radius 0 get 11 points, with radius 2 (next bin) get 10 points
-    weight = {0: 11, 2: 10, 5: 9, 10: 8, 15: 7, 20: 6, 25: 5, 30: 4, 45: 3, 50: 2, 60: 1}
+    weight = {0: 8, 2: 8, 5: 8, 10: 7, 15: 7, 20: 6, 25: 5, 30: 5, 45: 2, 50: 2, 60: 2}
 
     result = {} 
     for r in restaurant_locations:
-      score = restaurant_scores[r['business_id']] * 2 + weight[r['radius']]
+      score = restaurant_scores[r['business_id']] * 3 + (weight[r['radius']] / 11)
       sentiments = r['avg_sentiments']
 
       # ADD SENTIMENT TO SCORE 
@@ -280,17 +290,27 @@ class YelpScoring(object):
     #CHECK - if this includes all attributes from yelp-restaurants that might be necessary
 
     new_attributes = set()
-    for key in attributes:
-      try:
-        i = int(attributes[key])
-        if isinstance(i, int):
-          new_attributes.add(key)
-      except ValueError:  
-        if key == "Ambience":
-          text = attributes['Ambience']
-          new_attributes = new_attributes.union(set(re.split(r'[:,]\s*', text)))
-        elif attributes[key] != "False":
-          new_attributes.add(key)
+    attrs = eval(str(attributes))
+
+    for key in attrs.keys():
+
+      if isinstance(eval(attrs[key]), bool):
+        new_attributes.add(key)
+
+      else:
+
+        if isinstance(eval(attrs[key]), dict):
+          val = eval(attrs[key])
+          for k in val.keys():
+            if isinstance(val[k], bool):
+              if val[k] == True:
+                new_attributes.add(k)
+            if isinstance(val[k], dict):
+              val2 = val[k]
+              for k2 in val2.keys():
+                if isinstance(val2[k2], bool):
+                  if k2 == True:
+                    new_attributes.add(k2)
     
     return new_attributes
 
@@ -299,7 +319,7 @@ class YelpScoring(object):
     Returns: the category and attribute final list in csv called 'output'. 
     """
     
-    restaurants, restaurant_dict = self.create_python_dict()
+    restaurants, restaurant_dict = self.create_python_dict()[0:2]
     result_cat = set()
     result_att = set()
     for res in restaurants:
@@ -319,6 +339,34 @@ class YelpScoring(object):
       for a in result_att:
         writer.writerow({'attribute': a})
 
+  def get_restaurants_az(self):
+
+    categories = set()
+    attributes = set()
+    with open('yelp-restaurants.txt') as f:
+      for line in f.readlines():
+        obj = json.loads(line)
+        if obj["attributes"]:
+          attribute = eval(str(obj["attributes"]))
+          for key in attribute.keys():
+            if isinstance(eval(attribute[key]),dict):
+              for k in eval(attribute[key]).keys():
+                attributes.add(k)
+            else:
+              attributes.add(key)
+
+    with open('yelp-attributes.txt', 'w') as f:
+      for a in attributes:
+        f.write(a)
+        f.write("\n")
+      f.close()
+    
+    # with open('yelp-categories.txt', 'w') as f:
+    #   for cat in categories:
+    #     f.write(cat)
+    #     f.write("\n")
+    #   f.close()
+
 
 #TESTING
 
@@ -331,7 +379,33 @@ class YelpScoring(object):
 #bugs
 # run(['trendy', 'hipster'],['Kid'],'Mesa', 'AZ', 'Mesa', 'AZ')
 
+# print("Method")
+# yelp = YelpScoring()
+# a = []
+# countAtt = 0
+# countNot = 0
+# att = []
+# for r in yelp.restaurants:
+#   if r['attributes'] is not None:
+#     att.append(r['attributes'])
+#     countAtt += 1
+#     temp = yelp.tokenize_attributes(r['attributes'])
+#     for t in temp:
+#       if t not in a:
+#         a.append(t)
+#   else:
+#     countNot += 1
+# with open('attribute-test.txt', 'w') as f:
+#   for e in a:
+#     f.write(e + "\n")
+# # with open('attribute-rest.txt', 'w') as f:
+# #   for at in att:
+# #     f.write(json.dumps(at))
+# #     f.write("\n")
 
+# print(len(a))
+# print(countAtt)
+# print(countNot)
 
 
 # res = create_python_dict()
