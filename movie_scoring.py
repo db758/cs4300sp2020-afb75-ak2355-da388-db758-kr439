@@ -94,7 +94,7 @@ class MovieScoring(object):
 	
 	def getMovieDictionaries(self):
 		# Read in the csv of movies
-		with open('list_final_predicted.csv') as file:
+		with open('list_final_predicted_v2.csv') as file:
 			movies = list(csv.DictReader(file))
 			file.close()
 			# garbage collect
@@ -568,6 +568,9 @@ class MovieScoring(object):
 
 # print("Method")
 # movieClass = MovieScoring()
+# for mov in movieClass.movie_to_cast:
+# 	if movieClass.movie_to_cast[mov] != []:
+# 		print(mov)
 # movieClass.getCSVs()
 # print(len(movieClass.all_movies))
 # print(len(movieClass.inv_idx))
