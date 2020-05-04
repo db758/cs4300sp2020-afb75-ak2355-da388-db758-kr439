@@ -76,7 +76,7 @@ class YelpScoring(object):
 
     if len(final_result) == 0:
         user1_result = [{'restaurant1': "Could not find restaurant :( but popcorn is always a good option! ", 'score1': '', 'city1': '', 'state1': '',
-        'matchings': ''}]
+        'matchings': '', 'star': ''}]
 
     else:
       first_elem = list(final_result.keys())[0] #gets the first element id of the final result
@@ -87,10 +87,10 @@ class YelpScoring(object):
         i = ''
       else:
         i = list(i)
-
+      
       user1_result = [{'restaurant1': self.restaurant_dict[first_elem]['name'], 'score1': str(first_elem_score), 
       'city1': self.restaurant_dict[first_elem]['city'], 'state1': self.restaurant_dict[first_elem]['state'],
-      'matchings': i}]
+      'matchings': i, 'star': self.restaurant_dict[first_elem]['stars']}]
 
     if zipcode2 is None: 
       user2_result = []
@@ -103,7 +103,7 @@ class YelpScoring(object):
       if len(final_result2) == 0:
 
         user2_result = [{'restaurant2': "Could not find restaurant :( but popcorn is always a good option! ", 'score2': '', 'city2': '', 'state2': '',
-        'matchings': ''}]
+        'matchings': '', 'star': ''}]
       
       else:
         first_elem2 = list(final_result2.keys())[0]
@@ -117,7 +117,7 @@ class YelpScoring(object):
 
         user2_result = [{'restaurant2': self.restaurant_dict[first_elem2]['name'], 'score2': str(first_elem_score2), 
         'city2': self.restaurant_dict[first_elem2]['city'], 'state2': self.restaurant_dict[first_elem2]['state'],
-        'matchings': i2}]
+        'matchings': i2, 'star': self.restaurant_dict[first_elem2]['stars']}]
       
     return user1_result + user2_result
         
@@ -387,6 +387,15 @@ class YelpScoring(object):
 
 # print("Method")
 # yelp = YelpScoring()
+# # print(yelp.run(['romantic, hipster'],['Family', 'bagel'], "85013", None))
+# print(yelp.run(['romantic, hipster'],['Family', 'bagel'], "85013", "85003"))
+
+# star = []
+# for e in yelp.restaurant_dict:
+#   star.append(yelp.restaurant_dict[e]['stars'])
+# print(star)
+# print(len(yelp.restaurant_dict))
+# print(len(star))
 # a = []
 # countAtt = 0
 # countNot = 0
