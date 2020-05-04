@@ -24,7 +24,11 @@
         >Prototype 2</a
       >
     </div>
-    <form class="form-inline global-search">
+    <form
+      class="form-inline global-search"
+      name="search"
+      onsubmit="return validateForm()"
+    >
       <h1 class="title">You and Yours</h1>
       <br />
       <h4 class="subtitle" style="margin-bottom: 2%">
@@ -35,7 +39,7 @@
         <div id="movie-inputs">
           <div class="autocomplete" style="width:300px;">
             <label for="input-movie-a" class="pink-text"
-              >Enter Your Favorite Movie</label
+              >* Enter Your Favorite Movie</label
             >
             <input
               id="input-movie-a"
@@ -47,7 +51,7 @@
           </div>
           <div class="autocomplete" style="width:300px;">
             <label for="input-movie-b" class="pink-text"
-              >Enter Their Favorite Movie</label
+              >* Enter Their Favorite Movie*</label
             >
             <input
               id="input-movie-b"
@@ -62,7 +66,7 @@
         <br />
         <div style="width:300px">
           <label for="input-keywords-a" class="pink-text"
-            >Your Ideal Movie Keywords</label
+            >* Your Ideal Movie Keywords</label
           ><br />
           <input
             id="input-keywords-a"
@@ -74,7 +78,7 @@
         </div>
         <div style="width: 300px">
           <label for="input-keywords-b" class="pink-text"
-            >Their Ideal Movie Keywords</label
+            >* Their Ideal Movie Keywords*</label
           >
           <input
             id="input-keywords-b"
@@ -116,7 +120,7 @@
           <br />
         </div>
         <div class="autocomplete" style="width:300px;">
-          <label for="input-location-a" class="pink-text">Your Zipcode</label>
+          <label for="input-location-a" class="pink-text">* Your Zipcode</label>
           <input
             id="input-location-a"
             type="text"
@@ -128,7 +132,7 @@
         <div class="location-b" style="display: none">
           <div class="autocomplete" style="width:300px; ">
             <label for="input-location-b" class="pink-text"
-              >Their Zipcode</label
+              >* Their Zipcode</label
             >
             <input
               id="input-location-b"
@@ -166,6 +170,25 @@
     <p>{{ netid }}</p>
   </div>
   <script>
+    function validateForm() {
+      var search = document.forms["search"]
+      var movie_a = search["input-movie-a"].value;
+      var movie_b = search["input-movie-b"].value;
+      var keywords_a = search["input-keywords-a"].value;
+      var keywords_b = search["input-keywords-b"].value;
+      var zipcode_a = search["input-location-a"].value;
+      var zipcode_b = search["input-location-b"].value;
+
+      var zipcode_btn = document.getElementById("location-btn");
+      if ((movie_a == "") || (movie_b == "") || (keywords_a == "") || (keywords_b
+      == "") || (zipcode_a == "") || (zipcode_btn.checked == true && zipcode_b == "")) {
+        alert("Make sure to fill out all fields with an asterisk");
+        return false;
+      }
+
+    };
+
+
     var all_movies = {{ all_movies|safe }};
     var zipcodes = {{ zipcodes|safe }};
 
