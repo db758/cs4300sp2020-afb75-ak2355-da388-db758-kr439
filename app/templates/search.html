@@ -1,322 +1,261 @@
 <html>
-  <head>
-    <title>CUpids</title>
-    <link rel="stylesheet" href="/static/bootstrap.min.css" />
-    <link rel="stylesheet" href="/static/main.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300;0,400;0,600;0,700;0,900;1,300;1,500;1,600&display=swap"
-      rel="stylesheet"
-    />
-    <style></style>
-  </head>
 
-  <body>
-    <div class="logo-left">
-      <img src="../static/cinema.png" class="left-img" alt="" />
-      <img src="../static/restaurant.png" class="left-img" alt="" />
-    </div>
-    <div class="topcorner">
-      <a href="https://cu-pids.herokuapp.com" class="subtitle link"
-        >Prototype 1</a
-      >
-      |
-      <a href="https://cupids-v2.herokuapp.com" class="subtitle link"
-        >Prototype 2</a
-      >
-    </div>
-    <form
-      class="form-inline global-search"
-      name="search"
-      onsubmit="return validateForm()"
-    >
-      <h1 class="title">You and Yours</h1>
-      <br />
-      <h4 class="subtitle" style="margin-bottom: 2%">
-        Get a movie and restaurant recommendation pair for a date!
-      </h4>
-      <br />
-      <div class="form-group">
-        <div id="movie-inputs">
-          <div class="autocomplete" style="width:300px;">
-            <label for="input-movie-a" class="pink-text"
-              >* Enter Your Favorite Movie</label
-            >
-            <input
-              id="input-movie-a"
-              type="text"
-              name="movie-a"
-              class="form-control"
-              placeholder="Pulp Fiction"
-            />
-          </div>
-          <div class="autocomplete" style="width:300px;">
-            <label for="input-movie-b" class="pink-text"
-              >* Enter Their Favorite Movie</label
-            >
-            <input
-              id="input-movie-b"
-              type="text"
-              name="movie-b"
-              class="form-control"
-              placeholder="Despicable Me"
-            />
-          </div>
-        </div>
-        <br />
-        <br />
-        <div style="width:300px">
-          <label for="input-keywords-a" class="pink-text"
-            >* Your Ideal Movie Keywords</label
-          ><br />
-          <input
-            id="input-keywords-a"
-            type="text"
-            name="keywords-a"
-            class="form-control"
-            placeholder="Crime, Horror"
-          />
-        </div>
-        <div style="width: 300px">
-          <label for="input-keywords-b" class="pink-text"
-            >* Their Ideal Movie Keywords</label
-          >
-          <input
-            id="input-keywords-b"
-            type="text"
-            name="keywords-b"
-            class="form-control"
-            placeholder="Romantic, Princess"
-          />
-        </div>
+<head>
+  <title>CUpids</title>
+  <link rel="stylesheet" href="/static/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/main.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300;0,400;0,600;0,700;0,900;1,300;1,500;1,600&display=swap"
+    rel="stylesheet" />
+  <style></style>
+</head>
 
-        <br />
-        <br />
-        <div class="actors-input" style="display: none">
-          <div style="width: 300px;">
-            <label for="input-actors-a" class="pink-text"
-              >Your Favorite Actors</label
-            >
-            <input
-              id="input-actors-a"
-              type="text"
-              name="actors-a"
-              class="form-control"
-              placeholder="John Travolta, Uma Thurman"
-            />
-          </div>
-          <div style="width: 300px;">
-            <label for="input-actors-b" class="pink-text"
-              >Their Favorite Actors</label
-            >
-            <input
-              id="input-actors-b"
-              type="text"
-              name="actors-b"
-              class="form-control"
-              placeholder="Steve Carell, Miranda Cosgrove"
-            />
-          </div>
-          <br />
-          <br />
+<body>
+  <div class="logo-left">
+    <img src="../static/cinema.png" class="left-img" alt="" />
+    <img src="../static/restaurant.png" class="left-img" alt="" />
+  </div>
+  <div class="topcorner">
+    <a href="https://cu-pids.herokuapp.com" class="subtitle link">Prototype 1</a>
+    |
+    <a href="https://cupids-v2.herokuapp.com" class="subtitle link">Prototype 2</a>
+  </div>
+  <form class="form-inline global-search" name="search" onsubmit="return validateForm()">
+    <h1 class="title">You and Yours</h1>
+    <br />
+    <h4 class="subtitle" style="margin-bottom: 2%">
+      Get a movie and restaurant recommendation pair for a date!
+    </h4>
+    <br />
+    <div class="form-group">
+      <div id="movie-inputs">
+        <div class="autocomplete" style="width:300px;">
+          <label for="input-movie-a" class="pink-text">Enter Your Favorite Movie *</label>
+          <input id="input-movie-a" type="text" name="movie-a" class="form-control" placeholder="Pulp Fiction" />
         </div>
         <div class="autocomplete" style="width:300px;">
-          <label for="input-location-a" class="pink-text">* Your Zipcode</label>
-          <input
-            id="input-location-a"
-            type="text"
-            name="location-a"
-            class="form-control location-field"
-            placeholder="85013"
-          />
+          <label for="input-movie-b" class="pink-text">Enter Their Favorite Movie *</label>
+          <input id="input-movie-b" type="text" name="movie-b" class="form-control" placeholder="Despicable Me" />
         </div>
-        <div class="location-b" style="display: none">
-          <div class="autocomplete" style="width:300px; ">
-            <label for="input-location-b" class="pink-text"
-              >* Their Zipcode</label
-            >
-            <input
-              id="input-location-b"
-              type="text"
-              name="location-b"
-              class="form-control location-field"
-              placeholder="60616"
-            />
-          </div>
-        </div>
-        <br />
-        <br />
-        <input type="checkbox" id="actors-btn" onclick="showActors()" />
-        <label for="actors-btn">We'd like to input our favorite actors</label>
-        <br />
-        <input type="checkbox" id="location-btn" onclick="showLocationB()" />
-        <label for="location-btn">We are in different locations</label>
       </div>
       <br />
       <br />
-      <button type="submit" class="btn btn-info" id="home-submit">Go!</button>
-    </form>
+      <div style="width:300px">
+        <label for="input-keywords-a" class="pink-text">Your Ideal Movie Keywords *</label><br />
+        <input id="input-keywords-a" type="text" name="keywords-a" class="form-control" placeholder="Crime, Horror" />
+      </div>
+      <div style="width: 300px">
+        <label for="input-keywords-b" class="pink-text">Their Ideal Movie Keywords *</label>
+        <input id="input-keywords-b" type="text" name="keywords-b" class="form-control"
+          placeholder="Romantic, Princess" />
+      </div>
 
-    <img
-      class="right-img"
-      src="../static/undraw_social_friends_nsbv.png"
-      alt=""
-    />
-  </body>
+      <br />
+      <br />
+      <div class="actors-input" style="display: none">
+        <div style="width: 300px;">
+          <label for="input-actors-a" class="pink-text">Your Favorite Actors</label>
+          <input id="input-actors-a" type="text" name="actors-a" class="form-control"
+            placeholder="John Travolta, Uma Thurman" />
+        </div>
+        <div style="width: 300px;">
+          <label for="input-actors-b" class="pink-text">Their Favorite Actors</label>
+          <input id="input-actors-b" type="text" name="actors-b" class="form-control"
+            placeholder="Steve Carell, Miranda Cosgrove" />
+        </div>
+        <br />
+        <br />
+      </div>
+      Our services are only available in certain Arizona zipcodes (85...).
+      </br>
+      <div class="autocomplete" style="width:300px;">
+        <label for="input-location-a" class="pink-text">Your Zipcode *</label>
+        <input id="input-location-a" type="text" name="location-a" class="form-control location-field"
+          placeholder="85013" />
+      </div>
+      <div class="location-b" style="display: none">
+        <div class="autocomplete" style="width:300px; ">
+          <label for="input-location-b" class="pink-text">Their Zipcode *</label>
+          <input id="input-location-b" type="text" name="location-b" class="form-control location-field"
+            placeholder="60616" />
+        </div>
+      </div>
+      <br />
+      <br />
+      <input type="checkbox" id="actors-btn" onclick="showActors()" />
+      <label for="actors-btn">We'd like to input our favorite actors</label>
+      <br />
+      <input type="checkbox" id="location-btn" onclick="showLocationB()" />
+      <label for="location-btn">We are in different locations</label>
+    </div>
+    <br />
+    <br />
+    <button type="submit" class="btn btn-info" id="home-submit">Go!</button>
+  </form>
 
-  <div
-    class="footer"
-    style="font-size: 10px; font-weight: lighter; position: fixed; left: 0; bottom: 0; width: 100%; color: e56a9c; text-align: center"
-  >
-    <p>{{ netid }}</p>
-  </div>
-  <script>
-    function validateForm() {
-      var search = document.forms["search"]
-      var movie_a = search["input-movie-a"].value;
-      var movie_b = search["input-movie-b"].value;
-      var keywords_a = search["input-keywords-a"].value;
-      var keywords_b = search["input-keywords-b"].value;
-      var zipcode_a = search["input-location-a"].value;
-      var zipcode_b = search["input-location-b"].value;
+  <img class="right-img" src="../static/undraw_social_friends_nsbv.png" alt="" />
+</body>
 
-      var zipcode_btn = document.getElementById("location-btn");
-      if ((movie_a == "") || (movie_b == "") || (keywords_a == "") || (keywords_b
+<div class="footer"
+  style="font-size: 10px; font-weight: lighter; position: fixed; left: 0; bottom: 0; width: 100%; color: e56a9c; text-align: center">
+  <b>CUpids:</b>
+  {{ netid }}
+
+</div>
+<script>
+  function validateForm() {
+    var search = document.forms["search"]
+    var movie_a = search["input-movie-a"].value;
+    var movie_b = search["input-movie-b"].value;
+    var keywords_a = search["input-keywords-a"].value;
+    var keywords_b = search["input-keywords-b"].value;
+    var zipcode_a = search["input-location-a"].value;
+    var zipcode_b = search["input-location-b"].value;
+
+    var zipcode_btn = document.getElementById("location-btn");
+    if ((movie_a == "") || (movie_b == "") || (keywords_a == "") || (keywords_b
       == "") || (zipcode_a == "") || (zipcode_btn.checked == true && zipcode_b == "")) {
-        alert("Make sure to fill out all fields with an asterisk");
-        return false;
-      }
+      alert("Make sure to fill out all fields with an asterisk (*)");
+      return false;
+    }
 
-    };
+    zipcodes = ['85003', '85004', '85006', '85008', '85012', '85013', '85014', '85016', '85018', '85020', '85021', '85022', '85023', '85027', '85029', '85032', '85034', '85044', '85048', '85050', '85051', '85053', '85054', '85201', '85202', '85204', '85205', '85206', '85210', '85215', '85224', '85225', '85226', '85233', '85234', '85248', '85250', '85251', '85253', '85254', '85255', '85257', '85258', '85260', '85268', '85281', '85282', '85283', '85284', '85286', '85295', '85296', '85301', '85302', '85305', '85308', '85331', '85338', '85345', '85374', '85382', '85392']
+    if ( ( zipcodes.includes(zipcode_a))== false || (zipcode_btn.checked == true && zipcodes.includes(zipcode_b) == false)) {
+      alert("The service is only available for certain zipcodes in Arizona.");
+      return false;
+    }
+  };
 
 
-    var all_movies = {{ all_movies|safe }};
-    var zipcodes = {{ zipcodes|safe }};
+  var all_movies = {{ all_movies| safe }};
+  var zipcodes = {{ zipcodes| safe }};
 
-    function autocomplete(inp, arr) {
-      /*the autocomplete function takes two arguments,
-      the text field element and an array of possible autocompleted values:*/
-      var currentFocus;
-      /*execute a function when someone writes in the text field:*/
-      inp.addEventListener("input", function(e) {
-          var a, b, i, val = this.value;
-          /*close any already open lists of autocompleted values*/
-          closeAllLists();
-          if (!val) { return false;}
-          currentFocus = -1;
-          /*create a DIV element that will contain the items (values):*/
-          a = document.createElement("DIV");
-          a.setAttribute("id", this.id + "autocomplete-list");
-          a.setAttribute("class", "autocomplete-items");
-          /*append the DIV element as a child of the autocomplete container:*/
-          this.parentNode.appendChild(a);
-          /*for each item in the array...*/
-          for (i = 0; i < arr.length; i++) {
-            /*check if the item starts with the same letters as the text field value:*/
-            if (arr[i].toUpperCase().indexOf(val.toUpperCase()) != -1) {
-              /*create a DIV element for each matching element:*/
-              b = document.createElement("DIV");
-              /*make the matching letters bold:*/
-              star_pos = arr[i].toUpperCase().indexOf(val.toUpperCase())
-              b.innerHTML = arr[i].substr(0,star_pos);
-              b.innerHTML += "<strong>" + arr[i].substr(star_pos, val.length) + "</strong>";
-              b.innerHTML += arr[i].substr(val.length+star_pos);
-              /*insert a input field that will hold the current array item's value:*/
-              b.innerHTML += "<input type='hidden' value='" + arr[i].replace("'", "&apos;") + "'>";
-              console.log(arr[i])
-              /*execute a function when someone clicks on the item value (DIV element):*/
-                  b.addEventListener("click", function(e) {
-                  /*insert the value for the autocomplete text field:*/
-                  inp.value = this.getElementsByTagName("input")[0].value;
-                  /*close the list of autocompleted values,
-                  (or any other open lists of autocompleted values:*/
-                  closeAllLists();
-              });
-              a.appendChild(b);
-            }
-          }
-      });
-      /*execute a function presses a key on the keyboard:*/
-      inp.addEventListener("keydown", function(e) {
-          var x = document.getElementById(this.id + "autocomplete-list");
-          if (x) x = x.getElementsByTagName("div");
-          if (e.keyCode == 40) {
-            /*If the arrow DOWN key is pressed,
-            increase the currentFocus variable:*/
-            currentFocus++;
-            /*and and make the current item more visible:*/
-            addActive(x);
-          } else if (e.keyCode == 38) { //up
-            /*If the arrow UP key is pressed,
-            decrease the currentFocus variable:*/
-            currentFocus--;
-            /*and and make the current item more visible:*/
-            addActive(x);
-          } else if (e.keyCode == 13) {
-            /*If the ENTER key is pressed, prevent the form from being submitted,*/
-            e.preventDefault();
-            if (currentFocus > -1) {
-              /*and simulate a click on the "active" item:*/
-              if (x) x[currentFocus].click();
-            }
-          }
-      });
-      function addActive(x) {
-        /*a function to classify an item as "active":*/
-        if (!x) return false;
-        /*start by removing the "active" class on all items:*/
-        removeActive(x);
-        if (currentFocus >= x.length) currentFocus = 0;
-        if (currentFocus < 0) currentFocus = (x.length - 1);
-        /*add class "autocomplete-active":*/
-        x[currentFocus].classList.add("autocomplete-active");
-      }
-      function removeActive(x) {
-        /*a function to remove the "active" class from all autocomplete items:*/
-        for (var i = 0; i < x.length; i++) {
-          x[i].classList.remove("autocomplete-active");
+  function autocomplete(inp, arr) {
+    /*the autocomplete function takes two arguments,
+    the text field element and an array of possible autocompleted values:*/
+    var currentFocus;
+    /*execute a function when someone writes in the text field:*/
+    inp.addEventListener("input", function (e) {
+      var a, b, i, val = this.value;
+      /*close any already open lists of autocompleted values*/
+      closeAllLists();
+      if (!val) { return false; }
+      currentFocus = -1;
+      /*create a DIV element that will contain the items (values):*/
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (i = 0; i < arr.length; i++) {
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].toUpperCase().indexOf(val.toUpperCase()) != -1) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          star_pos = arr[i].toUpperCase().indexOf(val.toUpperCase())
+          b.innerHTML = arr[i].substr(0, star_pos);
+          b.innerHTML += "<strong>" + arr[i].substr(star_pos, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length + star_pos);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i].replace("'", "&apos;") + "'>";
+          console.log(arr[i])
+          /*execute a function when someone clicks on the item value (DIV element):*/
+          b.addEventListener("click", function (e) {
+            /*insert the value for the autocomplete text field:*/
+            inp.value = this.getElementsByTagName("input")[0].value;
+            /*close the list of autocompleted values,
+            (or any other open lists of autocompleted values:*/
+            closeAllLists();
+          });
+          a.appendChild(b);
         }
       }
-      function closeAllLists(elmnt) {
-        /*close all autocomplete lists in the document,
-        except the one passed as an argument:*/
-        var x = document.getElementsByClassName("autocomplete-items");
-        for (var i = 0; i < x.length; i++) {
-          if (elmnt != x[i] && elmnt != inp) {
+    });
+    /*execute a function presses a key on the keyboard:*/
+    inp.addEventListener("keydown", function (e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        e.preventDefault();
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x) x[currentFocus].click();
+        }
+      }
+    });
+    function addActive(x) {
+      /*a function to classify an item as "active":*/
+      if (!x) return false;
+      /*start by removing the "active" class on all items:*/
+      removeActive(x);
+      if (currentFocus >= x.length) currentFocus = 0;
+      if (currentFocus < 0) currentFocus = (x.length - 1);
+      /*add class "autocomplete-active":*/
+      x[currentFocus].classList.add("autocomplete-active");
+    }
+    function removeActive(x) {
+      /*a function to remove the "active" class from all autocomplete items:*/
+      for (var i = 0; i < x.length; i++) {
+        x[i].classList.remove("autocomplete-active");
+      }
+    }
+    function closeAllLists(elmnt) {
+      /*close all autocomplete lists in the document,
+      except the one passed as an argument:*/
+      var x = document.getElementsByClassName("autocomplete-items");
+      for (var i = 0; i < x.length; i++) {
+        if (elmnt != x[i] && elmnt != inp) {
           x[i].parentNode.removeChild(x[i]);
         }
       }
     }
     /*execute a function when someone clicks in the document:*/
     document.addEventListener("click", function (e) {
-        closeAllLists(e.target);
+      closeAllLists(e.target);
     });
+  }
+
+  autocomplete(document.getElementById("input-movie-a"), all_movies);
+  autocomplete(document.getElementById("input-movie-b"), all_movies);
+  autocomplete(document.getElementById("input-location-a"), zipcodes);
+  autocomplete(document.getElementById("input-location-b"), zipcodes);
+
+
+  var location_btn = document.getElementById("location-btn");
+  var location_b = document.getElementsByClassName("location-b")[0];
+
+  function showLocationB() {
+    if (location_btn.checked == true) {
+      location_b.style.display = "inline";
+    } else {
+      location_b.style.display = "none";
     }
+  }
 
-    autocomplete(document.getElementById("input-movie-a"), all_movies);
-    autocomplete(document.getElementById("input-movie-b"), all_movies);
-    autocomplete(document.getElementById("input-location-a"), zipcodes);
-    autocomplete(document.getElementById("input-location-b"), zipcodes);
-
-
-    var location_btn = document.getElementById("location-btn");
-    var location_b = document.getElementsByClassName("location-b")[0];
-
-    function showLocationB() {
-      if (location_btn.checked == true) {
-        location_b.style.display = "inline";
-      } else {
-        location_b.style.display = "none";
-      }
+  var actors_btn = document.getElementById("actors-btn");
+  var actors_input = document.getElementsByClassName("actors-input")[0];
+  function showActors() {
+    if (actors_btn.checked == true) {
+      actors_input.style.display = "inline";
+    } else {
+      actors_input.style.display = "none";
     }
+  }
+</script>
 
-    var actors_btn = document.getElementById("actors-btn");
-    var actors_input = document.getElementsByClassName("actors-input")[0];
-    function showActors() {
-      if (actors_btn.checked == true) {
-        actors_input.style.display = "inline";
-      } else {
-        actors_input.style.display = "none";
-      }
-    }
-  </script>
 </html>
