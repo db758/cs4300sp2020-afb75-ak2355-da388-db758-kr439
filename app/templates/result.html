@@ -41,7 +41,7 @@
         >{% endif %}.
       </h4>
       <br />
-      <h6 class="subtitle">
+      <h6 class="pink-text">
         Click on the pairing cell to see more information
       </h6>
     </div>
@@ -59,13 +59,14 @@
         <div class="col-sm-4">
           <h5>
             Movie: {{ movieList[i]["title"] }}
+            <p>
             <a class="pink-text link" href="{{ movieList[i]['link'] }}"
               >See Movie Info</a
-            >
+            ></p>
           </h5>
           <p>
-            Food-Related Words: {% for word in movieList[i]["food_words"] %}
-            {{ word }}{{"," if not loop.last}} {% endfor %}
+            Key Words: {% for word in movieList[i]["food_words"] %}
+            {{ word }}{{"," if not loop.last}} {% endfor %} {{ user1Restaurants[i]["matchings"] }}{{ user2Restaurants[i]["matchings"] }}
           </p>
         </div>
         <div class="col-sm-4">
@@ -74,7 +75,7 @@
             Location: {{ user1Restaurants[i]["city1"] }},
             {{ user1Restaurants[i]["state1"] }}
           </p>
-          <p>Matching Attributes: {{ user1Restaurants[i]["matchings"] }}</p>
+          <!-- <p>Matching Attributes: {{ user1Restaurants[i]["matchings"] }}</p> -->
         </div>
         <div class="col-sm-4">
           <h5>Restaurant for Them: {{ user2Restaurants[i]["restaurant2"] }}</h5>
@@ -82,7 +83,7 @@
             Location: {{ user2Restaurants[i]["city2"] }},
             {{ user2Restaurants[i]["state2"] }}
           </p>
-          <p>Matching Attributes: {{ user2Restaurants[i]["matchings"] }}</p>
+          <!-- <p>Matching Attributes: {{ user2Restaurants[i]["matchings"] }}</p> -->
         </div>
       </div>
       {% else %}
@@ -95,14 +96,15 @@
       <div class="treaty-panel row">
         <div class="col-sm-6">
           <h5>
-            Movie: {{ movieList[i]["title"] }}
+            Movie: {{ movieList[i]["title"] }} 
+            <p>
             <a class="pink-text link" href="{{ movieList[i]['link'] }}"
               >See Movie Info</a
-            >
+            ></p>
           </h5>
           <p>
-            Food-Related Words: {% for word in movieList[i]["food_words"] %}
-            {{ word }}{{"," if not loop.last}} {% endfor %}
+            Key Words: {% for word in movieList[i]["food_words"] %}
+            {{ word }}{{"," if not loop.last}} {% endfor %} {{ user1Restaurants[i]["matchings"] }}
           </p>
         </div>
         <div class="col-sm-6">
@@ -111,7 +113,7 @@
             Location: {{ user1Restaurants[i]["city1"] }},
             {{ user1Restaurants[i]["state1"] }}
           </p>
-          <p>Matching Attributes: {{ user1Restaurants[i]["matchings"] }}</p>
+          <!-- <p>Matching Attributes: {{ user1Restaurants[i]["matchings"] }}</p> -->
         </div>
       </div>
       {% endif %} {% endfor %}

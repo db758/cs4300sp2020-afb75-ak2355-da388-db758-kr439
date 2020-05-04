@@ -190,30 +190,30 @@ class YelpScoring(object):
       if zcode == zipcode:
         res["radius"] = 0
         res_same_zip.append(res)
-      elif zcode in radius_2:
-        res["radius"] = 2
-        res_within_2.append(res)
+      # elif zcode in radius_2:
+      #   res["radius"] = 2
+      #   res_within_2.append(res)
       elif zcode in radius_5:
         res["radius"] = 5
         res_within_5.append(res)
-      elif zcode in radius_10:
-        res["radius"] = 10
-        res_within_10.append(res)
-      elif zcode in radius_15:
-        res["radius"] = 15
-        res_within_15.append(res)
+      # elif zcode in radius_10:
+      #   res["radius"] = 10
+      #   res_within_10.append(res)
+      # elif zcode in radius_15:
+      #   res["radius"] = 15
+      #   res_within_15.append(res)
       elif zcode in radius_20:
         res["radius"] = 20
         res_within_20.append(res)
-      elif zcode in radius_25:
-        res["radius"] = 25
-        res_within_25.append(res)
+      # elif zcode in radius_25:
+      #   res["radius"] = 25
+      #   res_within_25.append(res)
       elif zcode in radius_30:
         res["radius"] = 30
         res_within_30.append(res)
-      elif zcode in radius_45:
-        res["radius"] = 45
-        res_within_45.append(res)
+      # elif zcode in radius_45:
+      #   res["radius"] = 45
+      #   res_within_45.append(res)
       elif zcode in radius_50:
         res["radius"] = 50
         res_within_50.append(res)
