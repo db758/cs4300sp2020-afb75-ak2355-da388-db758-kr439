@@ -156,16 +156,22 @@ class YelpScoring(object):
 
     # Get all zipcodes in different sizes of radius from the input zipcode
 
-    radius_2 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 2)]) # All zipcodes with 2 miles of input
-    radius_5 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 5)]) - radius_2   # All zipcodes within 2 < zipcode <= 5
-    radius_10 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 10)]) - radius_2 - radius_5 # All zipcodes within 5 < zipcode <= 10
-    radius_15 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 15)]) - radius_2 - radius_5 - radius_10
-    radius_20 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 20)]) - radius_2 - radius_5 - radius_10 - radius_15
-    radius_25 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 25)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20
-    radius_30 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 30)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25
-    radius_45 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 45)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30
-    radius_50 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 50)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30 - radius_45
-    radius_60 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 60)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30 - radius_45 - radius_50
+    # radius_2 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 2)]) # All zipcodes with 2 miles of input
+    # radius_5 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 5)]) - radius_2   # All zipcodes within 2 < zipcode <= 5
+    # radius_10 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 10)]) - radius_2 - radius_5 # All zipcodes within 5 < zipcode <= 10
+    # radius_15 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 15)]) - radius_2 - radius_5 - radius_10
+    # radius_20 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 20)]) - radius_2 - radius_5 - radius_10 - radius_15
+    # radius_25 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 25)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20
+    # radius_30 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 30)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25
+    # radius_45 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 45)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30
+    # radius_50 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 50)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30 - radius_45
+    # radius_60 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 60)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30 - radius_45 - radius_50
+
+    radius_5 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 5)])   # All zipcodes within 2 < zipcode <= 5
+    radius_20 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 20)]) - radius_5
+    radius_30 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 30)]) - radius_5 - radius_20
+    radius_50 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 50)]) - radius_5 - radius_20 - radius_30
+    radius_60 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 60)]) - radius_5 - radius_20 - radius_30 - radius_50
 
     res_same_zip = []
     res_within_2 = []
@@ -244,7 +250,7 @@ class YelpScoring(object):
       sim_attribute = jac_attribute[0]
       sim_category = jac_cattegory[0]
 
-      result[r['business_id']] = sim_attribute + sim_category
+      result[r['business_id']] = sim_attribute + (3 * sim_category)
       output[r['business_id']] = jac_attribute[1].union(jac_cattegory[1])
     
     sorted_dict = {r: result[r] for r in sorted(result, key=result.get, reverse=True)}
@@ -258,7 +264,7 @@ class YelpScoring(object):
     Will only include restaurants from the restaurant locations input.
     """
     # 11 bins for zipcodes - those w radius 0 get 11 points, with radius 2 (next bin) get 10 points
-    weight = {0: 8, 2: 8, 5: 8, 10: 7, 15: 7, 20: 6, 25: 5, 30: 5, 45: 2, 50: 2, 60: 2}
+    weight = {0: 11, 2: 10, 5: 9, 10: 8, 15: 7, 20: 6, 25: 5, 30: 4, 45: 3, 50: 2, 60: 1}
 
     result = {} 
     for r in restaurant_locations:
@@ -402,6 +408,23 @@ class YelpScoring(object):
 # #   for at in att:
 # #     f.write(json.dumps(at))
 # #     f.write("\n")
+
+# print("Method")
+# yelp = YelpScoring()
+# a = []
+# for r in yelp.restaurants:
+#   if r['categories'] is not None:
+#     temp = yelp.tokenize_categories(r['categories'])
+#     for t in temp:
+#       if t not in a:
+#         a.append(t)
+# with open('cat-test.txt', 'w') as f:
+#   for e in a:
+#     f.write(e + "\n")
+# with open('attribute-rest.txt', 'w') as f:
+#   for at in att:
+#     f.write(json.dumps(at))
+#     f.write("\n")
 
 # print(len(a))
 # print(countAtt)

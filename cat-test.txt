@@ -1,0 +1,475 @@
+Food
+Pretzels
+Fast Food
+Bakeries
+Restaurants
+Hot Dogs
+American (New)
+Burgers
+Chinese
+Sandwiches
+Ice Cream & Frozen Yogurt
+American (Traditional)
+Tex-Mex
+Salad
+Desserts
+Mexican
+Szechuan
+Asian Fusion
+Cocktail Bars
+Arcades
+Wine Bars
+Arts & Entertainment
+Bars
+Nightlife
+Pizza
+Buffets
+Italian
+Thai
+Wraps
+Cafes
+Juice Bars & Smoothies
+Vegetarian
+Caterers
+Delis
+Event Planning & Services
+Gelato
+Shaved Ice
+Breakfast & Brunch
+Mediterranean
+Greek
+Hotel bar
+African
+Comfort Food
+Chicken Wings
+Sports Bars
+Australian
+Health Markets
+Specialty Food
+Cooking Classes
+Shopping
+Arts & Crafts
+Beauty & Spas
+Hair Salons
+Coffee & Tea
+Nail Salons
+Sushi Bars
+Vegan
+Middle Eastern
+Hookah Bars
+Lounges
+Southern
+Wine & Spirits
+Beer
+Food Delivery Services
+Vietnamese
+Bagels
+Hawaiian
+Caribbean
+Bubble Tea
+Japanese
+Korean
+Seafood
+Tacos
+Carpet Cleaning
+Home Services
+Professional Services
+Home Cleaning
+Window Washing
+Home Organization
+Local Services
+Tiling
+Office Cleaning
+Gluten-Free
+Steakhouses
+Dive Bars
+Barbeque
+Pubs
+Cajun/Creole
+German
+Afghan
+Halal
+Music Venues
+Dance Clubs
+Diners
+Cinema
+Mini Golf
+Active Life
+Bowling
+Indian
+Food Trucks
+Local Flavor
+Tapas/Small Plates
+Donuts
+Cheesesteaks
+Cantonese
+Dim Sum
+Brewpubs
+Breweries
+Beer Bar
+Waffles
+Street Vendors
+Venues & Event Spaces
+Sporting Goods
+Golf
+Irish
+Gastropubs
+Indoor Playcentre
+Soul Food
+Ramen
+Jazz & Blues
+Noodles
+Latin American
+Wedding Chapels
+Ethnic Food
+Fish & Chips
+Argentine
+Hot Pot
+Soup
+Organic Stores
+Karaoke
+Live/Raw Food
+Tapas Bars
+Do-It-Yourself Food
+Peruvian
+Shopping Centers
+Department Stores
+Fashion
+Pan Asian
+Grocery
+Filipino
+Colombian
+New Mexican Cuisine
+Izakaya
+Kitchen & Bath
+Home & Garden
+Acai Bowls
+International Grocery
+Country Dance Halls
+Pool Halls
+Pets
+Veterinarians
+French
+Security Systems
+Imported Food
+Seafood Markets
+Cambodian
+Chicken Shop
+Poke
+Motorcycle Repair
+RV Repair
+Auto Upholstery
+Auto Detailing
+Auto Repair
+Furniture Reupholstery
+Auto Customization
+Automotive
+Modern European
+Party & Event Planning
+Gyms
+Country Clubs
+Fitness & Instruction
+Hotels
+Hotels & Travel
+Bed & Breakfast
+Bikes
+Bike Repair/Maintenance
+Mass Media
+Bistros
+Food Court
+Belgian
+Kebab
+Pakistani
+Yoga
+Massage
+Ethiopian
+Cupcakes
+Meat Shops
+Poutineries
+Beer Gardens
+Russian
+Farmers Market
+Christmas Trees
+Flowers & Gifts
+Florists
+Polish
+Festivals
+Music & Video
+Used Bookstore
+Bookstores
+Community Service/Non-Profit
+Mags
+Books
+Fruits & Veggies
+Day Spas
+Health & Medical
+Medical Spas
+Virtual Reality Centers
+Sports Wear
+Golf Lessons
+Whiskey Bars
+Lebanese
+Performing Arts
+Beverage Store
+Convenience Stores
+Pancakes
+Creperies
+Teppanyaki
+Custom Cakes
+Patisserie/Cake Shop
+Food Stands
+Falafel
+Emergency Medicine
+Doctors
+Pediatricians
+Hospitals
+Cardiologists
+Spanish
+Cuban
+Coffee Roasteries
+Women's Clothing
+Men's Clothing
+Salvadoran
+Mongolian
+Empanadas
+Ukrainian
+Gas Stations
+Playgrounds
+Kids Activities
+Malaysian
+Singaporean
+Pilates
+Dance Studios
+Brazilian
+Dominican
+Smokehouse
+Amusement Parks
+Tours
+Wedding Planning
+Scandinavian
+Irish Pub
+Moroccan
+Arabian
+Turkish
+British
+Olive Oil
+Herbs & Spices
+Speakeasies
+Pasta Shops
+Head Shops
+Discount Store
+Pet Stores
+Souvenir Shops
+Cannabis Dispensaries
+Internet Cafes
+Tea Rooms
+Resorts
+Taiwanese
+Kosher
+Coffee & Tea Supplies
+Archery
+Horseback Riding
+Parks
+Appliances
+Grilling Equipment
+Fireplace Services
+Grill Services
+Contractors
+Outdoor Furniture Stores
+Appliances & Repair
+Real Estate
+Drugstores
+Unofficial Yelp Events
+Adult Entertainment
+Bar Crawl
+Social Clubs
+Persian/Iranian
+Burmese
+Dinner Theater
+Puerto Rican
+Food Tours
+Car Wash
+Public Services & Government
+Libraries
+Basque
+Chocolatiers & Shops
+Piano Bars
+Candy Stores
+Towing
+Recreation Centers
+Comedy Clubs
+Education
+Parenting Classes
+Specialty Schools
+Massage Therapy
+Trainers
+Nutritionists
+Fondue
+Thrift Stores
+Casinos
+Honey
+Botanical Gardens
+Museums
+Zoos
+Cultural Center
+Cooking Schools
+Hungarian
+Chimney Cakes
+Trinidadian
+Conveyor Belt Sushi
+Wineries
+Teeth Whitening
+Tanning
+Spray Tanning
+Eyelash Service
+Health Coach
+Delicatessen
+Home Decor
+Restaurant Supplies
+Furniture Stores
+Wholesalers
+Building Supplies
+Dentists
+Japanese Curry
+Art Galleries
+Tobacco Shops
+Airports
+Ethnic Grocery
+Gay Bars
+Electricians
+Lighting Fixtures & Equipment
+Shoe Stores
+Butcher
+Bartenders
+Bankruptcy Law
+Tax Law
+Trusts
+Lawyers
+Tax Services
+Wills
+Estate Planning Law
+Business Consulting
+& Probates
+Financial Services
+Movers
+Distilleries
+Cosmetics & Beauty Supply
+Weight Loss Centers
+Amateur Sports Teams
+Golf Equipment Shops
+Personal Chefs
+Brasseries
+Sports Clubs
+Indonesian
+Laotian
+Macarons
+Gift Shops
+Champagne Bars
+Czech
+Tiki Bars
+Polynesian
+Outlet Stores
+Honduran
+High Fidelity Audio Equipment
+Vinyl Records
+Electronics Repair
+Wholesale Stores
+Game Meat
+Religious Organizations
+Churches
+Horse Racing
+Handyman
+Knife Sharpening
+Yelp Events
+General Dentistry
+Laser Tag
+Couriers & Delivery Services
+Kombucha
+Pita
+Cheese Shops
+Pop-Up Restaurants
+Eatertainment
+Check Cashing/Pay-day Loans
+Currency Exchange
+Wigs
+Go Karts
+Race Tracks
+Physical Therapy
+Art Museums
+Cabaret
+Themed Cafes
+Art Classes
+Farms
+Graphic Design
+Spiritual Shop
+Personal Shopping
+Strip Clubs
+Pet Services
+Pet Adoption
+Barbers
+Shanghainese
+Accessories
+Health Retreats
+Rotisserie Chicken
+Antiques
+Stadiums & Arenas
+Accountants
+Club Crawl
+Cafeteria
+Trampoline Parks
+Climbing
+Pool & Hot Tub Service
+Hot Tub & Pool
+Nail Technicians
+Hair Stylists
+Himalayan/Nepalese
+Psychologists
+Reiki
+Psychics
+Supernatural Readings
+Meditation Centers
+Life Coach
+Counseling & Mental Health
+Customized Merchandise
+DJs
+Cannabis Clinics
+Chiropractors
+Naturopathic/Holistic
+Medical Cannabis Referrals
+Acupuncture
+Pain Management
+Medical Centers
+Jewelry
+Home Health Care
+Cosmetic Surgeons
+Orthodontists
+Cosmetic Dentists
+Medical Transportation
+Armenian
+Tanning Beds
+Catalan
+Dance Schools
+Preschools
+Art Schools
+Drywall Installation & Repair
+Painters
+Vitamins & Supplements
+Shaved Snow
+Wine Tasting Room
+Sicilian
+Uzbek
+Austrian
+Oaxacan
+Coffeeshops
+Pharmacy
+Hong Kong Style Cafe
+Cards & Stationery
+Guest Houses
+Traditional Clothing
+Post Offices
+Synagogues
+Bingo Halls
+Shared Office Spaces
+Vape Shops
+Electronics
+Leisure Centers
