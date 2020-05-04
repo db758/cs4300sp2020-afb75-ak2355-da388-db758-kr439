@@ -565,14 +565,14 @@ class MovieScoring(object):
 		# 	for mov in i:
 		# 		output.write(mov+ '\n')
 
-print("Method")
-movieClass = MovieScoring()
+# print("Method")
+# movieClass = MovieScoring()
 # for mov in movieClass.movie_to_cast:
 # 	if movieClass.movie_to_cast[mov] != []:
 # 		print(mov)
 # movieClass.getCSVs()
 # print(len(movieClass.all_movies))
-print(len(movieClass.inv_idx))
+# print(len(movieClass.inv_idx))
 # print(len(movieClass.movie_to_cast))
 
 
