@@ -38,14 +38,13 @@ class MovieScoring(object):
 			self.movie_to_cast = json.load(output)
 			output.close()
 
-		
 		#List of all movies
 		self.all_movies = list(self.movie_to_genre.keys())
 
 		#Initialize the Cosine parts
 		# self.movies_tokens = self.token(self.movie_to_summaries)
 		# self.inv_idx = self.buildInvertedIndex(self.movies_tokens)
-		# self.idf = self.compute_idf(self.inv_idx, len(self.movie_to_summaries), min_df=15, max_df_ratio=0.1)
+		# self.idf = self.compute_idf(self.inv_idx, len(self.movie_to_summaries), min_df=18, max_df_ratio=0.05)
 		# self.inv_idx = {key: val for key, val in self.inv_idx.items() if key in self.idf}
 		# self.doc_norms = self.compute_doc_norms(self.inv_idx, self.idf, len(self.movie_to_summaries))
 
@@ -389,7 +388,7 @@ class MovieScoring(object):
 		return inverted_index
 		#inverted index only has the query term words
 
-	def compute_idf(self, inv_idx, n_docs, min_df=10, max_df_ratio=0.1):
+	def compute_idf(self, inv_idx, n_docs, min_df=18, max_df_ratio=0.05):
 		"""
 		This just builds computes idf for the movie summaries. {word: idf value}
 		
@@ -566,14 +565,14 @@ class MovieScoring(object):
 		# 	for mov in i:
 		# 		output.write(mov+ '\n')
 
-# print("Method")
-# movieClass = MovieScoring()
+print("Method")
+movieClass = MovieScoring()
 # for mov in movieClass.movie_to_cast:
 # 	if movieClass.movie_to_cast[mov] != []:
 # 		print(mov)
 # movieClass.getCSVs()
 # print(len(movieClass.all_movies))
-# print(len(movieClass.inv_idx))
+print(len(movieClass.inv_idx))
 # print(len(movieClass.movie_to_cast))
 
 
