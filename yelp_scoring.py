@@ -76,7 +76,7 @@ class YelpScoring(object):
 
     if len(final_result) == 0:
         user1_result = [{'restaurant1': "Could not find restaurant :( but popcorn is always a good option! ", 'score1': '', 'city1': '', 'state1': '',
-        'matchings': '', 'star': ''}]
+        'matchings': '', 'star': '', 'zipcode': ''}]
 
     else:
       first_elem = list(final_result.keys())[0] #gets the first element id of the final result
@@ -90,7 +90,7 @@ class YelpScoring(object):
       
       user1_result = [{'restaurant1': self.restaurant_dict[first_elem]['name'], 'score1': str(first_elem_score), 
       'city1': self.restaurant_dict[first_elem]['city'], 'state1': self.restaurant_dict[first_elem]['state'],
-      'matchings': i, 'star': self.restaurant_dict[first_elem]['stars']}]
+      'matchings': i, 'star': self.restaurant_dict[first_elem]['stars'], 'zipcode': self.restaurant_dict[first_elem]['postal_code']}]
 
     if zipcode2 is None: 
       user2_result = []
@@ -103,7 +103,7 @@ class YelpScoring(object):
       if len(final_result2) == 0:
 
         user2_result = [{'restaurant2': "Could not find restaurant :( but popcorn is always a good option! ", 'score2': '', 'city2': '', 'state2': '',
-        'matchings': '', 'star': ''}]
+        'matchings': '', 'star': '', 'zipcode': ''}]
       
       else:
         first_elem2 = list(final_result2.keys())[0]
@@ -117,7 +117,7 @@ class YelpScoring(object):
 
         user2_result = [{'restaurant2': self.restaurant_dict[first_elem2]['name'], 'score2': str(first_elem_score2), 
         'city2': self.restaurant_dict[first_elem2]['city'], 'state2': self.restaurant_dict[first_elem2]['state'],
-        'matchings': i2, 'star': self.restaurant_dict[first_elem2]['stars']}]
+        'matchings': i2, 'star': self.restaurant_dict[first_elem2]['stars'], 'zipcode': self.restaurant_dict[first_elem2]['postal_code']}]
       
     return user1_result + user2_result
         
@@ -156,22 +156,22 @@ class YelpScoring(object):
 
     # Get all zipcodes in different sizes of radius from the input zipcode
 
-    # radius_2 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 2)]) # All zipcodes with 2 miles of input
-    # radius_5 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 5)]) - radius_2   # All zipcodes within 2 < zipcode <= 5
-    # radius_10 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 10)]) - radius_2 - radius_5 # All zipcodes within 5 < zipcode <= 10
-    # radius_15 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 15)]) - radius_2 - radius_5 - radius_10
-    # radius_20 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 20)]) - radius_2 - radius_5 - radius_10 - radius_15
-    # radius_25 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 25)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20
-    # radius_30 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 30)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25
-    # radius_45 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 45)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30
-    # radius_50 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 50)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30 - radius_45
-    # radius_60 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 60)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30 - radius_45 - radius_50
+    radius_2 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 1)]) # All zipcodes with 2 miles of input
+    radius_5 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 2)]) - radius_2   # All zipcodes within 2 < zipcode <= 5
+    radius_10 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 3)]) - radius_2 - radius_5 # All zipcodes within 5 < zipcode <= 10
+    radius_15 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 4)]) - radius_2 - radius_5 - radius_10
+    radius_20 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 5)]) - radius_2 - radius_5 - radius_10 - radius_15
+    radius_25 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 10)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20
+    radius_30 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 15)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25
+    radius_45 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 20)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30
+    radius_50 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 25)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30 - radius_45
+    radius_60 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 30)]) - radius_2 - radius_5 - radius_10 - radius_15 - radius_20 - radius_25 - radius_30 - radius_45 - radius_50
 
-    radius_5 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 5)])   # All zipcodes within 2 < zipcode <= 5
-    radius_20 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 20)]) - radius_5
-    radius_30 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 30)]) - radius_5 - radius_20
-    radius_50 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 50)]) - radius_5 - radius_20 - radius_30
-    radius_60 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 60)]) - radius_5 - radius_20 - radius_30 - radius_50
+    # radius_5 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 5)])   # All zipcodes within 2 < zipcode <= 5
+    # radius_20 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 20)]) - radius_5
+    # radius_30 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 30)]) - radius_5 - radius_20
+    # radius_50 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 50)]) - radius_5 - radius_20 - radius_30
+    # radius_60 = set([z.zip for z in zcdb.get_zipcodes_around_radius(zipcode, 60)]) - radius_5 - radius_20 - radius_30 - radius_50
 
     res_same_zip = []
     res_within_2 = []
@@ -190,30 +190,30 @@ class YelpScoring(object):
       if zcode == zipcode:
         res["radius"] = 0
         res_same_zip.append(res)
-      # elif zcode in radius_2:
-      #   res["radius"] = 2
-      #   res_within_2.append(res)
+      elif zcode in radius_2:
+        res["radius"] = 2
+        res_within_2.append(res)
       elif zcode in radius_5:
         res["radius"] = 5
         res_within_5.append(res)
-      # elif zcode in radius_10:
-      #   res["radius"] = 10
-      #   res_within_10.append(res)
-      # elif zcode in radius_15:
-      #   res["radius"] = 15
-      #   res_within_15.append(res)
+      elif zcode in radius_10:
+        res["radius"] = 10
+        res_within_10.append(res)
+      elif zcode in radius_15:
+        res["radius"] = 15
+        res_within_15.append(res)
       elif zcode in radius_20:
         res["radius"] = 20
         res_within_20.append(res)
-      # elif zcode in radius_25:
-      #   res["radius"] = 25
-      #   res_within_25.append(res)
+      elif zcode in radius_25:
+        res["radius"] = 25
+        res_within_25.append(res)
       elif zcode in radius_30:
         res["radius"] = 30
         res_within_30.append(res)
-      # elif zcode in radius_45:
-      #   res["radius"] = 45
-      #   res_within_45.append(res)
+      elif zcode in radius_45:
+        res["radius"] = 45
+        res_within_45.append(res)
       elif zcode in radius_50:
         res["radius"] = 50
         res_within_50.append(res)
@@ -268,7 +268,7 @@ class YelpScoring(object):
 
     result = {} 
     for r in restaurant_locations:
-      score = restaurant_scores[r['business_id']] * 3 + (weight[r['radius']] / 11)
+      score = restaurant_scores[r['business_id']] * 3 + (weight[r['radius']] / 11) + (r['stars'] / 5)
       sentiments = r['avg_sentiments']
 
       # ADD SENTIMENT TO SCORE 

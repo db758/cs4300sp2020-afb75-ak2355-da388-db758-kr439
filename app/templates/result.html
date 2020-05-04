@@ -53,46 +53,52 @@
         ><i>{{ movieList[i]["title"] }}</i> &
         {{ user1Restaurants[i]["restaurant1"] }} &
         {{ user2Restaurants[i]["restaurant2"] }}
-        <img src="../static/arrow.png"  alt="arrow" align="right" style="width:15px;height:10px;" />
+        <img
+          src="../static/arrow.png"
+          alt="arrow"
+          align="right"
+          style="width:15px;height:10px;"
+        />
       </button>
       <div class="treaty-panel row">
         <div class="col-sm-4">
           <h5>
-            Movie: {{ movieList[i]["title"] }}
+            <strong>Movie: </strong>{{ movieList[i]["title"] }}
             <p>
-            <a class="pink-text link" href="{{ movieList[i]['link'] }}"
-              >See Movie Info</a
-            ></p>
+              <a class="pink-text link" href="{{ movieList[i]['link'] }}"
+                >See Movie Info</a
+              >
+            </p>
           </h5>
           <p>
-            Key Words: {% for word in movieList[i]["food_words"] %}
-            {{ word }}{{"," if not loop.last}} {% endfor %} 
-            {% for w in user1Restaurants[i]["matchings"] %}
-            {{ w }}{{"," if not loop.last}} {% endfor %} 
-            {% for x in user2Restaurants[i]["matchings"] %}
-            {{ x }}{{"," if not loop.last}} {% endfor %} 
+            Key Words: {% for word in foodWordList[i] %}
+            {{ word }}{{"," if not loop.last}} {% endfor %}
           </p>
         </div>
         <div class="col-sm-4">
-          <h5>Restaurant for You: {{ user1Restaurants[i]["restaurant1"] }}</h5>
+          <h5>
+            <strong>Restaurant for You:</strong>
+            {{ user1Restaurants[i]["restaurant1"] }}
+          </h5>
           <p>
             Location: {{ user1Restaurants[i]["city1"] }},
             {{ user1Restaurants[i]["state1"] }}
           </p>
-          <p>
-            Stars: {{user1Restaurants[i]["star"]}}
-          </p>
+          <p>Zipcode: {{ user1Restaurants[i]["zipcode"] }}</p>
+          <p>Stars: {{ user1Restaurants[i]["star"] }}</p>
           <!-- <p>Matching Attributes: {{ user1Restaurants[i]["matchings"] }}</p> -->
         </div>
         <div class="col-sm-4">
-          <h5>Restaurant for Them: {{ user2Restaurants[i]["restaurant2"] }}</h5>
+          <h5>
+            <strong>Restaurant for Them:</strong>
+            {{ user2Restaurants[i]["restaurant2"] }}
+          </h5>
           <p>
             Location: {{ user2Restaurants[i]["city2"] }},
             {{ user2Restaurants[i]["state2"] }}
           </p>
-          <p>
-            Stars: {{user2Restaurants[i]["star"]}}
-          </p>
+          <p>Zipcode: {{ user2Restaurants[i]["zipcode"] }}</p>
+          <p>Stars: {{ user2Restaurants[i]["star"] }}</p>
           <!-- <p>Matching Attributes: {{ user2Restaurants[i]["matchings"] }}</p> -->
         </div>
       </div>
@@ -101,33 +107,39 @@
         <strong>Pairing {{ i + 1 }}: </strong
         ><i>{{ movieList[i]["title"] }}</i> &
         {{ user1Restaurants[i]["restaurant1"] }}
-        <img src="../static/arrow.png"  alt="arrow" align="right" style="width:15px;height:10px;" />
+        <img
+          src="../static/arrow.png"
+          alt="arrow"
+          align="right"
+          style="width:15px;height:10px;"
+        />
       </button>
       <div class="treaty-panel row">
         <div class="col-sm-6">
           <h5>
-            Movie: {{ movieList[i]["title"] }} 
+            <strong>Movie: </strong>{{ movieList[i]["title"] }}
             <p>
-            <a class="pink-text link" href="{{ movieList[i]['link'] }}"
-              >See Movie Info</a
-            ></p>
+              <a class="pink-text link" href="{{ movieList[i]['link'] }}"
+                >See Movie Info</a
+              >
+            </p>
           </h5>
           <p>
-            Key Words: {% for word in movieList[i]["food_words"] %}
+            Key Words: {% for word in foodWordList[i] %}
             {{ word }}{{"," if not loop.last}} {% endfor %}
-            {% for w in user1Restaurants[i]["matchings"] %}
-            {{ w }}{{"," if not loop.last}} {% endfor %} 
           </p>
         </div>
         <div class="col-sm-6">
-          <h5>Restaurant for You: {{ user1Restaurants[i]["restaurant1"] }}</h5>
+          <h5>
+            <strong>Restaurant for You:</strong>
+            {{ user1Restaurants[i]["restaurant1"] }}
+          </h5>
           <p>
             Location: {{ user1Restaurants[i]["city1"] }},
             {{ user1Restaurants[i]["state1"] }}
           </p>
-          <p>
-            Stars: {{user1Restaurants[i]["stars"]}}
-          </p>
+          <p>Zipcode: {{ user1Restaurants[i]["zipcode"] }}</p>
+          <p>Stars: {{ user1Restaurants[i]["star"] }}</p>
           <!-- <p>Matching Attributes: {{ user1Restaurants[i]["matchings"] }}</p> -->
         </div>
       </div>

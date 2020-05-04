@@ -70,10 +70,19 @@ def search():
 		user1Restaurants = [your_restaurant1, your_restaurant2, your_restaurant3]
 		user2Restaurants = [their_restaurant1, their_restaurant2, their_restaurant3]
 
+		foodWordList = []
+		for i in range(3):
+			foodWords = movieList[i]['food_words'] + list(user1Restaurants[i]['matchings'])
+			if len(yelp_result1) == 2:
+				foodWords = foodWords + list(user2Restaurants[i]['matchings'])
+			foodWords = set([word.lower() for word in foodWords])
+			foodWords = [word.title() for word in list(foodWords)]
+			foodWordList.append(foodWords)
+
 		return render_template('result.html', netid=net_id, movieList=movieList, 
 		twoRestaurants=twoRestaurants, user1Restaurants=user1Restaurants, 
 		user2Restaurants=user2Restaurants, yourMovie=movie_a, theirMovie=movie_b,
-		yourZipcode=location_a, theirZipcode=location_b)
+		yourZipcode=location_a, theirZipcode=location_b, foodWordList=foodWordList)
 
 
 	return render_template('search.html', name=project_name, netid=net_id, all_movies=all_movies, zipcodes=zipcodes)
