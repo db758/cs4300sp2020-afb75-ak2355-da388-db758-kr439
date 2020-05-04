@@ -86,7 +86,7 @@ class YelpScoring(object):
       if len(i) == 0:
         i = ''
       else:
-        i = str(i)
+        i = list(i)
 
       user1_result = [{'restaurant1': self.restaurant_dict[first_elem]['name'], 'score1': str(first_elem_score), 
       'city1': self.restaurant_dict[first_elem]['city'], 'state1': self.restaurant_dict[first_elem]['state'],
@@ -113,7 +113,7 @@ class YelpScoring(object):
         if len(i2) == 0:
           i2 = ''
         else:
-          i2 = str(i2)
+          i2 = list(i2)
 
         user2_result = [{'restaurant2': self.restaurant_dict[first_elem2]['name'], 'score2': str(first_elem_score2), 
         'city2': self.restaurant_dict[first_elem2]['city'], 'state2': self.restaurant_dict[first_elem2]['state'],

@@ -66,7 +66,11 @@
           </h5>
           <p>
             Key Words: {% for word in movieList[i]["food_words"] %}
-            {{ word }}{{"," if not loop.last}} {% endfor %} {{ user1Restaurants[i]["matchings"] }}{{ user2Restaurants[i]["matchings"] }}
+            {{ word }}{{"," if not loop.last}} {% endfor %} 
+            {% for w in user1Restaurants[i]["matchings"] %}
+            {{ w }}{{"," if not loop.last}} {% endfor %} 
+            {% for x in user2Restaurants[i]["matchings"] %}
+            {{ x }}{{"," if not loop.last}} {% endfor %} 
           </p>
         </div>
         <div class="col-sm-4">
@@ -104,7 +108,9 @@
           </h5>
           <p>
             Key Words: {% for word in movieList[i]["food_words"] %}
-            {{ word }}{{"," if not loop.last}} {% endfor %} {{ user1Restaurants[i]["matchings"] }}
+            {{ word }}{{"," if not loop.last}} {% endfor %}
+            {% for w in user1Restaurants[i]["matchings"] %}
+            {{ w }}{{"," if not loop.last}} {% endfor %} 
           </p>
         </div>
         <div class="col-sm-6">
